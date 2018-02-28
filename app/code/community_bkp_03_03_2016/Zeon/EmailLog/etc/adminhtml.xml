@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!--
+/**
+* Email Log integration.
+*
+* @package    Zeon_EmailLog
+*/
+-->
+<config>
+	<menu>
+        <system>
+            <children>
+                <tools>
+                    <children>
+                        <emaillog translate="title" module="emaillog">
+                            <title>Email Log</title>
+                            <action>emaillog/index</action>
+                        </emaillog>
+                    </children>
+                </tools>
+            </children>
+        </system>
+    </menu>
+    <acl>
+		<resources>
+			<admin>
+				<children>
+					<system>
+						<children>
+							<config>
+								<children>
+									<emaillog>
+										<title>Email Log Settings</title>
+									</emaillog>
+								</children>
+							</config>
+						</children>
+					</system>
+				</children>
+			</admin>
+		</resources>
+	</acl>
+</config>

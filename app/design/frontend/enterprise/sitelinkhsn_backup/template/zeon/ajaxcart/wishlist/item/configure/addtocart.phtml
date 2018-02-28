@@ -1,0 +1,78 @@
+<?php
+/**
+ * zeonsolutions inc.
+ * @category   design
+ * @package    enterprise_default
+ * @version    0.0.1
+ * @copyright  @copyright Copyright (c) 2013 zeonsolutions.Inc. (http://www.zeonsolutions.com)
+ * @license    http://shop.zeonsolutions.com/license-enterprise.txt
+ */
+?>
+
+<?php $_product = $this->getProduct(); ?>
+<?php $_wishlistItem = Mage::registry('wishlist_item'); ?>
+<?php $_wishlistSubmitUrl = $this->helper('wishlist')->getUpdateUrl($_wishlistItem); ?>
+<?php $buttonTitle = $this->__('Add to Cart'); ?>
+    <div class="add-to-cart">
+        <!--  Quantity testbox and label -->
+        <?php if (!$_product->isGrouped()): ?>
+            <div class="qty-box">
+                <label for="qty"><?php echo $this->__('Quantity') ?></label>
+                <input type="text" name="qty" id="qty" maxlength="12" value="<?php echo $this->getProductDefaultQty() * 1 ?>" title="<?php echo $this->__('Quantity') ?>" <?php if (!$_product->isSaleable()) { echo 'disabled'; } ?> class="input-text qty" />
+            </div>
+        <?php endif; ?>
+        <!--  out of stock label -->
+
+            <?php if ($this->displayProductStockStatus()): ?>
+                <?php if (!$_product->isAvailable()): ?>
+                     <div class="item-oos"><p class="availability out-of-stock"><?php echo $this->__('Item out of stock') ?></p></div>
+                     <div class="cart-btn-set">
+                <?php endif; ?>
+            <?php endif; ?>
+
+        <!--  confirmation checkbox -->
+        <?php if ($_product->isSaleable()): ?>
+        <?php if ($this->hasOptions() && $_product->getPersonalize() != 1) : ?>
+            <div class="required-box">
+                <span class="review-approval"><?php echo $this->__('Review & Approval') ?></span>
+                <input type="checkbox" id="required_check" name="required_check" />
+                <span class="note"><?php echo $this->__('I confirm the personalization indicated above is correct.') ?></span>
+            </div>
+        <?php endif; ?>
+        <!-- "Add To Cart" button -->
+        <div class="cart-btn-set">
+            <div class="cart-button">
+                <button type="submit" title="<?php echo $buttonTitle ?>" class="button btn-cart red-button"><span><span><?php echo $buttonTitle ?></span></span></button>
+                <?php echo $this->getChildHtml('', true, true) ?>
+            </div>
+        <?php endif; ?>
+        <!-- Email stock link -->
+        <?php echo $this->getChildHtml('alert_urls') ?>
+        <!-- wishlist link -->
+        <?php if ($this->helper('wishlist')->isAllow()) : ?>
+            <div class="add-wishlist updatelist">
+                <a href="javascript:void(0);" onclick="setWislistUpdate(this);" class=""><span class="add-wish-icon"></span><?php echo $this->__('Update Wishlist') ?></a>
+            </div>
+            <input type="hidden" name="id" id="wishlist_item_id" value="<?php echo $this->getRequest()->getParam('id') ?>" />
+            <input type="hidden" name="wishlist_id" id="wishlist_id" value="0" />
+        <?php endif; ?>
+        </div>
+    </div>
+
+    <script>
+    function setWislistUpdate(objThis)
+    {
+        if ($('required_check')) {
+            $('required_check').setValue('1');
+        }
+        var productForm = new VarienForm('product_addtocart_form', false);
+        if (!productForm.validator.validate()) {
+            return;
+        }
+        productAddToCartForm.submitLight(objThis, '<?php echo $_wishlistSubmitUrl ?>');
+    }
+
+    jQuery(document).ready(function() {
+        validatePersonalizedFields();
+    });
+    </script>

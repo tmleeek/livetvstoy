@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+  <getresponse_adminhtml_getresponsebackend_index>
+	<reference name="content">
+	  <block type="getresponse/adminhtml_getresponsebackend" name="getresponsebackend" template="getresponse/getresponsebackend.phtml"/>
+	</reference>
+  </getresponse_adminhtml_getresponsebackend_index>
+</layout>

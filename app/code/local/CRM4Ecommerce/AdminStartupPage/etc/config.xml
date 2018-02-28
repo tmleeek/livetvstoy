@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    @category   CRM4Ecommerce
+    @package    CRM4Ecommerce_AdminStartupPage
+    @author     Philip Nguyen <philip@crm4ecommerce.com>
+    @link       http://crm4ecommerce.com
+-->
+<config>
+    <modules>
+        <CRM4Ecommerce_AdminStartupPage>
+            <version>1.1.1</version>
+            <published_date>2015-12-06</published_date>
+        </CRM4Ecommerce_AdminStartupPage>
+    </modules>
+    <frontend>
+        <routers>
+            <adminstartuppage>
+                <use>standard</use>
+                <args>
+                    <module>CRM4Ecommerce_AdminStartupPage</module>
+                    <frontName>adminstartuppage</frontName>
+                </args>
+            </adminstartuppage>
+        </routers>
+    </frontend>
+    <admin>
+        <routers> 
+            <adminhtml> 
+                <args> 
+                    <modules> 
+                        <adminstartuppage after="Mage_Adminhtml">CRM4Ecommerce_AdminStartupPage_Adminhtml</adminstartuppage> 
+                    </modules> 
+                </args> 
+            </adminhtml> 
+        </routers>
+    </admin>
+    <adminhtml>
+        <translate>
+            <modules>
+                <CRM4Ecommerce_AdminStartupPage>
+                    <files>
+                        <default>CRM4Ecommerce_AdminStartupPage.csv</default>
+                    </files>
+                </CRM4Ecommerce_AdminStartupPage>
+            </modules>
+        </translate>
+        <menu>
+            <sales>
+                <children>
+                    <order>
+                        <children>
+                            <create>
+                                <title>Create New Order</title>
+                                <sort_order>0</sort_order>
+                                <action>adminhtml/sales_order_create/index</action>
+                            </create>
+                        </children>
+                    </order>
+                </children>
+            </sales>
+            <crm4ecommerce module="adminstartuppage" translate="title">
+                <title>Startup Page</title>
+                <sort_order>100</sort_order>
+                <children>
+                    <adminstartuppage module="adminstartuppage" translate="title">
+                        <title>Admin Startup Page</title>
+                        <sort_order>0</sort_order>
+                        <children>
+                            <dashboard module="adminstartuppage" translate="title">
+                                <title>Dashboard</title>
+                                <sort_order>0</sort_order>
+                                <action>adminhtml/adminstartuppage_dashboard</action>
+                            </dashboard>
+                            <settings module="adminstartuppage" translate="title">
+                                <title>Module Settings</title>
+                                <sort_order>1</sort_order>
+                                <action>adminhtml/system_config/edit/section/crm4ecommerce_adminstartuppage</action>
+                            </settings>
+                        </children>
+                    </adminstartuppage>
+                </children>
+            </crm4ecommerce>
+        </menu>
+        <acl>
+            <resources>
+                <all>
+                    <title>Allow Everything</title>
+                </all>
+                <admin>
+                    <children>
+						<sales>
+							<children>
+								<order>
+									<children>
+										<create>
+											<title>Create New Order</title>
+											<sort_order>0</sort_order>
+										</create>
+									</children>
+								</order>
+							</children>
+						</sales>
+                        <crm4ecommerce module="adminstartuppage" translate="title">
+                            <title>CRM4Ecommerce Extensions</title>
+                            <sort_order>10</sort_order>
+                            <children>
+                                <adminstartuppage module="adminstartuppage" translate="title">
+                                    <title>Admin Startup Page</title>
+                                    <sort_order>0</sort_order>
+                                    <children>
+                                        <dashboard module="adminstartuppage" translate="title">
+                                            <title>Dashboard</title>
+                                            <sort_order>0</sort_order>
+                                        </dashboard>
+                                        <settings module="adminstartuppage" translate="title">
+                                            <title>Module Settings</title>
+                                            <sort_order>1</sort_order>
+                                        </settings>
+                                        <clear_register module="adminstartuppage" translate="title">
+                                            <title>Clear All Register Information</title>
+                                            <sort_order>2</sort_order>
+                                        </clear_register>
+                                    </children>
+                                </adminstartuppage>
+                            </children>
+                        </crm4ecommerce>
+                        <system>
+                            <children>
+                                <myaccount>
+                                    <children>
+                                        <change_startup_page module="adminstartuppage" translate="title">
+                                            <title>Change Startup Page</title>
+                                            <sort_order>0</sort_order>
+                                        </change_startup_page>
+                                    </children>
+                                </myaccount>
+                                <config>
+                                    <children>
+                                        <crm4ecommerce_adminstartuppage module="adminstartuppage" translate="title">
+                                            <title>CRM4Ecommerce Admin Startup Page Settings</title>
+                                            <sort_order>0</sort_order>
+                                        </crm4ecommerce_adminstartuppage>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+        <layout>
+            <updates>
+                <adminstartuppage>
+                    <file>crm4ecommerce_adminstartuppage.xml</file>
+                </adminstartuppage>
+            </updates>
+        </layout>
+        <events>
+            <admin_session_user_login_success>
+                <observers>
+                    <crm4ecommerce_adminstartuppage_observer>
+                        <class>adminstartuppage/observer</class>
+                        <method>adminLogin</method>
+                    </crm4ecommerce_adminstartuppage_observer>
+                </observers>
+            </admin_session_user_login_success>
+            <admin_system_config_changed_section_crm4ecommerce_adminstartuppage>
+                <observers>
+                    <crm4ecommerce_adminstartuppage_observer>
+                        <class>adminstartuppage/observer</class>
+                        <method>configChanged</method>
+                    </crm4ecommerce_adminstartuppage_observer>
+                </observers>
+            </admin_system_config_changed_section_crm4ecommerce_adminstartuppage>
+            <controller_action_predispatch>
+                <observers>
+                    <crm4ecommerce_adminstartuppage_observer>
+                        <class>adminstartuppage/observer</class>
+                        <method>adminhtmlControllerActionPredispatch</method>
+                    </crm4ecommerce_adminstartuppage_observer>
+                </observers>
+            </controller_action_predispatch>
+        </events>
+    </adminhtml>   
+    <global>
+        <models>
+            <adminstartuppage>
+                <class>CRM4Ecommerce_AdminStartupPage_Model</class>
+            </adminstartuppage>
+            <admin>
+                <rewrite>
+                    <user>CRM4Ecommerce_AdminStartupPage_Model_Rewrite_Admin_User</user>                    
+                </rewrite>
+            </admin>
+            <adminhtml>
+                <rewrite>
+                    <system_config_source_admin_page>CRM4Ecommerce_AdminStartupPage_Model_Rewrite_Adminhtml_System_Config_Source_Admin_Page</system_config_source_admin_page>
+                </rewrite>
+            </adminhtml>
+        </models>
+        <resources>
+            <crm4ecommerce_adminstartuppage_setup>
+                <setup>
+                    <module>CRM4Ecommerce_AdminStartupPage</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </crm4ecommerce_adminstartuppage_setup>
+            <adminstartuppage_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </adminstartuppage_write>
+            <adminstartuppage_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </adminstartuppage_read>
+        </resources>
+        <blocks>
+            <adminstartuppage>
+                <class>CRM4Ecommerce_AdminStartupPage_Block</class>
+            </adminstartuppage>
+            <adminhtml>
+                <rewrite>
+                    <system_account_edit_form>CRM4Ecommerce_AdminStartupPage_Block_Rewrite_System_Account_Edit_Form</system_account_edit_form>
+                    <permissions_user_edit_tab_main>CRM4Ecommerce_AdminStartupPage_Block_Rewrite_Permissions_User_Edit_Tab_Main</permissions_user_edit_tab_main>
+                </rewrite>
+            </adminhtml>
+        </blocks>
+        <helpers>
+            <adminstartuppage>
+                <class>CRM4Ecommerce_AdminStartupPage_Helper</class>
+            </adminstartuppage>
+        </helpers>
+    </global>
+    <default>
+        <crm4ecommerce_adminstartuppage>
+            <general>
+                <status>0</status>
+                <serial_infor>No Inputted Serial Key</serial_infor>
+                <start_date>None</start_date>
+                <expire_date>None</expire_date>
+            </general>
+            <settings>
+                <admin_ruoter_key>admin</admin_ruoter_key>
+            </settings>
+        </crm4ecommerce_adminstartuppage>
+    </default>
+</config>

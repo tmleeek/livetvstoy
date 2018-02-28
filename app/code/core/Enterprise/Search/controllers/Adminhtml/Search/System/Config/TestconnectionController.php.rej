@@ -1,0 +1,62 @@
+--- app/code/core/Enterprise/Search/controllers/Adminhtml/Search/System/Config/TestconnectionController.php
++++ app/code/core/Enterprise/Search/controllers/Adminhtml/Search/System/Config/TestconnectionController.php
+@@ -39,28 +39,43 @@
+      */
+     public function pingAction()
+     {
+-        if (empty($_REQUEST['host']) || empty($_REQUEST['port']) || empty($_REQUEST['path'])) {
++        if (!isset($_REQUEST['host']) || !($host = $_REQUEST['host'])
++            || !isset($_REQUEST['port']) || !($port = (int)$_REQUEST['port'])
++            || !isset($_REQUEST['path']) || !($path = $_REQUEST['path'])
++        ) {
+             echo 0;
+-            return;
++            die;
+         }
+ 
+-        $timeout = (isset($_REQUEST['timeout']) && $_REQUEST['timeout'] > 0)
+-            ? (float)$_REQUEST['timeout']
+-            : Enterprise_Search_Model_Adapter_Solr_Abstract::DEFAULT_TIMEOUT;
++        $pingUrl = 'http://' . $host . ':' . $port . '/' . $path . '/admin/ping';
+ 
+-        $result = Mage::getResourceModel('enterprise_search/engine', array(
+-                'hostname' => $_REQUEST['host'],
+-                'port'     => (int)$_REQUEST['port'],
+-                'path'     => $_REQUEST['path'],
+-                'login'    => (isset($_REQUEST['login'])) ? $_REQUEST['login'] : '',
+-                'password' => (isset($_REQUEST['password'])) ? $_REQUEST['password'] : '',
+-                'timeout'  => $timeout))
+-            ->test();
++        if (isset($_REQUEST['timeout'])) {
++            $timeout = (int)$_REQUEST['timeout'];
++            if ($timeout < 0) {
++                $timeout = -1;
++            }
++        } else {
++            $timeout = 0;
++        }
++
++        $context = stream_context_create(
++            array(
++                'http' => array(
++                    'method' => 'HEAD',
++                    'timeout' => $timeout
++                )
++            )
++        );
++
++        // attempt a HEAD request to the solr ping page
++        $ping = @file_get_contents($pingUrl, false, $context);
+ 
+-        if ($result === false) {
++        // result is false if there was a timeout
++        // or if the HTTP status was not 200
++        if ($ping !== false) {
++            echo 1;
++        } else {
+             echo 0;
+-        } else {
+-            echo 1;
+         }
+     }
+ }

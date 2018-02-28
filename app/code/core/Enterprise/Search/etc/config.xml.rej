@@ -1,0 +1,25 @@
+--- app/code/core/Enterprise/Search/etc/config.xml
++++ app/code/core/Enterprise/Search/etc/config.xml
+@@ -102,7 +102,6 @@
+                     </enterprise_search>
+                 </observers>
+             </catelogsearch_searchable_attributes_load_after>
+-
+             <catalog_category_product_partial_reindex>
+                 <observers>
+                     <enterprise_search>
+@@ -111,14 +110,6 @@
+                     </enterprise_search>
+                 </observers>
+             </catalog_category_product_partial_reindex>
+-            <cataloginventory_stock_partial_reindex>
+-                <observers>
+-                    <enterprise_search>
+-                        <class>enterprise_search/observer</class>
+-                        <method>rebuiltIndex</method>
+-                    </enterprise_search>
+-                </observers>
+-            </cataloginventory_stock_partial_reindex>
+         </events>
+     </global>
+ 

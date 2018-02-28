@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Zeon_Contactinfo>
+            <version>1.0.0</version>
+        </Zeon_Contactinfo>
+    </modules>
+    <global>
+        <helpers>
+            <contactinfo>
+                <class>Zeon_Contactinfo_Helper</class>
+            </contactinfo>
+        </helpers>
+    </global>
+    <default>
+        <contactinfo>
+            <general>
+                <customer_service_link>customer-service-links</customer_service_link>
+                <customer_service_info>tystoybox-contactus-info</customer_service_info>
+            </general>
+        </contactinfo>
+    </default>
+</config>

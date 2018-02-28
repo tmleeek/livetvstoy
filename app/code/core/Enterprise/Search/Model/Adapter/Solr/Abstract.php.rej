@@ -1,0 +1,82 @@
+--- app/code/core/Enterprise/Search/Model/Adapter/Solr/Abstract.php
++++ app/code/core/Enterprise/Search/Model/Adapter/Solr/Abstract.php
+@@ -44,13 +44,6 @@
+     const DEFAULT_SPELLCHECK_COUNT  = 1;
+ 
+     /**
+-     * Default timeout in seconds
+-     */
+-    const DEFAULT_TIMEOUT = 15;
+-
+-
+-
+-    /**
+      * Define ping status
+      *
+      * @var float | bool
+@@ -73,27 +66,7 @@
+ 
+ 
+ 
+-    /**
+-     * Prepare connect options list and load default values for not set params
+-     *
+-     * @param array $options
+-     *
+-     * @return array
+-     */
+-    protected function _initConnectOptions(array $options = array())
+-    {
+-        $helper = Mage::helper('enterprise_search');
+-        $defaultOptions = array(
+-            'hostname' => $helper->getSolrConfigData('server_hostname'),
+-            'login'    => $helper->getSolrConfigData('server_username'),
+-            'password' => $helper->getSolrConfigData('server_password'),
+-            'port'     => $helper->getSolrConfigData('server_port'),
+-            'timeout'  => $helper->getSolrConfigData('server_timeout'),
+-            'path'     => $helper->getSolrConfigData('server_path')
+-        );
+-
+-        return array_merge($defaultOptions, $options);
+-    }
++
+ 
+     /**
+      * Set advanced index fields prefix
+@@ -184,18 +157,15 @@
+                         $fieldCondition = array();
+                         foreach ($value as $part) {
+                             $part = $this->_prepareFilterQueryText($part);
+-                            $fieldCondition[] = $field . ':' . $part;
+-                            if ($field == 'sku') {
+-                                $fieldCondition[] = 'partial_' . $field . ':' . $part;
+-                            }
++                            $fieldCondition[] = $field .':'. $part;
+                         }
+-                        $fieldCondition = '(' . implode(' OR ', $fieldCondition) . ')';
++                        $fieldCondition = '('. implode(' OR ', $fieldCondition) .')';
+                     }
+                 } else {
+                     if ($value != '*') {
+                         $value = $this->_prepareQueryText($value);
+                     }
+-                    $fieldCondition = $field . ':' . $value;
++                    $fieldCondition = $field .':'. $value;
+                 }
+ 
+                 $searchConditions[] = $fieldCondition;
+@@ -403,12 +373,8 @@
+ 
+         // Field type defining
+         $attributeCode = $attribute->getAttributeCode();
+-        if ($attributeCode == 'sku') {
+-            if ($target == 'sort') {
+-                return 'attr_sort_sku';
+-            } else {
+-                return 'sku';
+-            }
++        if (in_array($attributeCode, array('sku'))) {
++            return $attributeCode;
+         }
+ 
+         if ($attributeCode == 'price') {

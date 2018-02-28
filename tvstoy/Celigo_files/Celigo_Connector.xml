@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Celigo_Connector>
+            <active>true</active>
+            <codePool>local</codePool>
+			<depends>
+				<Mage_Core />
+				<Mage_Customer />
+				<Mage_Adminhtml />
+			</depends>
+        </Celigo_Connector>
+    </modules>
+</config> 

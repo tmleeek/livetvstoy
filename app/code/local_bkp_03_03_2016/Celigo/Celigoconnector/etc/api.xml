@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magento Enterprise Edition
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magento Enterprise Edition License
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.magentocommerce.com/license/enterprise-edition
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    Celigo
+ * @package     Celigo_Celigoconnector
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://www.magentocommerce.com/license/enterprise-edition
+ */
+-->
+<config>
+  <api>
+	<resources>
+		<celigo_sales_order translate="title" module="celigoconnector">
+			<model>celigoconnector/sales_order_api</model>
+			<title>Order API</title>
+			<acl>celigo_sales_order</acl>
+			<methods>
+				<update translate="title" module="celigoconnector">
+					<title>Update Order</title>
+					<acl>celigo_sales_order/update</acl>
+				</update>
+			</methods>
+			<faults module="celigoconnector">
+				<not_exists>
+					<code>100</code>
+					<message>Requested order not exists.</message>
+				</not_exists>
+				<order_data_invalid>
+					<code>101</code>
+					<message>Invalid data given. Details in error message.</message>
+				</order_data_invalid>
+			</faults>
+		</celigo_sales_order>
+	</resources>
+	<acl>
+		<resources>
+			<celigo_sales_order translate="title" module="celigoconnector">
+				<title>Celigo Order</title>
+				<update translate="title" module="celigoconnector">
+					<title>Update Order</title>
+				</update>
+			</celigo_sales_order>
+		</resources>
+	</acl>
+  </api>
+</config>

@@ -1,0 +1,90 @@
+<?php
+// Get the config setting.
+$_configSettings = $this->helper('zeon_catalogmanager')->getConfigDetails('perfect_gifts');
+
+if ($_configSettings['active']):
+    // Get the best seller product collection.
+    $_categoryCollection = $this->getPerfectGiftsCategoriesCollection();
+
+    //Get inactive categories
+    //$inActiveCategories = Mage::helper('zeon_catalogmanager')->getInActiveCategories();
+    $_collectionSize = count($_categoryCollection);
+    if ($_categoryCollection && $_collectionSize):
+        // Get the catalog helper.
+        $_helper        = $this->helper('catalog/output');
+
+        $_maxCharLimit = (int) $_configSettings['char_limit'];
+        $_columnCount = ((int) $_configSettings['number_of_items'] > 0) ? $_configSettings['number_of_items'] : $this->getColumnCount();
+        $_categoryPerRow = 4;
+    ?>
+        <div class="category-products perfect-gifts">
+            <div class="green-title-sec">
+                <span class="green-title"><?php echo $this->__($_configSettings['block_title']); ?></span>
+            </div>
+        <?php
+
+    $i = 0;
+    foreach ($_categoryCollection as $_category):
+        $parentCategory = $_category['parent'];
+        $childCategory = array();
+        if (isset ($_category['child'])) {
+            $childCategory = $_category['child'];
+        }
+        // Loop on till max number of item setting.
+        if ($i+1 > $_configSettings['number_of_items']):
+            break;
+        endif;
+    ?>
+        <?php $_imageUrl = Mage::getBaseUrl('media') . 'catalog/category/' . $parentCategory['thumbnail'];
+			if( $parentCategory['thumbnail'] == '' ) {
+			$_imageUrl = $this->getSkinUrl('images/no_image_c.jpg');
+			} ?>
+    <?php if ($i++ % $_categoryPerRow == 0): ?>
+        <ul class="products-grid">
+    <?php endif ?>
+            <li class="item<?php if (($i - 1) % $_columnCount == 0): ?> first<?php elseif ($i % $_columnCount == 0 || $i % $_categoryPerRow == 0 || $i == $_collectionSize): ?> last<?php endif; ?> col-lg-3 col-sm-3 col-xs-6">
+                <?php
+                if ($parentCategory['best_seller_category']) { ?>
+                    <span class="best-seller-gift"><?php echo $this->__('BEST SELLER!'); ?></span>
+                <?php
+                } ?>
+                <a href="<?php echo $parentCategory['url']; ?>" title="<?php echo $this->__($parentCategory['name']); ?>" class="category-image">
+                    <img src="<?php echo $_imageUrl; ?>" alt="<?php echo $this->__($parentCategory['name']); ?>" width="300" height="100%"/>
+                </a>
+                <h2 class="category-name perfect-gift-category">
+                    <a href="<?php echo $parentCategory['url']; ?>" alt="<?php echo $this->__($parentCategory['name']); ?>"><?php echo $this->__($parentCategory['name']); ?></a>
+                </h2>
+
+                <?php
+                if (!empty ($childCategory)) {
+                    $childCategoryCount = count($childCategory); ?>
+                    <ul class="sub-category-ul">
+                    <?php
+                    foreach ($childCategory as $childKey => $child) { ?>
+                        <li class="sub-category-name <?php if ($childKey == 0): ?> first<?php elseif (($childKey == $childCategoryCount-1) || ($childKey == $_configSettings['number_of_subcat']-1)): ?> last<?php endif; ?>">
+                            <a href="<?php echo $child['url']; ?>" title="<?php echo $child['name']; ?>">
+                                <?php echo ($_maxCharLimit > 0 && strlen($child['name']) > $_maxCharLimit) ? substr($child['name'], 0, $_maxCharLimit) . '...' : $child['name']; ?>
+                            </a>
+                        </li>
+                    <?php
+                        if ($childKey == ($_configSettings['number_of_subcat']-1)) {
+                            break;
+                        }
+                    } ?>
+                    </ul>
+                <?php
+                } ?>
+                <a href="<?php echo $parentCategory['url']; ?>" title="<?php echo $this->__('View All'); ?>" class="category-link">
+                    <?php echo $this->__('View All'); ?>
+                </a>
+            </li>
+            <?php if ($i % $_categoryPerRow == 0 || $i == $_collectionSize): ?>
+            </ul>
+            <?php endif ?>
+    <?php endforeach ?>
+    <script type="text/javascript">decorateGeneric($$('ul.products-grid'), ['odd','even','first','last'])</script>
+</div>
+<?php
+    endif;
+endif;
+?>

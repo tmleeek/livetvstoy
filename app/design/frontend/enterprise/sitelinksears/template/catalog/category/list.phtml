@@ -1,0 +1,66 @@
+<?php
+/**
+ * Zeon Solutions
+ * Catalog Module
+ * The Catalog module has been overridden.
+ * refer the text file for details.
+ *
+ * @category   Zeon
+ * @package    Zeon_Catalog
+ * @copyright  Copyright (c) 2008 Zeon Solutions (http://www.zeonsolutions.com/)
+ * @version    1.01
+ * @date       jan 29 2009 1846 IST
+ */
+?>
+<?php
+/**
+ * Category list
+ *
+ * @see Zeon_Catalog_Block_Category_List
+ */
+?>
+
+<?php $_categories = $this->getCurrentChildCategories(); ?>
+
+<?php if(count($_categories) < 1): ?>
+    <div class="note-msg">
+        <?php echo $this->__('There are no categories matching the selection.') ?>
+    </div>
+<?php else: ?>
+<div class="category-products">
+    <?php
+    // Set the page limit.
+    $configCatPerRow = $this->getConfigDetails('category_list/category_grid_per_row'); ?>
+    <?php $_collectionSize = count($_categories) ?>
+
+    <?php $i=0; foreach ($_categories as $_category): ?>
+        <?php
+        $_imageUrl=Mage::getBaseUrl('media') . 'catalog/category/' . $_category->getImage();
+        $_thumbnailUrl=Mage::getBaseUrl('media') . 'catalog/category/' . $_category->getThumbnail();
+        if( $_category->getImage() == '' ) {
+            $_imageUrl = $this->getSkinUrl('images/no_image_c.jpg');
+        } ?>
+
+        <?php if(($i++ % $configCatPerRow) == 0): ?>
+        <ul class="products-grid">
+        <?php endif; ?>
+            <li class="item<?php if (($i - 1) % $configCatPerRow == 0): ?> first<?php elseif ($i % $configCatPerRow == 0): ?> last<?php endif; ?> col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                <a href="<?php echo $this->getCategoryUrl($_category) ?>" onclick="setLocation('<?php echo $this->getCategoryUrl($_category) ?>');" title="<?php echo $this->htmlEscape($_category->getName()) ?>" class="category-img">
+                    <!-- To display thumbnail image of sub categories -->
+                   <?php if($_category->getThumbnail() == '' ) { ?>
+                       <img src="<?php echo $_imageUrl; ?>" alt="<?php echo $this->htmlEscape($_category->getName()) ?>"/>
+                    <?php }else { ?>
+                       <img src="<?php echo $_thumbnailUrl; ?>" alt="<?php echo $this->htmlEscape($_category->getName()) ?>"/>
+                    <?php } ?>
+                </a>
+                <h2 class="category-name">
+                    <a href="<?php echo $this->getCategoryUrl($_category) ?>" onclick="setLocation('<?php echo $this->getCategoryUrl($_category) ?>');" title="<?php echo $this->htmlEscape($_category->getName()) ?>"><?php echo $this->htmlEscape($_category->getName()) ?></a>
+                </h2>
+            </li>
+        <?php if( ($i % $configCatPerRow) == 0 || $i==$_collectionSize): ?>
+        </ul>
+        <?php endif; ?>
+    <?php endforeach ?>
+    <script type="text/javascript">decorateGeneric($$('ul.products-grid'), ['odd','even','first','last'])</script>
+</div>
+<?php endif; ?>

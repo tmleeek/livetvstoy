@@ -1,0 +1,12 @@
+--- app/code/core/Mage/CatalogSearch/Model/Advanced.php
++++ app/code/core/Mage/CatalogSearch/Model/Advanced.php
+@@ -163,9 +163,6 @@
+                 continue;
+             }
+             $value = $values[$attribute->getAttributeCode()];
+-            if (!is_array($value)) {
+-                $value = trim($value);
+-            }
+ 
+             if ($attribute->getAttributeCode() == 'price') {
+                 $value['from'] = isset($value['from']) ? trim($value['from']) : '';

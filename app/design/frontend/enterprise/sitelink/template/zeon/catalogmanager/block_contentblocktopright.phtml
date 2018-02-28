@@ -1,0 +1,96 @@
+<?php
+// Get the config setting.
+$_configSettings = $this->helper('zeon_catalogmanager')->getConfigDetails('content_block_top_right');
+
+if ($_configSettings['active']):
+    // Get the best seller product collection.
+    $_productCollection = $this->getContentBlockTopRightCollection();
+    //Get inactive categories
+    $inActiveCategories = Mage::helper('zeon_catalogmanager')->getInActiveCategories();
+
+    if ($_productCollection && $_productCollection->count()):
+
+        //get all option labels for flags
+        $_attributeCode = 'product_flags';
+        $allOptionLabels = Mage::helper('catalog')->getAllOptionLabels($_attributeCode);
+        $allOptionKeys   = array_keys($allOptionLabels);
+
+        // Get the catalog helper.
+        $_helper        = $this->helper('catalog/output');
+        $_catalogBlock  = Mage::getBlockSingleton('catalog/product_list');
+
+        $_maxCharLimit = (int) $_configSettings['char_limit'];
+        $_columnCount = ((int) $_configSettings['number_of_items_per_row'] > 0) ? $_configSettings['number_of_items_per_row'] : $this->getColumnCount();
+        ?>
+       <?php
+            $numberOfProducts = $_configSettings['number_of_items_per_row'];
+            if (!$numberOfProducts) {
+                $numberOfProducts = 2;
+            }
+            $_products = $_productCollection;
+            $class = (count($_products) >= $numberOfProducts) ? '' : 'limited-product'; ?>
+
+            <?php if ($_products): ?>
+                <div class="category-products homepage-content-top-right">
+
+                    <div class="homepage_content_top_right">
+                        <?php
+                        foreach ($_productCollection as $_product):
+                            $_helper = $this->helper('catalog/output');
+                            ?>
+                            <div class="slide item <?php echo $class; ?>">
+
+                                <h2 class="bestseller-pro-block">
+                                    <a href="<?php echo $_product->getProductUrl(); ?>" title="<?php echo $this->stripTags($_product->getName(), null, true); ?>" class="product-image">
+                                        <?php
+                                        // checking for product flags
+                                        if ($_product->getData('product_flags')) {
+                                            $selectedOptions = explode(',', $_product->getData('product_flags'));
+                                            foreach ($selectedOptions as $selectedOpt) {
+                                                if (in_array($selectedOpt, $allOptionKeys)) {
+                                                    $optionInfo = $allOptionLabels[$selectedOpt];
+                                                    $flagImageUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).'flags/'.$optionInfo['image'];
+                                                    ?>
+                                                    <span class="product-flags"><img src="<?php echo $flagImageUrl; ?>" alt="<?php echo $optionInfo['label']; ?>" title="<?php echo $optionInfo['label']; ?>"/></span>
+                                                <?php
+                                                }
+                                            }
+                                        } ?>
+
+                                        <img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(170); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true); ?>" />
+                                    </a>
+                                </h2>
+                                <?php //if ($_product->getRatingSummary()): ?>
+                                <?php //echo $_catalogBlock->getReviewsSummaryHtml($_product, 'short') ?>
+                                <?php //endif; ?>
+                            </div>
+                        <?php
+                        endforeach; ?>
+                    </div>
+
+                    <?php if (count($_products) >= $numberOfProducts): ?>
+                        <script>
+                            jQuery(document).ready(function() {
+                                jQuery('.homepage_content_top_right').bxSlider({
+                                    pager: false,
+                                    slideWidth: 100,
+                                    minSlides: <?php echo $numberOfProducts; ?>,
+                                    maxSlides: <?php echo $numberOfProducts; ?>,
+                                    moveSlides: 1,
+                                    slideMargin: 10,
+                                    useCSS: false
+                                });
+                            });
+                        </script>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
+
+
+
+
+            <script type="text/javascript">decorateGeneric($$('ul.products-grid'), ['odd','even','first','last'])</script>
+        
+    <?php
+    endif;
+endif;

@@ -1,0 +1,194 @@
+<?php
+/**
+ * Magento Enterprise Edition
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magento Enterprise Edition License
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.magentocommerce.com/license/enterprise-edition
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2013 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://www.magentocommerce.com/license/enterprise-edition
+ */
+?>
+<div class="page-title">
+    <h1><?php echo $this->__('Your order has been received.') ?></h1>
+</div>
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<h2 class="sub-title"><?php echo $this->__('Thank you for your purchase!') ?></h2>
+
+<?php if ($this->getOrderId()):?>
+<?php if ($this->getCanViewOrder()) :?>
+    <p><?php echo $this->__('Your order # is: %s.', sprintf('<a href="%s">%s</a>', $this->escapeHtml($this->getViewOrderUrl()), $this->escapeHtml($this->getOrderId()))) ?></p>
+<?php  else :?>
+    <p><?php echo $this->__('Your order # is: %s.', $this->escapeHtml($this->getOrderId())) ?></p>
+<?php endif;?>
+    <p><?php echo $this->__('You will receive an order confirmation email with details of your order and a link to track its progress.') ?></p>
+<?php if ($this->getCanViewOrder() && $this->getCanPrintOrder()) :?>
+    <p>
+        <?php echo $this->__('Click <a href="%s" onclick="this.target=\'_blank\'">here to print</a> a copy of your order confirmation.', $this->getPrintUrl()) ?>
+        <?php echo $this->getChildHtml() ?>
+    </p>
+<?php endif;?>
+<?php endif;?>
+
+<?php if ($this->getAgreementRefId()): ?>
+    <p><?php echo $this->__('Your billing agreement # is: %s.', sprintf('<a href="%s">%s</a>', $this->escapeHtml($this->getAgreementUrl()), $this->escapeHtml($this->getAgreementRefId())))?></p>
+<?php endif;?>
+
+<?php if ($profiles = $this->getRecurringProfiles()):?>
+<p><?php echo $this->__('Your recurring payment profiles:'); ?></p>
+<ul class="disc">
+<?php foreach($profiles as $profile):?>
+<?php $profileIdHtml = ($this->getCanViewProfiles() ? sprintf('<a href="%s">%s</a>', $this->escapeHtml($this->getProfileUrl($profile)), $this->escapeHtml($this->getObjectData($profile, 'reference_id'))) : $this->escapeHtml($this->getObjectData($profile, 'reference_id')));?>
+    <li><?php echo $this->__('Payment profile # %s: "%s".', $profileIdHtml, $this->escapeHtml($this->getObjectData($profile, 'schedule_description')))?></li>
+<?php endforeach;?>
+</ul>
+<?php endif;?>
+
+<div class="buttons-set">
+    <button type="button" class="button red-button" title="<?php echo $this->__('Continue Shopping') ?>" onclick="window.location='<?php echo $this->getUrl() ?>'"><span><span><?php echo $this->__('Continue Shopping') ?></span></span></button>
+</div>
+
+<?php
+$thisOrderId = Mage::getSingleton('checkout/session')->getLastRealOrderId();
+     $order       = Mage::getModel('sales/order');
+     $order->loadByIncrementId($thisOrderId);
+     $GrandTotal  = $order->getGrandTotal() - $order->getShippingAmount();
+     $grandTotal  = number_format($GrandTotal,2, '.','');
+     $items = $order->getItemsCollection();
+    $resource_attr = Mage::getSingleton('core/resource');
+    $readConnection = $resource_attr->getConnection('core_read');
+    $query_attr = "SELECT * FROM `catalog_product_entity_varchar` WHERE `attribute_id` = 186 AND `value` LIKE '%102%' AND `store_id` = 0";
+                    
+    $results = $readConnection->fetchAll($query_attr);
+    $entityid = array();
+    //$value = array();
+    foreach($results as $ro)
+    {
+        $entityid[] = $ro['entity_id'];
+        //$value = $ro['value'];
+    }
+    $poptropica_query_attr = "SELECT * FROM `catalog_product_entity_varchar` WHERE `attribute_id` = 186 AND `value` LIKE '%72%' AND `store_id` = 0";
+                    
+    $poptropica_results = $readConnection->fetchAll($poptropica_query_attr);
+    $pop_entityid = array();
+    //$value = array();
+    foreach($poptropica_results as $ro1)
+    {
+        $pop_entityid[] = $ro1['entity_id'];
+        //$value = $ro['value'];
+    }
+     $curious_query_attr = "SELECT * FROM `catalog_product_entity_varchar` WHERE `attribute_id` = 186 AND `value` LIKE '%20%' AND `store_id` = 0";
+                    
+    $curious_results = $readConnection->fetchAll($curious_query_attr);
+    $curious_entityid = array();
+    //$value = array();
+    foreach($curious_results as $ro2)
+    {
+        $curious_entityid[] = $ro2['entity_id'];
+        //$value = $ro['value'];
+    }
+    $flag=0;
+  
+   $GA='';
+   foreach($items as $item):
+   if (in_array($item->getProductId(), $entityid)) {
+    $GA='UA-2498855-4';
+   }
+   else if (in_array($item->getProductId(), $pop_entityid)) {
+    $GA='UA-2498855-5';
+   }
+    else if (in_array($item->getProductId(), $curious_entityid)) {
+    $GA='UA-2498855-6';
+   }
+   endforeach;
+    //print_r($entityid);
+?>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', '<?php echo $GA;?>']);
+  _gaq.push(['_trackPageview']);
+  _gaq.push(['_addTrans',
+    '<?php echo $this->getOrderId();?>',           // transaction ID - required
+    'Tystoybox',
+    '<?php echo $grandTotal;?>'
+  ]);
+
+   // add item might be called for every item in the shopping cart
+   // where your ecommerce engine loops through each item in the cart and
+   // prints out _addItem for each
+  // alert(<?php echo count($items);?>);
+   <?php
+  
+   foreach($items as $item):
+  if (in_array($item->getProductId(), $entityid) || in_array($item->getProductId(), $pop_entityid) || in_array($item->getProductId(), $curious_entityid)) {
+   $flag=1;
+   
+    if ($pname!=$item->getSku()) {
+   
+
+   ?>
+   //alert(<?php echo $item->getCategory();?>);
+  _gaq.push(['_addItem',
+    '<?php echo $this->getOrderId();?>',           // transaction ID - required
+    '<?php echo $item->getSku();?>',           // SKU/code - required
+    '<?php echo $item->getName();?>',        // product name
+    '',   // category or variation
+    '<?php echo $item->getPrice();?>',          // unit price - required
+    '<?php echo $item->getQtyOrdered();?>'               // quantity - required
+  ]);
+  <?php
+  
+    }
+    $pname=$item->getSku();
+   }
+  endforeach; ?>
+  //alert(<?php echo $flag;?>);
+  
+   <?php if($flag==1)
+   {
+   ?>
+   _gaq.push(['_set', 'currencyCode', 'USD']);
+  _gaq.push(['_trackTrans']); //submits transaction to the Analytics servers
+<?php } ?>
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 1068764174;
+var google_conversion_language = "en";
+var google_conversion_format = "3";
+var google_conversion_color = "ffffff";
+var google_conversion_label = "2fG7CNqFqFsQjpjQ_QM";
+var google_conversion_value = <?php echo $order->getGrandTotal();?>;
+var google_conversion_currency = "USD";
+var google_remarketing_only = false;
+/* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/1068764174/?value=<?php echo $order->getGrandTotal();?>&amp;currency_code=USD&amp;label=2fG7CNqFqFsQjpjQ_QM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>

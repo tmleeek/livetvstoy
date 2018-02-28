@@ -1,0 +1,11 @@
+--- app/code/core/Enterprise/Index/Model/Resource/Process/Collection.php
++++ app/code/core/Enterprise/Index/Model/Resource/Process/Collection.php
+@@ -67,8 +67,6 @@
+      */
+     public function initializeSelect()
+     {
+-        Mage::dispatchEvent('enterprise_index_exclude_process_before', array('collection' => $this));
+-
+         $this->_select->reset();
+ 
+         $countsSelect = $this->getConnection()

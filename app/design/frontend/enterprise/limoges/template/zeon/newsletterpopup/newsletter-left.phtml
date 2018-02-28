@@ -1,0 +1,28 @@
+<?php $enableLeftNews =  Mage::helper('newsletterpopup')->getConfigDetails('active_lefttemplate');
+// show if newsletter is enable
+if ($enableLeftNews) :
+?>
+
+<div class="newsletter-left" id="newsletter-left">
+    <form id="newsletter-registration-left"
+        action="<?php echo $this->getUrl('newsletter/subscriber/new/') ?>"
+        method="post" id="newsletter-validate-detail">
+    <div class="form-fields-middle">
+    <p><?php echo $this->__("Sign up for Exclusive offers! ") ?></p>
+    <div class="input-wrapper"><input name="email" id="cm_email"
+        onfocus="if(this.value=='<?php echo $this->__("enter email") ?>') this.value=''"
+        onblur="if(this.value=='') this.value='<?php echo $this->__("enter email") ?>'"
+        class="validate-email required-entry field-left" type="text"
+        value="<?php echo $this->__("enter email") ?>" /></div>
+    <div class="btn-sign-up-now ASASas"><input type="submit" class="button" value="<?php echo $this->__(" ") ?>" /></div>
+    </div>
+
+    </form>
+    <div class="btm-bg"></div>
+</div>
+
+<script type="text/javascript">
+    //email form validation
+    var newsletterSubscriberFormDetail = new VarienForm('newsletter-registration-left', false);
+</script>
+<?php endif; ?>

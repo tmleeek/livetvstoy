@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns:typens="urn:{{var wsdl.name}}" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns="http://schemas.xmlsoap.org/wsdl/"
+    name="{{var wsdl.name}}" targetNamespace="urn:{{var wsdl.name}}">
+    <types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:Magento">
+            <import namespace="http://schemas.xmlsoap.org/soap/encoding/" schemaLocation="http://schemas.xmlsoap.org/soap/encoding/" />
+            <complexType name="ordersOrdersEntityToCreate">
+                <all>
+                    <element name="orders_id" type="xsd:int" minOccurs="0" />
+                    <element name="created_at" type="xsd:string" minOccurs="0" />
+                    <element name="updated_at" type="xsd:string" minOccurs="0" />
+                    <element name="content" type="xsd:string" minOccurs="0" />
+                    <element name="file" type="xsd:string" minOccurs="0" />
+                    <element name="title" type="xsd:string" minOccurs="0" />
+                </all>
+            </complexType>
+            <complexType name="ordersOrdersEntity">
+                <all>
+                    <element name="orders_id" type="xsd:int" minOccurs="0" />
+                    <element name="created_at" type="xsd:string" minOccurs="0" />
+                    <element name="updated_at" type="xsd:string" minOccurs="0" />
+                    <element name="content" type="xsd:string" minOccurs="0" />
+                    <element name="file" type="xsd:string" minOccurs="0" />
+                    <element name="title" type="xsd:string" minOccurs="0" />
+                </all>
+            </complexType>
+            <complexType name="ordersOrdersEntityArray">
+                <complexContent>
+                    <restriction base="soapenc:Array">
+                        <attribute ref="soapenc:arrayType" wsdl:arrayType="typens:ordersOrdersEntity[]" />
+                    </restriction>
+                </complexContent>
+            </complexType>
+			
+            <complexType name="creditmemoCreditmemoEntityToCreate">
+                <all>
+                    <element name="creditmemo_id" type="xsd:int" minOccurs="0" />
+                    <element name="created_at" type="xsd:string" minOccurs="0" />
+                    <element name="updated_at" type="xsd:string" minOccurs="0" />
+                    <element name="content" type="xsd:string" minOccurs="0" />
+                    <element name="file" type="xsd:string" minOccurs="0" />
+                    <element name="title" type="xsd:string" minOccurs="0" />
+                </all>
+            </complexType>
+            <complexType name="creditmemoCreditmemoEntity">
+                <all>
+                    <element name="creditmemo_id" type="xsd:int" minOccurs="0" />
+                    <element name="created_at" type="xsd:string" minOccurs="0" />
+                    <element name="updated_at" type="xsd:string" minOccurs="0" />
+                    <element name="content" type="xsd:string" minOccurs="0" />
+                    <element name="file" type="xsd:string" minOccurs="0" />
+                    <element name="title" type="xsd:string" minOccurs="0" />
+                </all>
+            </complexType>
+            <complexType name="creditmemoCreditmemoEntityArray">
+                <complexContent>
+                    <restriction base="soapenc:Array">
+                        <attribute ref="soapenc:arrayType" wsdl:arrayType="typens:creditmemoCreditmemoEntity[]" />
+                    </restriction>
+                </complexContent>
+            </complexType>
+
+        </schema>
+    </types>
+    <message name="ordersOrdersCreateRequest">
+        <part name="sessionId" type="xsd:string" />
+        <part name="ordersData" type="typens:ordersOrdersEntityToCreate" />
+    </message>
+    <message name="ordersOrdersCreateResponse">
+        <part name="result" type="xsd:int" />
+    </message>
+    <message name="ordersOrdersUpdateRequest">
+        <part name="sessionId" type="xsd:string" />
+        <part name="ordersId" type="xsd:int" />
+        <part name="ordersData" type="typens:ordersOrdersEntityToCreate" />
+    </message>
+    <message name="ordersOrdersUpdateResponse">
+        <part name="result" type="xsd:boolean" />
+    </message>
+    <message name="ordersOrdersDeleteRequest">
+        <part name="sessionId" type="xsd:string" />
+        <part name="ordersId" type="xsd:int" />
+    </message>
+    <message name="ordersOrdersDeleteResponse">
+        <part name="result" type="xsd:boolean" />
+    </message>
+	
+    <message name="creditmemoCreditmemoListRequest">
+        <part name="sessionId" type="xsd:string" />
+        <part name="filters" type="typens:filters" />
+    </message>
+    <message name="creditmemoCreditmemoListResponse">
+        <part name="storeView" type="typens:creditmemoCreditmemoEntityArray" />
+    </message>
+    <message name="creditmemoCreditmemoInfoRequest">
+        <part name="sessionId" type="xsd:string" />
+        <part name="creditmemoId" type="xsd:int" />
+        <part name="attributes" type="typens:ArrayOfString" />
+    </message>
+    <message name="creditmemoCreditmemoInfoResponse">
+        <part name="creditmemoInfo" type="typens:creditmemoCreditmemoEntity" />
+    </message>
+    <message name="creditmemoCreditmemoUpdateRequest">
+        <part name="sessionId" type="xsd:string" />
+        <part name="creditmemoId" type="xsd:int" />
+        <part name="creditmemoData" type="typens:creditmemoCreditmemoEntityToCreate" />
+    </message>
+    <message name="creditmemoCreditmemoUpdateResponse">
+        <part name="result" type="xsd:boolean" />
+    </message>
+	
+    <portType name="{{var wsdl.handler}}PortType">
+        <operation name="ordersOrdersCreate">
+            <documentation>Create orders</documentation>
+            <input message="typens:ordersOrdersCreateRequest" />
+            <output message="typens:ordersOrdersCreateResponse" />
+        </operation>
+        <operation name="ordersOrdersUpdate">
+            <documentation>Update orders data</documentation>
+            <input message="typens:ordersOrdersUpdateRequest" />
+            <output message="typens:ordersOrdersUpdateResponse" />
+        </operation>
+        <operation name="ordersOrdersDelete">
+            <documentation>Delete orders</documentation>
+            <input message="typens:ordersOrdersDeleteRequest" />
+            <output message="typens:ordersOrdersDeleteResponse" />
+        </operation>
+		
+        <operation name="creditmemoCreditmemoList">
+            <documentation>Retrieve creditmemos</documentation>
+            <input message="typens:creditmemoCreditmemoListRequest" />
+            <output message="typens:creditmemoCreditmemoListResponse" />
+        </operation>
+        <operation name="creditmemoCreditmemoInfo">
+            <documentation>Retrieve creditmemo data</documentation>
+            <input message="typens:creditmemoCreditmemoInfoRequest" />
+            <output message="typens:creditmemoCreditmemoInfoResponse" />
+        </operation>
+        <operation name="creditmemoCreditmemoUpdate">
+            <documentation>Update creditmemo data</documentation>
+            <input message="typens:creditmemoCreditmemoUpdateRequest" />
+            <output message="typens:creditmemoCreditmemoUpdateResponse" />
+        </operation>
+    </portType>
+    <binding name="{{var wsdl.handler}}Binding" type="typens:{{var wsdl.handler}}PortType">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
+        <operation name="ordersOrdersCreate">
+            <soap:operation soapAction="urn:{{var wsdl.handler}}Action" />
+            <input>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+        <operation name="ordersOrdersUpdate">
+            <soap:operation soapAction="urn:{{var wsdl.handler}}Action" />
+            <input>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+        <operation name="ordersOrdersDelete">
+            <soap:operation soapAction="urn:{{var wsdl.handler}}Action" />
+            <input>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+		
+        <operation name="creditmemoCreditmemoList">
+            <soap:operation soapAction="urn:{{var wsdl.handler}}Action" />
+            <input>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+        <operation name="creditmemoCreditmemoInfo">
+            <soap:operation soapAction="urn:{{var wsdl.handler}}Action" />
+            <input>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+        <operation name="creditmemoCreditmemoUpdate">
+            <soap:operation soapAction="urn:{{var wsdl.handler}}Action" />
+            <input>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body namespace="urn:{{var wsdl.name}}" use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+		
+    </binding>
+</definitions>

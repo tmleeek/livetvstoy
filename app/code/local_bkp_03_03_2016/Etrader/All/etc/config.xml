@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Etrader_All>
+            <version>0.0.1.0</version>
+        </Etrader_All>
+    </modules>
+	<global>
+		<blocks>
+            <etrader_all>
+                <class>Etrader_All_Block</class>
+            </etrader_all>
+			<adminhtml>
+                <rewrite>
+                    <catalog_product_edit_tab_options_option>Etrader_All_Block_Adminhtml_Catalog_Product_Edit_Tab_Options_Option</catalog_product_edit_tab_options_option>
+                </rewrite>
+				<rewrite>
+                    <catalog_product_edit_tab_options_type_select>Etrader_All_Block_Adminhtml_Catalog_Product_Edit_Tab_Options_Type_Select</catalog_product_edit_tab_options_type_select>
+                </rewrite>
+			</adminhtml>
+        </blocks>
+        <resources>
+			<etrader_all_setup>
+				<setup>
+					<module>Etrader_All</module>
+				</setup>
+			</etrader_all_setup>
+		</resources>
+    </global>
+</config>

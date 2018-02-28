@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * BN codes (or Build Notation codes) are provided to Partners for inclusion
+ * into their product integration as a passed parameter during a transaction.
+ * BN codes provide tracking on all transactions originating or associated
+ * with a particular Partner.
+ *
+ * Config model that is aware of all Mage_Paypal payment methods
+ * Works with PayPal-specific system configuration
+ *
+ * ZEON :: Added the functionality to send BB details to Paypal
+ *
+ * @keywords Paypal, Payment Gateway, Build Notation Code
+ * @author Suhas Dhoke <suhas.dhoke@zeonsolutions.com>
+ */
+-->
+<config>
+    <modules>
+        <Zeon_Paypalbn>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Zeon_Paypalbn>
+    </modules>
+</config>

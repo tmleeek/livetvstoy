@@ -1,0 +1,108 @@
+<?php
+/**
+ * Magento Enterprise Edition
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magento Enterprise Edition License
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.magentocommerce.com/license/enterprise-edition
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2013 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://www.magentocommerce.com/license/enterprise-edition
+ */
+?>
+<?php if($crumbs && is_array($crumbs)): ?>
+<div class="breadcrumbs">
+    <ul>
+        <?php
+        $index = 0;
+        foreach($crumbs as $_crumbName=>$_crumbInfo): ?>
+            <?php
+            $index++;
+            $storeName = Mage::app()->getStore()->getGroup()->getName();
+
+			$catTitle=html_entity_decode($this->escapeHtml($_crumbInfo['label']), ENT_COMPAT, 'UTF-8');
+
+            if (strtolower($_crumbInfo['label']) == 'home' && $index == 1) {
+                $catTitle = $storeName;
+            } ?>
+            <li class="<?php echo $_crumbName ?>" itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
+            <?php if($_crumbInfo['link'] && !$_crumbInfo['last']): ?>
+                <a href="<?php echo $_crumbInfo['link'] ?>" title="<?php echo $catTitle; ?>" itemprop="url"><span itemprop="title"><?php echo $catTitle; ?></span></a>
+            <?php elseif($_crumbInfo['last']): ?>
+                <a itemprop="url"><span itemprop="title"><?php echo '<strong>'.$catTitle.'</strong>'; ?></span></a>
+                <script type="text/javascript">
+                    jQuery(document).ready(function() {
+                        var catTitle = "<?php echo $catTitle; ?>";
+                        var cleanText = escapeHtml(catTitle);
+                        jQuery('div.category-title').children('pre').children('h1').text(cleanText);
+                    });
+                </script>
+            <?php else: ?>
+                <?php echo $catTitle; ?>
+            <?php endif; ?>
+            <?php if(!$_crumbInfo['last']): ?>
+                <span> &bull; </span>
+            <?php endif; ?>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+</div>
+<?php endif; ?>
+<?php
+$controllerName = strtolower(Mage::app()->getRequest()->getControllerName());
+$actionName = strtolower(Mage::app()->getRequest()->getActionName());
+$moduleName = strtolower(Mage::app()->getRequest()->getModuleName());
+?>
+<?php
+if (($moduleName == 'wishlist' && $controllerName == 'index' && $actionName == 'index') ||
+($moduleName == 'sales' && $controllerName == 'order' && $actionName == 'history') ||
+($moduleName == 'sales' && $controllerName == 'order' && $actionName == 'view') ||
+($moduleName == 'sales' && $controllerName == 'order' && $actionName == 'invoice') ||
+($moduleName == 'sales' && $controllerName == 'order' && $actionName == 'shipment') ||
+($moduleName == 'sales' && $controllerName == 'order' && $actionName == 'creditmemo') ||
+($moduleName == 'cms'   && $controllerName == 'page'  && $actionName == 'view') ||
+($moduleName == 'review' && $controllerName == 'customer') ||
+($moduleName == 'customer' && $controllerName == 'address') ||
+($moduleName == 'newsletter' && $controllerName == 'manage') ||
+($moduleName == 'customer' && $controllerName == 'account' && $actionName != 'login')) { ?>
+    <script type="text/javascript" charset="utf-8">
+        jQuery(document).ready(function() {
+            jQuery('body').addClass('myaccount-dashboard');
+            jQuery('body').removeClass('sales-order-track');
+        });
+    </script>
+<?php
+} else if (($moduleName == 'sales' && $controllerName == 'guest' && $actionName == 'view') ||
+($moduleName == 'sales' && $controllerName == 'guest' && $actionName == 'invoice') ||
+($moduleName == 'sales' && $controllerName == 'guest' && $actionName == 'shipment') ||
+($moduleName == 'sales' && $controllerName == 'guest' && $actionName == 'creditmemo')) { ?>
+    <script type="text/javascript" charset="utf-8">
+        jQuery(document).ready(function() {
+            jQuery('body').addClass('sales-order-track');
+            jQuery('body').removeClass('myaccount-dashboard');
+        });
+    </script>
+<?php
+} else { ?>
+    <?php /*<div class="widget widget-static-block"><?php echo $this->getText(); ?></div> */ ?>
+    <script type="text/javascript" charset="utf-8">
+        jQuery(document).ready(function() {
+            jQuery('body').removeClass('myaccount-dashboard');
+            jQuery('body').removeClass('sales-order-track');
+        });
+    </script>
+<?php } ?>

@@ -1,0 +1,491 @@
+<?php
+/**
+ * zeonsolutions inc.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://shop.zeonsolutions.com/license-enterprise.txt
+ *
+ * =================================================================
+ *                 MAGENTO EDITION USAGE NOTICE
+ * This package designed for Magento ENTERPRISE edition
+ * =================================================================
+ * zeonsolutions does not guarantee correct work of this extension
+ * on any other Magento edition except Magento ENTERPRISE edition.
+ * zeonsolutions does not provide extension support in case of
+ * incorrect edition usage.
+ * =================================================================
+ *
+ * @category   design
+ * @package    enterprise_default
+ * @version    0.0.1
+ * @copyright  @copyright Copyright (c) 2013 zeonsolutions.Inc. (http://www.zeonsolutions.com)
+ * @license    http://shop.zeonsolutions.com/license-enterprise.txt
+ */
+?>
+<?php
+$_helper = $this->helper('catalog/output');
+$_product = $this->getProduct();
+$resource = Mage::getSingleton('core/resource');
+	$writeConnection = $resource->getConnection('core_write');
+         $id=$_product->getSku();
+         $query_sel = "SELECT * FROM `site_link_configure_products` where cps_sku='$id' and partner_name='WALMART SITELINK'";
+            $results = $writeConnection->fetchAll($query_sel);
+$date = date("m/d/Y");
+$sDate = date("m/d/Y", strtotime($results[0]['intro_date']));
+if($results[0]['cancel_date']!='')
+$eDate = date("m/d/Y", strtotime($results[0]['cancel_date']));
+else
+$eDate = date("m/d/Y", strtotime('2030-05-30'));
+
+//Lead time to display Ship time.
+$_leadTime = $_product->getLeadTime();
+$_leadTime = trim($_leadTime);
+$cart_id=$_COOKIE['CRT'];
+Mage::log($cart_id, null, 'wm_sitelink_log_'.date("j.n.Y").'.log');
+$redirectURL=$_GET['redirectURL'];
+$offerID=$_GET['offerID'];
+$walmartID=$_GET['walmartID'];
+//$_shipsFrom = $_product->getShipsFrom();
+//$_shipsTo   = $_product->getShipsTo();
+//get pdf info
+$_pdfTitles = $_product->getPdfTitles();
+$_pdfLinks = $_product->getPdfLinks();
+$pdfUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . 'wysiwyg/pdf';
+$mediaUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . 'catalog/product'; ?>
+
+
+<script type="text/javascript">
+    var optionsPrice = new Product.OptionsPrice(<?php echo $this->getJsonConfig() ?>);
+    function showDetails() {
+        jQuery('.detailslink').fancybox({
+            maxWidth    : 800,
+            maxHeight    : 600,
+            fitToView    : false,
+            width        : '70%',
+            height        : '70%',
+            autoSize    : false,
+            closeClick    : false,
+            openEffect    : 'none',
+            closeEffect    : 'none'
+        });
+        return false;
+    }
+    AJAX_CART.isAutoHidePopup = 0;
+</script>
+
+<script>
+    jQuery(window).load(function() {
+        <?php
+        if ($this->getRequest()->getParam('review') == 'read') { ?>
+        jQuery( ".read-review" ).trigger( "click" );
+        jQuery(window).scrollTop(jQuery("#product-reviews-list").offset().top);
+        <?php
+        } else if ($this->getRequest()->getParam('review') == 'write') { ?>
+        jQuery( ".write-review" ).trigger( "click" );
+        jQuery(window).scrollTop(jQuery("#rating-form").offset().top);
+        <?php
+        } ?>
+    });
+</script>
+
+<?php $formKey = Mage::getSingleton('core/session')->getFormKey();?>
+<div id="messages_product_view"><?php echo $this->getMessagesBlock()->toHtml() ?></div>
+
+<div class="product-view col-lg-12 col-md-12 col-sm-12 col-xs-12" itemscope itemtype="http://schema.org/Product">
+
+<!-- Product page form    -->
+    <?php
+    /***
+     * The Code for the logic to show personalized button insted of add to cart on list page
+     */
+    $personalize_value =  Mage::getModel('catalog/product')->load($_product->getId())->getPersonalize();
+
+    //
+    if ('configure' == $this->getRequest()->getActionName()) {
+        $personalize_value = 0;
+    }
+    ?>
+
+<?php
+
+	 
+	$attributeSetModel = Mage::getModel("eav/entity_attribute_set");
+	$attributeSetModel->load($_product->getAttributeSetId());
+	$attributeSetName  = $attributeSetModel->getAttributeSetName();
+	 
+	$_DesignerProduct = (0 == strcmp($attributeSetName, 'Designer Product')) ? true : false;
+ 
+	if($_DesignerProduct):
+	
+		//Designer code starts
+		global $product_template, $material, $site_url;
+		 
+		$home_root 	= Mage::getBaseDir('base');
+		$base_url 		= Mage::getBaseUrl();
+		//$site_url 	= $base_url;
+		//$site_url = "http://imagick.cps-images.com/";
+		$pid 			= $_product->getSku();
+		$product_template = $_product->getResource()->getAttribute('product_template')->getFrontend()->getValue($_product);
+		$material = $_product->getResource()->getAttribute('metal')->getFrontend()->getValue($_product);
+		//$special_price =  $_product->getSpecialPrice();
+		//$base_price =  $_product->getPrice();
+ 
+		include $home_root.'/custom/start.php';
+	 
+		// Execute CSS and JS for Configurator
+		exec_scripts($base_url,$scripts);
+		
+		// Execute XML for Configurator
+		exec_XML($xml);
+		
+?>
+
+<script type="text/javascript">
+	gmode = 'prod';
+	productid = '<?php echo trim($pid); ?>';
+	JQ_AJD = $.noConflict(true);
+	prod_template = '<?php echo $product_template; ?>';
+	material = '<?php echo $material; ?>';
+	site_url = '<?php echo $base_url; ?>';
+	//home_root = '<?php echo $home_root; ?>';
+	//site_root = '<?php echo $_SERVER['DOCUMENT_ROOT']; ?>;
+</script>
+
+<?php //Designer code ends
+ endif;
+?>  
+
+	<div id="AJAX-designer">
+<?php if($results[0]['status']==1) { ?>
+<?php if(strtotime($date)>=strtotime($sDate) && strtotime($date)<strtotime($eDate)) { ?>
+        <div class="product-essential row">
+			<div class="product-name" itemprop="name">
+				<h1><?php echo $_helper->productAttribute($_product, $results[0]['product_name'], 'name') ?></h1>
+				<?php echo $this->__('Walmart # %s', $this->htmlEscape($results[0]['part_no'])); ?>
+			</div>
+
+            <!-- left div for media section-->
+            <div class="prod-detail-left col-lg-5 col-md-5 col-sm-5 col-xs-12">
+			
+			<?php if($_DesignerProduct):  ?>
+			
+            	<!-- Product Image and Thumbnails -->
+				<div id="main-image-holder"><?php include $home_root.'/custom/configurator/interface/image.php'; ?></div>
+                <?php //echo $this->getChildHtml('media') ?>
+                <!-- social network links -->
+                <?php //echo $this->getChildHtml('sharetool_addthis') ?>
+				
+			<?php else: ?>
+			
+				<!-- default Product Image -->
+                <?php echo $this->getChildHtml('media') ?>
+                <!-- social network links -->
+                <?php //echo $this->getChildHtml('sharetool_addthis') ?>
+				
+			<?php endif; ?>
+			<?php if ($results[0]['custom_option1'] == 2) { ?>
+			<div style="padding-left: 107px;">
+                    <a class="size-chart_bottom" href="#size-chart-content_bottom" target="_blank"><?php echo $results[0]['custom_text1'];?></a></div>
+                <?php } ?>
+            </div>
+            <!-- center div for description/rating/other section-->
+            <div class="prod-detail-center col-lg-7 col-md-7 col-sm-7 col-xs-12">
+                <div class="product-main-info">
+                    <!-- Product name -->
+                    <!-- Product SKU -->
+                    <!-- Product review details -->
+                    <?php //echo $this->getaSummaryHtml($_product, false, true) ?>
+                    <!-- Product price data -->
+                   <?php //if ($_product->getMsrp()): ?>
+                        <?php //$_msrpPrice = $this->helper('core')->currency($_product->getMsrp(),true,false) ?>
+                       <!-- <p class="old-price">
+                            <span class="price-label"><?php echo $this->__('ORIGINAL'); ?></span>
+                            <span class="price"><?php echo $this->helper('core')->currency($results[0]['retail_price'],true,false) ?></span>
+                        </p>-->
+                    <?php //endif; ?>
+                    <?php //echo $this->getPriceHtml($_product) ?>
+                   
+                   <!--<div itemtype="http://schema.org/Offer" itemscope="" itemprop="offers" class="price-box">
+                                                <span class="price label mycustom">SALE</span>
+               
+               <meta itemprop="priceCurrency" content="USD">
+				                <span itemprop="price" class="price"><?php echo $this->helper('core')->currency($results[0]['actual_price'],true,false) ?></span>				                
+                
+                
+                        
+        </div>-->
+                    <div itemprop="description" class="std">
+    
+        <!--strong><?php echo $results[0]['short_description'];?></strong -->
+    
+    <p>
+    <?php echo $results[0]['long_description'];?>   </p>
+           
+        
+</div>
+                    <?php //echo $description=$this->getChildHtml('description');?>
+
+                    <?php
+                    $stonePlacementDiagram = $_product->getStonePlacementDiagram();
+                    $spdFilePath = Mage::getBaseDir('media').DS.'catalog'.DS.'product'.DS.$stonePlacementDiagram;
+                    if (!empty($stonePlacementDiagram) && file_exists($spdFilePath)) { ?>
+                        <!--<a href="javascript:;" id="spdPopLink" onclick="$('message-popup-window-mask').show();showSPD('spd_div')">Stone Placement Diagram</a>-->
+                        <div style="display: none;">
+                            <div id="spd_div">
+                                <img class="spdImg" src="<?php echo $mediaUrl  . $stonePlacementDiagram; ?>" />
+                                <div class="spd_description">
+                      <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('spd_desc')->toHtml(); ?>
+                                </div>
+                            </div>
+                        </div>
+                    <?php
+                    }
+                    /* pdf details */
+                    if ((!empty($_pdfLinks)) && (!empty($_pdfTitles))):
+                        $pdfLinks = explode(',',$_pdfLinks);
+                        $pdfTitles = explode(',',$_pdfTitles);
+                        $pdfStep = 0;
+                        foreach($pdfLinks as $pdfLinks): ?>
+                            <a class="extenal-link" target="_blank" href="<?php echo $pdfUrl.'/'.trim($pdfLinks) ?>"><?php echo $this->__($pdfTitles[$pdfStep]) ?></a>
+                        <?php $pdfStep++;
+                        endforeach;
+                    endif;
+                    /* end pdf details */
+                    ?>
+                </div>
+            <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('privacy-policy')->toHtml()?>
+        </div>
+
+		<?php if($_DesignerProduct): ?>
+		
+		<!-- right div for customizations,add to cart/others section-->
+		<div class="prod-detail-right col-lg-7 col-md-7 col-sm-7 col-xs-12">
+		<form id="AJD_form" class="AJD_form" action="#" enctype="multipart/form-data" method="POST">
+		
+			
+					
+						<?php
+						if(Mage::app()->getFrontController()->getRequest()->getRequestedActionName() == 'configure')
+							$_GET['status'] = 'edit';
+						?>
+					
+						<?php if(0 == strcmp($attributeSetName, 'Designer Product')): ?>
+							<div id="interface-holder"><?php include $home_root.'/custom/configurator/interface/interface_walmart.php'; ?></div>
+							<div id="selector-mover"></div>
+						<?php endif; ?>
+			
+		
+</form></div>
+		<?php endif; ?>
+
+            <div class="prod-detail-right2 col-lg-7 col-md-7 col-sm-7 col-xs-12" ><!-- display: none -->
+
+				<form  action="<?php if ($personalize_value == 1){ echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB).'personalize'; } else { echo $this->getSubmitUrl($_product); } ?>" method="post" <?php if ($personalize_value != 1 && Mage::getStoreConfigFlag('zeon_ajaxcart/frontend/cart_enabled')) { ?> onsubmit="fun(); ajaxCart.addUpdate('ajaxcart/cart/add1');return false;" <?php } ?> id="product_addtocart_form"<?php if ($_product->getOptions()): ?> enctype="multipart/form-data"<?php endif; ?> autocomplete="off">
+
+					<input type="hidden" name="form_key" value="<?php echo $formKey; ?>" />
+					<div class="no-display">
+						<input type="hidden" name="product" value="<?php echo $_product->getId() ?>" />
+						<input type="hidden" name="child_product" value="<?php echo $_product->getId() ?>" />
+						<input type="hidden" name="related_product" id="related-products-field" value="" />
+<input type="hidden" name="offer_id" value="<?php echo $offerID; ?>" />
+<input type="hidden" name="partner_name" value="<?php echo $results[0]['partner_name']; ?>" />
+<input type="hidden" name="cps_sku" value="<?php echo $results[0]['cps_sku']; ?>" />
+<input type="hidden" name="client_sku" value="<?php echo $walmartID; ?>" />
+<input type="hidden" name="cart_id" value="<?php echo $cart_id; ?>" />
+<input type="hidden" name="redirectURL" value="<?php echo $redirectURL; ?>" />
+						<?php if ($personalize_value == 1): ?>
+							<input type="hidden" name="id" value="<?php echo $_product->getId() ?>" />
+						<?php endif; ?>
+
+					</div>
+						
+							<!-- Product options / add to cart  -->
+							<div class="product-main-info personalizing-block" ><!-- display none -->
+								<!-- get container1 -->
+						   <?php if ($_product->isSaleable() && $this->hasOptions() && $this->getChildChildHtml('container1')): ?>
+									<div class="options-container-small">
+										<?php echo $this->getChildChildHtml('container1', '', true, true) ?>
+									</div>
+								<?php endif; ?>
+								<!-- get container2 -->
+						   <?php if ($_product->isSaleable() && $this->hasOptions() && $this->getChildChildHtml('container2')): ?>
+									<div class="options-container-big">
+										<?php echo $this->getChildChildHtml('container2', '', true, true) ?>
+									</div>
+								<?php endif; ?>
+								<div class="clearer"></div>
+								<!-- get add to cart container -->
+								<?php echo $this->getChildHtml('addtocart') ?>
+								<div class="clearer"></div>
+							</div>
+				</form>
+	
+    	 </div>
+    </div>
+       
+   <div class="mobile description-section">
+	<div class="product-collateral">
+        <dl id="collateral-tabs" class="collateral-tabs">
+            <dt class="tab" ><span><?php echo "Description"; ?></span></dt>
+                <dd class="tab-container">
+                        <div class="tab-content"><?php echo $description; ?></div>
+                 </dd>
+        </dl>
+       </div>
+
+   </div>
+   <?php } else { echo "No Record to display";}?>
+   <?php } else { echo "No Record to display";}?>
+</div>
+	
+		<div style="display:none;" id="size-chart-content_bottom"><?php
+$homepage = file_get_contents($results[0]['custom_url1']);
+echo $homepage;
+?></div>
+	
+    <script type="text/javascript">
+       var optionsPrice = new Product.OptionsPrice(<?php echo $this->getJsonConfig() ?>);
+	//alert(jQuery('.size-chart_bottom'));
+		jQuery('.size-chart_bottom').fancybox({
+			maxWidth    : 800,
+            maxHeight    : 600,
+            fitToView    : false,
+            width        : '70%',
+            height        : '70%',
+            autoSize    : false,
+            closeClick    : false,
+            openEffect    : 'none',
+            closeEffect    : 'none'
+		});
+    </script>
+<script type="text/javascript">
+	
+	function fun()
+	{
+	    var qty=jQuery("#qty").val();
+	    
+	s_omni.events="scAdd,event116";
+	s_omni.pageName="Add to Cart Personalized Gifts";
+	s_omni.prop1="Cart";
+	s_omni.prop2="Add to Cart Personalized Gifts";
+	s_omni.eVar5="[Personalize] Page";
+	s_omni.eVar33=qty; // Number of item(s)
+	s_omni.prop42="Checkout";
+	s_omni.prop50="com";
+	s_omni.products=" walmarthome; <?php echo $walmartID;?>;"+qty+";;eVar30=Walmart.com";
+	//var s_product=s_omni.t();if(s_product) document.write(s_product);
+	s_omni.t();
+	//alert(s_omni.products);	
+	}
+	jQuery(".add-to-cart #qty-clone").keyup(function() {
+			console.log(jQuery(".add-to-cart #qty-clone").val());
+			jQuery(".qty-box #qty").val(jQuery(".add-to-cart #qty-clone").val());
+	});
+	
+
+    //<![CDATA[
+    var productAddToCartForm = new VarienForm('product_addtocart_form');
+    productAddToCartForm.submit = function(button, url) {
+        if (this.validator.validate()) {
+            var form = this.form;
+            var oldUrl = form.action;
+
+            if (url) {
+                form.action = url;
+            }
+            var e = null;
+            try {
+                this.form.submit();
+            } catch (e) {
+            }
+            this.form.action = oldUrl;
+            if (e) {
+                throw e;
+            }
+
+            if (button && button != 'undefined') {
+                button.disabled = true;
+            }
+        }
+    }.bind(productAddToCartForm);
+
+    productAddToCartForm.submitLight = function(button, url){
+        if(this.validator) {
+            var nv = Validation.methods;
+            delete Validation.methods['required-entry'];
+            delete Validation.methods['validate-one-required'];
+            delete Validation.methods['validate-one-required-by-name'];
+            if (this.validator.validate()) {
+                if (url) {
+                    this.form.action = url;
+                }
+                this.form.submit();
+            }
+            Object.extend(Validation.methods, nv);
+        }
+    }.bind(productAddToCartForm);
+    //]]>
+
+    jQuery("input[type=checkbox]").on('ifChecked', function(event){
+        jQuery('#advice-required-entry-required_check').hide();
+    });
+    jQuery("input[type=checkbox]").on('ifUnchecked', function(event){
+        jQuery('#advice-required-entry-required_check').show();
+    });
+	
+	jQuery(".cart-button button").addClass('remoteSubmit');
+	jQuery(".add-wishlist a.link-wishlist").addClass('remoteWishlist');
+
+    function showSPD(id) {
+        win = new Window({ title: "Stone Placement Diagram", zIndex:3000, destroyOnClose: true, recenterAuto:false,
+            resizable: false, width:600, height:400, minimizable: false, maximizable: false, draggable: false});
+        win.setContent(id, false, false);
+        win.showCenter();
+        win.setCloseCallback(function(){win.destroy();$('message-popup-window-mask').hide();});
+    }
+</script>
+<script language="JavaScript" type="text/javascript"><!--
+var s_account="walmartcom";//-->
+</script>
+<script language="JavaScript" type="text/javascript" src="http://i2.walmartimages.com/webanalytics/omniture/s_code.js"></script>
+<script language="JavaScript" type="text/javascript">
+
+var omni = {
+"adid" : s_omni.getQueryParam('adid'),
+"fbref" : s_omni.getQueryParam('fb_ref'),
+"sourceid" : s_omni.getQueryParam('sourceid'),
+"povid" : s_omni.getQueryParam('povid'),
+"findingMethod" : s_omni.getQueryParam('findingMethod'),
+getCampaignId : function() {
+if(this.adid) { return this.adid; }
+else if (this.fbref) { return this.fbref.split('_')[1]; }
+else if (this.sourceid){ return this.sourceid; }
+else { return ''; }
+}
+};
+s_omni.pageName="CPS: Personalized 1 of 1"; //Page Title
+s_omni.channel="personalizeditems-cps.walmart.com"; //Channel  Set to the domain
+s_omni.campaign=omni.getCampaignId();
+s_omni.prop1="Personalize"; //Page Type
+s_omni.prop2="CPS: Personalized 1 of 1"; //Page Name Granular
+s_omni.prop8="Home"; //Department
+
+var s_code=s_omni.t();if(s_code) document.write(s_code);
+</script>
+<style>
+    #AJAX-designer *, #AJAX-designer *:before, #AJAX-designer *:after {
+	-webkit-box-sizing: border-box !important;
+	-moz-box-sizing: border-box !important;
+	box-sizing: border-box !important;
+    }
+   
+    #interface-holder {
+	float: none;
+	min-height: 550px;
+	width: auto;
+    }
+</style>

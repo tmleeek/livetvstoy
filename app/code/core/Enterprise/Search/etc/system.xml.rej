@@ -1,0 +1,22 @@
+--- app/code/core/Enterprise/Search/etc/system.xml
++++ app/code/core/Enterprise/Search/etc/system.xml
+@@ -26,18 +26,7 @@
+  */
+ -->
+ <config>
+-    <sections>
+-        <general>
+-            <groups>
+-                <locale>
+-                    <fields>
+-                        <code>
+-                            <backend_model>enterprise_search/adminhtml_system_config_backend_locale_code</backend_model>
+-                        </code>
+-                    </fields>
+-                </locale>
+-            </groups>
+-        </general>
++   <sections>
+         <catalog>
+             <groups>
+                 <search>

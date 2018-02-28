@@ -1,0 +1,66 @@
+<?php $enablePopup =  Mage::helper('newsletterpopup')->getConfigDetails('active_popup'); ?>
+<?php $currentStoreCode = Mage::app()->getWebsite()->getCode(); ?>
+
+<script type="text/javascript"><!--
+    // check for cookie to call popup
+    jQuery(document).ready(function() {
+        var check_cookie = null;
+        if(jQuery.cookie('newsletter_popup_<?php echo $currentStoreCode; ?>')) {
+            check_cookie = jQuery.cookie('newsletter_popup_<?php echo $currentStoreCode; ?>');
+        }
+        if(check_cookie == null && <?php echo $enablePopup; ?>) {
+            beginNewsletterForm();
+        }
+    });
+
+    // call newsletter popup using fancybox
+    function beginNewsletterForm () {
+        jQuery.fancybox({
+            'padding': '0px',
+            'autoScale': true,
+            'transitionIn': 'fade',
+            'transitionOut': 'fade',
+            'showCloseButton': true,
+            'wrapCSS' : 'signup-popup',
+            'type': 'inline',
+            'href': '#newsletter-popup',
+            'afterLoad': function() {
+                jQuery.cookie('newsletter_popup_<?php echo $currentStoreCode; ?>', 'shown', { expires: 30, path: '/', domain: '<?php echo $_SERVER["SERVER_NAME"]; ?>'});
+            }
+        });
+        jQuery("#newsletter-popup").trigger('click');
+    }
+    --></script>
+
+<!-- News letter form -->
+<center style="display: none;">
+    <div class="container newsletter-popup" id="newsletter-popup">
+        <div class="sub-container">
+            <div class="content">
+                <div class="register-form">
+                    <form id="newsletter-registration-formpopup"
+                        action="<?php echo $this->getUrl('newsletter/subscriber/new/') ?>"
+                        method="post" id="newsletter-validate-detail">
+
+                        <div class="message"><?php echo $this->__("Sign up for %s Emails!", Mage::app()->getStore()->getFrontendName()) ?></div>
+                        <div class="form-fields-middle">
+                        <div class="input-wrapper"><input name="email" id="cm_email"
+                            onfocus="if(this.value=='<?php echo $this->__("email address") ?>') this.value=''"
+                            onblur="if(this.value=='') this.value='<?php echo $this->__("email address") ?>'"
+                            class="validate-email required-entry field-left" type="text"
+                            value="<?php echo $this->__("email address") ?>" /></div>
+                        </div>
+                        <div class="btn-sign-up-now">
+                        <button class="button" type="submit" class="button" value="<?php echo $this->__("Sign Up!") ?>" /><span><span>Sign Up!</span></span></button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</center>
+<script type="text/javascript">
+    //email form validation
+    var newsletterSubscriberFormDetail = new VarienForm('newsletter-registration-formpopup', true);
+</script>

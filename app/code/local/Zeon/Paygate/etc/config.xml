@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Zeon_Paygate>
+            <version>1.0.1</version>
+        </Zeon_Paygate>
+    </modules>
+    <global>
+        <blocks>
+          <paygate>
+            <rewrite>
+              <authorizenet_info_cc>Zeon_Paygate_Block_Authorizenet_Info_Cc</authorizenet_info_cc>
+            </rewrite>
+          </paygate>
+        </blocks>
+    </global>
+</config>

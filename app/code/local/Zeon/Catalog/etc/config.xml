@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Zeon Solutions
+ * Catalog Module
+ * The Catalog module has been overridden.
+ * refer the text file for details.
+ *
+ * @category   Zeon
+ * @package    Zeon_Catalog
+ * @copyright  Copyright (c) 2008 Zeon Solutions (http://www.zeonsolutions.com/)
+ * @version    1.0.0
+ * @date       jan 29 2009 1846 IST
+ */
+-->
+<config>
+    <modules>
+        <Zeon_Catalog>
+            <version>1.0.2</version>
+        </Zeon_Catalog>
+    </modules>
+    <global>
+        <blocks>
+            <catalog>
+                <rewrite>
+                    <category_list>Zeon_Catalog_Block_Category_List</category_list>
+                    <category_list_toolbar>Zeon_Catalog_Block_Category_List_Toolbar</category_list_toolbar>
+                    <product_list_toolbar>Zeon_Catalog_Block_Product_List_Toolbar</product_list_toolbar>
+                    <!-- <product_view>Zeon_Catalog_Block_Product_View</product_view> -->
+                    <product_list>Zeon_Catalog_Block_Product_List</product_list>
+                    <product_view_type_configurable>Zeon_Catalog_Block_Product_View_Type_Configurable</product_view_type_configurable>
+                </rewrite>
+            </catalog>
+        </blocks>
+
+        <helpers>
+            <catalog>
+                <rewrite>
+                    <product_configuration>Zeon_Catalog_Helper_Product_Configuration</product_configuration>
+                    <data>Zeon_Catalog_Helper_Data</data>
+                </rewrite>
+            </catalog>
+        </helpers>
+
+        <models>
+            <catalog>
+                <rewrite>
+                    <layer_filter_category>Zeon_Catalog_Model_Layer_Filter_Category</layer_filter_category>
+                </rewrite>
+                <rewrite>
+                    <product_type_configurable_price>Zeon_Catalog_Model_Product_Type_Configurable_Price</product_type_configurable_price>
+                </rewrite>
+            </catalog>
+            <catalog_resource_eav_mysql4>
+                <rewrite>
+                    <product_collection>Zeon_Catalog_Model_Resource_Eav_Mysql4_Product_Collection</product_collection>
+                </rewrite>
+                <rewrite>
+                    <product_indexer_price_configurable>Zeon_Catalog_Model_Resource_Eav_Mysql4_Product_Indexer_Price_Configurable</product_indexer_price_configurable>
+                </rewrite>
+                <rewrite>
+                    <product_indexer_price>Zeon_Catalog_Model_Resource_Eav_Mysql4_Product_Indexer_Price</product_indexer_price>
+                </rewrite>
+            </catalog_resource_eav_mysql4>
+        </models>
+
+        <resources>
+            <zeon_catalog_setup>
+                <setup>
+                    <module>Zeon_Catalog</module>
+                    <class>Zeon_Catalog_Model_Resource_Setup</class>
+                </setup>
+            </zeon_catalog_setup>
+        </resources>
+
+        <events>
+            <!--<catalog_product_save_before>
+                <observers>
+                    <zcatalog_save_product_urlkey>
+                        <type>singleton</type>
+                        <class>Zeon_Catalog_Model_Observer</class>
+                        <method>setProductUrlKey</method>
+                    </zcatalog_save_product_urlkey>
+                </observers>
+            </catalog_product_save_before>-->
+        </events>
+    </global>
+    <default>
+        <catalog>
+            <category_list>
+                <category_display_mode>grid-list</category_display_mode>
+                <category_per_page>6</category_per_page>
+                <category_grid_per_page_values>1,3,6,9,12</category_grid_per_page_values>
+                <category_list_per_page_values>1,5,10,15,20,25</category_list_per_page_values>
+                <category_grid_per_page>6</category_grid_per_page>
+                <category_list_per_page>5</category_list_per_page>
+                <category_grid_per_row>4</category_grid_per_row>
+            </category_list>
+        </catalog>
+    </default>
+</config>

@@ -1,0 +1,20 @@
+--- app/code/core/Enterprise/Search/Model/Adapter/HttpStream.php
++++ app/code/core/Enterprise/Search/Model/Adapter/HttpStream.php
+@@ -63,7 +63,16 @@
+      */
+     protected function _connect($options = array())
+     {
+-        $options = $this->_initConnectOptions($options);
++        $helper = Mage::helper('enterprise_search');
++        $def_options = array(
++            'hostname' => $helper->getSolrConfigData('server_hostname'),
++            'login'    => $helper->getSolrConfigData('server_username'),
++            'password' => $helper->getSolrConfigData('server_password'),
++            'port'     => $helper->getSolrConfigData('server_port'),
++            'timeout'  => $helper->getSolrConfigData('server_timeout'),
++            'path'     => $helper->getSolrConfigData('server_path')
++        );
++        $options = array_merge($def_options, $options);
+ 
+         try {
+             $this->_client = Mage::getSingleton('enterprise_search/client_solr', $options);

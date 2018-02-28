@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">  
+    <default>
+        <reference name = "head">      
+            <action method="addJs"><script>magalter_core/align.js</script></action>  
+            <action method="addJs"><script>magalter_core/effects.js</script></action>        
+            <action method="addJs"><script>magalter_core/events.js</script></action>            
+        </reference>       
+    </default>   
+</layout>

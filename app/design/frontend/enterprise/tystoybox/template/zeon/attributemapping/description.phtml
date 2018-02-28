@@ -1,0 +1,29 @@
+<?php
+/**
+ * @category    Fqs
+ * @package     Fqs_Attributemapping
+ * @@copyright   Copyright (c) 2012 Zeon Solutions, Inc. All Rights Reserved.(http://www.zeonsolutions.com)
+ * @license     http://www.zeonsolutions.com/license/
+ */
+ ?>
+<div class="page-description">
+    <?php
+    // Check, if it is a Poptropica Charater or not.
+    $_isPoptropicaCharacter = $this->isPoptropicaCharacter();
+    if (!$_isPoptropicaCharacter):
+        // If NO then display a link to user to select Avatar from "http://www.poptropica.com/shop/" site.
+        $_title = $this->__('Poptropica Get Started');
+?>
+        <p class="category-image">
+            <a href="<?php echo Mage::getStoreConfig('personalize/poptropica_settings/poptropica_shop_url'); ?>" title="<?php echo $_title; ?>" target="_blank">
+                <img title="<?php echo $_title; ?>" alt="<?php echo $_title; ?>" src="<?php echo $this->getSkinUrl('images/poptropica-get-started.png'); ?>">
+            </a>
+        </p>
+<?php
+    else:
+        echo $this->setBackgroundImage();
+    endif;
+    ?>
+
+    <?php echo $this->setPageDescripion(); ?>
+</div>

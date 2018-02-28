@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Changes requested by Amasty to use FPC with Redis. Changes added on 12/14/2015 by Arul
+ */
+-->
+<config>
+    <global>
+        <amfpc>
+            <options>
+            <backend><![CDATA[Mage_Cache_Backend_Redis]]></backend>
+            <backend_options>
+                <server><![CDATA[10.0.0.27]]></server>
+                <port><![CDATA[6379]]></port>
+                <persistent></persistent>
+                <database><![CDATA[0]]></database>
+                <password></password>
+                <force_standalone><![CDATA[0]]></force_standalone>
+                <connect_retries><![CDATA[1]]></connect_retries>
+                <read_timeout><![CDATA[20]]></read_timeout>
+                <log_level><![CDATA[4]]></log_level>
+                <lifetimelimit><![CDATA[57600]]></lifetimelimit>
+                <automatic_cleaning_factor>0</automatic_cleaning_factor> <!-- Disabled by default -->
+                <compress_data>1</compress_data>  <!-- 0-9 for compression level, recommended: 0 or 1 -->
+                <compress_tags>1</compress_tags>  <!-- 0-9 for compression level, recommended: 0 or 1 -->
+                <compress_threshold>20480</compress_threshold>  <!-- Strings below this size will not be compressed -->
+                <compression_lib>gzip</compression_lib> <!-- Supports gzip, lzf, lz4 (as l4z) and snappy -->
+                <use_lua>0</use_lua> <!-- Set to 1 if Lua scripts should be used for some operations -->
+            </backend_options>
+            </options>
+        </amfpc>
+   </global>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <frontName><![CDATA[zpanel]]></frontName>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+</config>

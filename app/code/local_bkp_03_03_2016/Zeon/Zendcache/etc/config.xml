@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Zeon_Zendcache>
+            <version>1.0.0</version>
+        </Zeon_Zendcache>
+    </modules>
+    <global>
+        <helpers>
+            <zendcache>
+                <class>Zeon_Zendcache_Helper</class>
+            </zendcache>
+        </helpers>
+        <models>
+            <zendcache>
+                <class>Zeon_Zendcache_Model</class>
+                <resourceModel>zendcache_resource</resourceModel>
+            </zendcache>
+            <zendcache_resource>
+                <class>Zeon_Zendcache_Model_Resource</class>
+            </zendcache_resource>
+        </models>
+    </global>
+    <!--<crontab>
+        <jobs>
+            <custom_url_page_cache_crawler>
+                <schedule>
+                    <cron_expr>15 5 * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>zendcache/crawler::customCrawl</model>
+                </run>
+            </custom_url_page_cache_crawler>
+        </jobs>
+    </crontab>-->
+</config>

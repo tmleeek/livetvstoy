@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+<config>
+    <modules>
+        <Zeon_Adminhtml>
+            <version>0.1.0</version>
+        </Zeon_Adminhtml>
+    </modules>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <zeon before="Mage_Adminhtml">Zeon_Adminhtml</zeon>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+    <stores>
+        <admin>
+            <!-- default admin design package and theme -->
+            <design>
+                <package>
+                    <name>default</name>
+                </package>
+                <theme>
+                    <default>tystoybox</default>
+                </theme>
+            </design>
+        </admin>
+    </stores>
+
+    <global>
+        <blocks>
+            <adminhtml>
+                <rewrite>
+                    <sales_order_invoice_view>Zeon_Adminhtml_Block_Sales_Order_Invoice_View</sales_order_invoice_view>
+                </rewrite>
+            </adminhtml>
+        </blocks>
+    </global>
+
+</config>

@@ -1,0 +1,58 @@
+<?php
+$incrementId = Mage::getSingleton('checkout/session')->getLastRealOrderId();//It has the order ID
+
+$order = Mage::getModel('sales/order')->load($incrementId, 'increment_id'); //Load the order details
+
+/**
+ * Code to fetch personalized parameters passed
+ */
+$session = Mage::getSingleton("customer/session");
+$oldSessionId = $session->getEncryptedSessionId();
+if (Mage::getSingleton('customer/session')->isLoggedIn()) {
+    $customerData = Mage::getSingleton('customer/session')
+        ->getCustomer();
+    $customer = $customerData->getId();
+    $flag = 'false';
+} else {
+    $customer = $oldSessionId;
+    $flag = 'true';
+}
+$personalizeModel = Mage::getSingleton('personalize/personalize');
+
+$isPersonalizedProduct = false;
+$personalizedProdCount = 0;
+foreach ($order->getAllItems() as $item) {
+    if ($item->getProduct()->getPersonalize()) {
+        $isPersonalizedProduct = true;
+        $personalizedProdCount++;
+    }
+}
+
+if ($isPersonalizedProduct && $personalizedProdCount > 0) {
+    $personalizeData = $personalizeModel->getPersonalizedDetailsByCustomerId($customer, $personalizedProdCount);
+    $websiteId = Mage::getStoreConfig('personalize/mycustom_group/mycustom_field1');//Set the website id
+    $includeScript = Mage::getStoreConfig('personalize/mycustom_group/mycustom_field');//Set the artifi include script
+    echo $includeScript;
+
+    $designId = array();
+    $designIds = '';
+    if (count($personalizeData)) {
+        foreach ($personalizeData as $idx => $row) {
+            $designId[] = $row['design_id'];
+            if ('false' == $row['is_guest'] || isset($row['session_id'])) {
+                $isGuest = false;
+                $sessionId = $row['session_id'];
+            } else {
+                $isGuest = true;
+            }
+        }
+        $designIds = implode(',', $designId);
+    }
+    if (isset($isGuest) && $isGuest == true) {
+        echo "<script type='text/javascript'>$(document).ready(function(){Artifi.UpdateUserId('{$customer}', '{$sessionId}', '{$flag}', {$websiteId});});</script> ";
+    } else {
+        echo "<script type='text/javascript'>$(document).ready(function(){Artifi.UpdateUserId('{$customer}', '{$oldSessionId}', '{$flag}', {$websiteId});});</script> ";
+    }
+
+    echo "<script type='text/javascript'>$(document).ready(function(){ Artifi.UpdateMultipleCustomizedProductOrderStatus( [$designIds], {$websiteId} );});</script>";
+}

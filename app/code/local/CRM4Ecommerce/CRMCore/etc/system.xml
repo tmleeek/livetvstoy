@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!--
+    @category   CRM4Ecommerce
+    @package    CRM4Ecommerce_CRMCore
+    @author     Philip Nguyen <philip@crm4ecommerce.com>
+    @link       http://crm4ecommerce.com
+-->
+<config>
+    <tabs>
+        <crm4ecommerce translate="label">
+            <label>CRM4Ecommerce Extensions</label>
+            <sort_order>1</sort_order>
+        </crm4ecommerce>
+    </tabs>
+    <sections>
+        <crm4ecommerce_notification translate="label">
+            <class>separator-top</class>
+            <label><![CDATA[Notifications & Support]]></label>
+            <tab>crm4ecommerce</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>1000</sort_order>
+            <show_in_default>1</show_in_default>
+            <groups>
+                <settings translate="label comment">
+                    <label>Notifications</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>0</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <fields>
+                        <status translate="label comment">
+                            <label>Get Notifications</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <comment>Allow get nofications or not.</comment>
+                        </status>
+                    </fields>
+                </settings>
+                <support translate="label comment">
+                    <label>Support</label>
+                    <frontend_model>crmcore/adminhtml_config_supportForm</frontend_model>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                </support>
+            </groups>
+        </crm4ecommerce_notification>
+    </sections>
+</config>

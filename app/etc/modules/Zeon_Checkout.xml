@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Zeon_Checkout>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Zeon_Checkout>
+    </modules>
+</config>

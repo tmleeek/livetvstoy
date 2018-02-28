@@ -1,0 +1,311 @@
+﻿<?xml version='1.0' encoding='UTF-8'?>
+<cliparts>
+	<clipart id="1" name="Academics" file_name="academics.png" assoc_cat="0" avail="true"/>
+	<clipart id="2" name="Accounting" file_name="accounting.png" assoc_cat="0" avail="false"/>
+	<clipart id="3" name="Agriculture" file_name="agriculture.png" assoc_cat="0" avail="true"/>
+	<clipart id="4" name="Art" file_name="art.png" assoc_cat="0" avail="true"/>
+	<clipart id="5" name="Bible Study" file_name="bible-study.png" assoc_cat="0" avail="true"/>
+	<clipart id="6" name="Biology" file_name="biology.png" assoc_cat="0" avail="true"/>
+	<clipart id="7" name="Biology 2" file_name="biology-2.png" assoc_cat="0" avail="true"/>
+	<clipart id="8" name="Blacksmith" file_name="blacksmith.png" assoc_cat="0" avail="true"/>
+	<clipart id="9" name="Business/Accounting" file_name="business.png" assoc_cat="0" avail="true"/>
+	<clipart id="10" name="Broadcasting" file_name="broadcasting.png" assoc_cat="0" avail="true"/>
+	<clipart id="11" name="Class of 2015" file_name="class-of-2015.png" assoc_cat="0" avail="true"/>
+	<clipart id="12" name="Class of 2015 Cap" file_name="class-of-2015-cap.png" assoc_cat="0" avail="true"/>
+	<clipart id="13" name="Class of 2015 Scroll" file_name="class-of-2015-scroll.png" assoc_cat="0" avail="true"/>
+	<clipart id="14" name="Class of 2016" file_name="class-of-2016.png" assoc_cat="0" avail="true"/>
+	<clipart id="15" name="Class of 2016 Cap" file_name="class-of-2016-cap.png" assoc_cat="0" avail="true"/>
+	<clipart id="16" name="Class of 2016 Scroll" file_name="class-of-2016-scroll.png" assoc_cat="0" avail="true"/>
+	<clipart id="17" name="Class of 2017" file_name="class-of-2017.png" assoc_cat="0" avail="true"/>
+	<clipart id="18" name="Class of 2017 Cap" file_name="class-of-2017-cap.png" assoc_cat="0" avail="true"/>
+	<clipart id="19" name="Class of 2017 Scroll" file_name="class-of-2017-scroll.png" assoc_cat="0" avail="true"/>
+	<clipart id="20" name="Communications" file_name="communications.png" assoc_cat="0" avail="true"/>
+	<clipart id="21" name="Cosmetology" file_name="cosmetology.png" assoc_cat="0" avail="true"/>
+	<clipart id="22" name="Cosmetology 2" file_name="cosmetology-2.png" assoc_cat="0" avail="true"/>
+	<clipart id="23" name="Counseling" file_name="counseling.png" assoc_cat="0" avail="true"/>
+	<clipart id="24" name="Criminology" file_name="criminology.png" assoc_cat="0" avail="true"/>
+	<clipart id="25" name="Culinary" file_name="culinary.png" assoc_cat="0" avail="true"/>
+	<clipart id="26" name="Culinary 2" file_name="culinary-2.png" assoc_cat="0" avail="true"/>
+	<clipart id="27" name="Debate" file_name="debate.png" assoc_cat="0" avail="true"/>
+	<clipart id="28" name="Dental Hygiene" file_name="dental-hygiene.png" assoc_cat="0" avail="true"/>
+	<clipart id="29" name="Diploma" file_name="diploma.png" assoc_cat="0" avail="true"/>
+	<clipart id="30" name="Drama" file_name="drama.png" assoc_cat="0" avail="true"/>
+	<clipart id="31" name="Economics" file_name="economics.png" assoc_cat="0" avail="true"/>
+	<clipart id="32" name="Education" file_name="education.png" assoc_cat="0" avail="true"/>
+	<clipart id="33" name="Electronics" file_name="electronics.png" assoc_cat="0" avail="true"/>
+	<clipart id="34" name="Fire Dept" file_name="firefighting.png" assoc_cat="0" avail="true"/>
+	<clipart id="35" name="Firefighting" file_name="fire-dept.png" assoc_cat="0" avail="true"/>
+	<clipart id="36" name="Grad 1" file_name="grad-1.png" assoc_cat="0" avail="true"/>
+	<clipart id="37" name="Grad 2" file_name="grad-2.png" assoc_cat="0" avail="true"/>
+	<clipart id="38" name="Grad 3" file_name="grad-3.png" assoc_cat="0" avail="true"/>
+	<clipart id="39" name="Honor" file_name="honor.png" assoc_cat="0" avail="true"/>
+	<clipart id="40" name="Journalism" file_name="journalism.png" assoc_cat="0" avail="true"/>
+	<clipart id="41" name="JROTC" file_name="jrotc.png" assoc_cat="0" avail="true"/>
+	<clipart id="42" name="Justice" file_name="justice.png" assoc_cat="0" avail="true"/>
+	<clipart id="43" name="Law enforcement" file_name="law-enforcement.png" assoc_cat="0" avail="true"/>
+	<clipart id="44" name="Mechanic Shop" file_name="mechanic-shop.png" assoc_cat="0" avail="true"/>
+	<clipart id="45" name="Medicine" file_name="medicine.png" assoc_cat="0" avail="true"/>
+	<clipart id="46" name="Music" file_name="music.png" assoc_cat="0" avail="true"/>
+	<clipart id="47" name="NHS" file_name="nhs.png" assoc_cat="0" avail="true"/>
+	<clipart id="48" name="Nursing" file_name="nursing.png" assoc_cat="0" avail="true"/>
+	<clipart id="49" name="Plumbing" file_name="psychology.png" assoc_cat="0" avail="true"/>
+	<clipart id="50" name="Psychology" file_name="plumbing.png" assoc_cat="0" avail="true"/>
+	<clipart id="51" name="Science" file_name="science.png" assoc_cat="0" avail="true"/>
+	<clipart id="52" name="Sign Language" file_name="sign-language.png" assoc_cat="0" avail="true"/>
+	<clipart id="53" name="Voc Tech" file_name="voc-tech.png" assoc_cat="0" avail="true"/>
+	<clipart id="54" name="American Flag" file_name="american-flag.png" assoc_cat="1" avail="true"/>
+	<clipart id="55" name="American Flag 2" file_name="american-flag-2.png" assoc_cat="1" avail="true"/>
+	<clipart id="56" name="Eagle USA" file_name="eagle-usa.png" assoc_cat="1" avail="true"/>
+	<clipart id="57" name="Friends" file_name="friends.png" assoc_cat="1" avail="true"/>
+	<clipart id="58" name="Future" file_name="future.png" assoc_cat="1" avail="true"/>
+	<clipart id="59" name="Hearts" file_name="hearts.png" assoc_cat="1" avail="true"/>
+	<clipart id="60" name="Honor Ribbon" file_name="honor-ribbon.png" assoc_cat="1" avail="true"/>
+	<clipart id="61" name="Love Doves" file_name="love-doves.png" assoc_cat="1" avail="true"/>
+	<clipart id="62" name="Peace" file_name="peace.png" assoc_cat="1" avail="true"/>
+	<clipart id="63" name="Rose" file_name="rose.png" assoc_cat="1" avail="true"/>
+	<clipart id="64" name="Shamrock" file_name="shamrock.png" assoc_cat="1" avail="true"/>
+	<clipart id="65" name="Square and Compass" file_name="square-and-compass.png" assoc_cat="1" avail="true"/>
+	<clipart id="66" name="Star Crescent" file_name="star-crescent.png" assoc_cat="1" avail="true"/>
+	<clipart id="67" name="USA Flag" file_name="usa-flag.png" assoc_cat="1" avail="true"/>
+	<clipart id="68" name="USA Flag 2" file_name="usa-flag-2.png" assoc_cat="1" avail="true"/>
+	<clipart id="69" name="Yin-Yang" file_name="yin-yang.png" assoc_cat="1" avail="true"/>
+	<clipart id="70" name="Angel" file_name="angel.png" assoc_cat="2" avail="true"/>
+	<clipart id="71" name="Claddagh" file_name="claddagh.png" assoc_cat="2" avail="true"/>
+	<clipart id="72" name="Cross bible" file_name="cross-bible.png" assoc_cat="2" avail="true"/>
+	<clipart id="73" name="Cross wreath" file_name="cross-wreath.png" assoc_cat="2" avail="true"/>
+	<clipart id="74" name="Cross-fish" file_name="cross-fish.png" assoc_cat="2" avail="true"/>
+	<clipart id="75" name="Crown Cross" file_name="crown-cross.png" assoc_cat="2" avail="true"/>
+	<clipart id="76" name="Jesus" file_name="jesus.png" assoc_cat="2" avail="true"/>
+	<clipart id="77" name="Praying Hands" file_name="praying-hands.png" assoc_cat="2" avail="true"/>
+	<clipart id="78" name="Star of David" file_name="star-of-david.png" assoc_cat="2" avail="true"/>
+	<clipart id="79" name="Star of David 2" file_name="star-of-david-2.png" assoc_cat="2" avail="true"/>
+	<clipart id="80" name="Virgin Mary" file_name="virgin-mary.png" assoc_cat="2" avail="true"/>
+	<clipart id="81" name="4H Club" file_name="4h-club.png" assoc_cat="3" avail="true"/>
+	<clipart id="82" name="Aces" file_name="aces.png" assoc_cat="3" avail="true"/>
+	<clipart id="83" name="Archery" file_name="archery.png" assoc_cat="3" avail="true"/>
+	<clipart id="84" name="Boating" file_name="boating.png" assoc_cat="3" avail="true"/>
+	<clipart id="85" name="Bow Arrow" file_name="bow-arrow.png" assoc_cat="3" avail="true"/>
+	<clipart id="86" name="Camping" file_name="camping.png" assoc_cat="3" avail="true"/>
+	<clipart id="87" name="Chess" file_name="chess.png" assoc_cat="3" avail="true"/>
+	<clipart id="88" name="Clarinet" file_name="clarinet.png" assoc_cat="3" avail="true"/>
+	<clipart id="89" name="Climbing" file_name="climbing.png" assoc_cat="3" avail="true"/>
+	<clipart id="90" name="Compass" file_name="compass.png" assoc_cat="3" avail="true"/>
+	<clipart id="91" name="Darts" file_name="darts.png" assoc_cat="3" avail="true"/>
+	<clipart id="92" name="Guitars" file_name="guitars.png" assoc_cat="3" avail="true"/>
+	<clipart id="93" name="Horseback riding" file_name="horseback-riding.png" assoc_cat="3" avail="true"/>
+	<clipart id="94" name="Lighthouse" file_name="lighthouse.png" assoc_cat="3" avail="true"/>
+	<clipart id="95" name="Pool" file_name="pool.png" assoc_cat="3" avail="true"/>
+	<clipart id="96" name="Pool 2" file_name="pool-2.png" assoc_cat="3" avail="true"/>
+	<clipart id="97" name="Scouting" file_name="scouting.png" assoc_cat="3" avail="true"/>
+	<clipart id="98" name="Barracudas" file_name="barracudas.png" assoc_cat="4" avail="true"/>
+	<clipart id="99" name="Bears" file_name="bears.png" assoc_cat="4" avail="true"/>
+	<clipart id="100" name="BlueJays" file_name="bluejays.png" assoc_cat="4" avail="true"/>
+	<clipart id="101" name="Bulldogs" file_name="bulldogs.png" assoc_cat="4" avail="true"/>
+	<clipart id="102" name="Bulls" file_name="bulls.png" assoc_cat="4" avail="true"/>
+	<clipart id="103" name="Cardinals" file_name="cardinals.png" assoc_cat="4" avail="true"/>
+	<clipart id="104" name="Chiefs" file_name="chiefs.png" assoc_cat="4" avail="false"/>
+	<clipart id="105" name="Cougars" file_name="cougars.png" assoc_cat="4" avail="true"/>
+	<clipart id="106" name="Cougars-2" file_name="cougars-2.png" assoc_cat="4" avail="false"/>
+	<clipart id="107" name="Dolphins" file_name="dolphins.png" assoc_cat="4" avail="true"/>
+	<clipart id="108" name="Dragons" file_name="dragons.png" assoc_cat="4" avail="true"/>
+	<clipart id="109" name="Eagles" file_name="eagles.png" assoc_cat="4" avail="true"/>
+	<clipart id="110" name="Elephants" file_name="elephants.png" assoc_cat="4" avail="true"/>
+	<clipart id="111" name="Falcons" file_name="falcons.png" assoc_cat="4" avail="true"/>
+	<clipart id="112" name="Griffins" file_name="griffins.png" assoc_cat="4" avail="true"/>
+	<clipart id="113" name="Hawks" file_name="hawks.png" assoc_cat="4" avail="true"/>
+	<clipart id="114" name="Hornets" file_name="hornets.png" assoc_cat="4" avail="true"/>
+	<clipart id="115" name="Huskies" file_name="huskies.png" assoc_cat="4" avail="true"/>
+	<clipart id="116" name="Lions" file_name="lions.png" assoc_cat="4" avail="true"/>
+	<clipart id="117" name="Mustangs" file_name="mustangs.png" assoc_cat="4" avail="true"/>
+	<clipart id="118" name="Native Americans" file_name="native-americans.png" assoc_cat="4" avail="true"/>
+	<clipart id="119" name="Owls" file_name="owls.png" assoc_cat="4" avail="true"/>
+	<clipart id="120" name="Panthers" file_name="panthers.png" assoc_cat="4" avail="true"/>
+	<clipart id="121" name="Patriot" file_name="patriot.png" assoc_cat="4" avail="true"/>
+	<clipart id="122" name="Patriots" file_name="patriots.png" assoc_cat="4" avail="true"/>
+	<clipart id="123" name="Pirate" file_name="pirate.png" assoc_cat="4" avail="true"/>
+	<clipart id="124" name="Rams" file_name="rams.png" assoc_cat="4" avail="true"/>
+	<clipart id="125" name="Tigers" file_name="tigers.png" assoc_cat="4" avail="true"/>
+	<clipart id="126" name="Tornado" file_name="tornado.png" assoc_cat="4" avail="true"/>
+	<clipart id="127" name="Trojans" file_name="trojans.png" assoc_cat="4" avail="true"/>
+	<clipart id="128" name="Twin Sharks" file_name="twin-sharks.png" assoc_cat="4" avail="true"/>
+	<clipart id="129" name="Vikings" file_name="vikings.png" assoc_cat="4" avail="true"/>
+	<clipart id="130" name="Warriors/Chiefs" file_name="warriors.png" assoc_cat="4" avail="true"/>
+	<clipart id="131" name="Wolves" file_name="wolves.png" assoc_cat="4" avail="true"/>
+	<clipart id="132" name="Baseball 1" file_name="baseball-1.png" assoc_cat="5" avail="true"/>
+	<clipart id="133" name="Baseball 2" file_name="baseball-2.png" assoc_cat="5" avail="true"/>
+	<clipart id="134" name="Baseball 3" file_name="baseball-3.png" assoc_cat="5" avail="true"/>
+	<clipart id="135" name="Basketball" file_name="basketball.png" assoc_cat="5" avail="false"/>
+	<clipart id="136" name="Bowling" file_name="bowling.png" assoc_cat="5" avail="true"/>
+	<clipart id="137" name="Cross-country running" file_name="cross-country-running.png" assoc_cat="5" avail="true"/>
+	<clipart id="138" name="Diving" file_name="diving.png" assoc_cat="5" avail="true"/>
+	<clipart id="139" name="Field Hockey" file_name="field-hockey.png" assoc_cat="5" avail="true"/>
+	<clipart id="140" name="Football 1" file_name="football-1.png" assoc_cat="5" avail="true"/>
+	<clipart id="141" name="Football 2" file_name="football-2.png" assoc_cat="5" avail="true"/>
+	<clipart id="142" name="Football 3" file_name="football-3.png" assoc_cat="5" avail="true"/>
+	<clipart id="143" name="Golf" file_name="golf.png" assoc_cat="5" avail="true"/>
+	<clipart id="144" name="Hockey" file_name="hockey.png" assoc_cat="5" avail="true"/>
+	<clipart id="145" name="Lacrosse" file_name="lacrosse.png" assoc_cat="5" avail="true"/>
+	<clipart id="146" name="Olympics" file_name="olympics.png" assoc_cat="5" avail="true"/>
+	<clipart id="147" name="Racing" file_name="racing.png" assoc_cat="5" avail="true"/>
+	<clipart id="148" name="Soccer" file_name="soccer.png" assoc_cat="5" avail="true"/>
+	<clipart id="149" name="Softball 1" file_name="softball-1.png" assoc_cat="5" avail="true"/>
+	<clipart id="150" name="Softball 2" file_name="softball-2.png" assoc_cat="5" avail="true"/>
+	<clipart id="151" name="Swimming" file_name="swimming.png" assoc_cat="5" avail="true"/>
+	<clipart id="152" name="Tennis" file_name="tennis.png" assoc_cat="5" avail="true"/>
+	<clipart id="153" name="Track" file_name="track.png" assoc_cat="5" avail="true"/>
+	<clipart id="154" name="Volleyball" file_name="volleyball.png" assoc_cat="5" avail="true"/>
+	<clipart id="155" name="Wrestling" file_name="wrestling.png" assoc_cat="5" avail="true"/>
+	<clipart id="156" name="Aquarius Sign" file_name="aquarius-sign.png" assoc_cat="6" avail="true"/>
+	<clipart id="157" name="Aries Sign" file_name="aries-sign.png" assoc_cat="6" avail="true"/>
+	<clipart id="158" name="Cancer Sign" file_name="cancer-sign.png" assoc_cat="6" avail="true"/>
+	<clipart id="159" name="Capricorn Sign" file_name="capricorn-sign.png" assoc_cat="6" avail="true"/>
+	<clipart id="160" name="Gemini Sign" file_name="gemini-sign.png" assoc_cat="6" avail="true"/>
+	<clipart id="161" name="Leo Sign" file_name="leo-sign.png" assoc_cat="6" avail="true"/>
+	<clipart id="162" name="Libra Sign" file_name="libra-sign.png" assoc_cat="6" avail="true"/>
+	<clipart id="163" name="Paw" file_name="paw.png" assoc_cat="6" avail="false"/>
+	<clipart id="164" name="Pisces Sign" file_name="pisces-sign.png" assoc_cat="6" avail="true"/>
+	<clipart id="165" name="Sagittarius Sign" file_name="sagittarius-sign.png" assoc_cat="6" avail="true"/>
+	<clipart id="166" name="Scorpio Sign" file_name="scorpio-sign.png" assoc_cat="6" avail="true"/>
+	<clipart id="167" name="Taurus Sign" file_name="taurus-sign.png" assoc_cat="6" avail="true"/>
+	<clipart id="168" name="Virgo Sign" file_name="virgo-sign.png" assoc_cat="6" avail="true"/>
+	<clipart id="169" name="Artpallete" file_name="artpallete.png" assoc_cat="7" avail="true"/>
+	<clipart id="170" name="Award" file_name="award.png" assoc_cat="7" avail="false"/>
+	<clipart id="171" name="Cat" file_name="cat.png" assoc_cat="7" avail="false"/>
+	<clipart id="172" name="Cross" file_name="cross.png" assoc_cat="7" avail="false"/>
+	<clipart id="173" name="Heart1" file_name="heart1.png" assoc_cat="7" avail="false"/>
+	<clipart id="174" name="Lightning" file_name="lightning.png" assoc_cat="7" avail="false"/>
+	<clipart id="175" name="Octopus" file_name="octopus.png" assoc_cat="7" avail="false"/>
+	<clipart id="176" name="Rose" file_name="rose.png" assoc_cat="7" avail="false"/>
+	<clipart id="177" name="Yinyang" file_name="yinyang.png" assoc_cat="7" avail="false"/>
+	<clipart id="178" name="Air Force Civil Engineer" file_name="air-force-civil-engineer.png" assoc_cat="8" avail="true"/>
+	<clipart id="179" name="Air Force Combat Control" file_name="air-force-combat-control.png" assoc_cat="8" avail="true"/>
+	<clipart id="180" name="Air Force Command and Control" file_name="air-force-command-and-control.png" assoc_cat="8" avail="true"/>
+	<clipart id="181" name="Air Force Commander" file_name="air-force-commander.png" assoc_cat="8" avail="true"/>
+	<clipart id="182" name="Air Force Communications" file_name="air-force-communications.png" assoc_cat="8" avail="true"/>
+	<clipart id="183" name="Air Force Emblem" file_name="air-force-emblem.png" assoc_cat="8" avail="true"/>
+	<clipart id="184" name="Air Force Fire protection" file_name="air-force-fire-protection.png" assoc_cat="8" avail="true"/>
+	<clipart id="185" name="Air Force Intelligence" file_name="air-force-intelligence.png" assoc_cat="8" avail="true"/>
+	<clipart id="186" name="Air Force Medical Core" file_name="air-force-medical-core.png" assoc_cat="8" avail="true"/>
+	<clipart id="187" name="Air Force Transportation Badge" file_name="air-force-transportation-badge.png" assoc_cat="8" avail="true"/>
+	<clipart id="188" name="Air Mobility Command" file_name="air-mobility-command.png" assoc_cat="8" avail="true"/>
+	<clipart id="189" name="Air Traffic Controller" file_name="air-traffic-controller.png" assoc_cat="8" avail="true"/>
+	<clipart id="190" name="Air Weapons Controller" file_name="air-weapons-controller.png" assoc_cat="8" avail="true"/>
+	<clipart id="191" name="Airborne Special Forces" file_name="airborne-special-forces.png" assoc_cat="8" avail="true"/>
+	<clipart id="192" name="Courage USA" file_name="courage-usa.png" assoc_cat="8" avail="true"/>
+	<clipart id="193" name="Defenders of the Force" file_name="defenders-of-the-force.png" assoc_cat="8" avail="true"/>
+	<clipart id="194" name="Explosive Ordnance Disposal" file_name="explosive-ordnance-disposal.png" assoc_cat="8" avail="true"/>
+	<clipart id="195" name="F-15 Pilot" file_name="f-15-pilot.png" assoc_cat="8" avail="true"/>
+	<clipart id="196" name="Air Force Law Enforcement" file_name="air-force-law-enforcement.png" assoc_cat="8" avail="true"/>
+	<clipart id="197" name="Logistics" file_name="logistics.png" assoc_cat="8" avail="true"/>
+	<clipart id="198" name="Maintenance" file_name="maintenance.png" assoc_cat="8" avail="true"/>
+	<clipart id="199" name="Meteorologist" file_name="meteorologist.png" assoc_cat="8" avail="true"/>
+	<clipart id="200" name="Missile Operator" file_name="missile-operator.png" assoc_cat="8" avail="true"/>
+	<clipart id="201" name="Services" file_name="services.png" assoc_cat="8" avail="true"/>
+	<clipart id="202" name="Space Missile" file_name="space-missile.png" assoc_cat="8" avail="true"/>
+	<clipart id="203" name="USAF Navigator" file_name="usaf-navigator.png" assoc_cat="8" avail="true"/>
+	<clipart id="204" name="USAF Pilot" file_name="usaf-pilot.png" assoc_cat="8" avail="true"/>
+	<clipart id="205" name="USAF Supply Fuels" file_name="usaf-supply-fuels.png" assoc_cat="8" avail="true"/>
+	<clipart id="206" name="1st Armor Division" file_name="1st-armor-division.png" assoc_cat="9" avail="true"/>
+	<clipart id="207" name="1st Cavalry Division" file_name="1st-cavalry-division.png" assoc_cat="9" avail="true"/>
+	<clipart id="208" name="1st Infantry Division" file_name="1st-infantry-division.png" assoc_cat="9" avail="true"/>
+	<clipart id="209" name="2nd Armor Division" file_name="2nd-armor-division.png" assoc_cat="9" avail="true"/>
+	<clipart id="210" name="2nd Armored Cavalry Regiment" file_name="2nd-armored-cavalry-regiment.png" assoc_cat="9" avail="true"/>
+	<clipart id="211" name="2nd Infantry Division Regiment" file_name="2nd-infantry-division-regiment.png" assoc_cat="9" avail="true"/>
+	<clipart id="212" name="3rd Armored Cavalry Regiment" file_name="3rd-armored-cavalry-regiment.png" assoc_cat="9" avail="true"/>
+	<clipart id="213" name="3rd Infantry Division" file_name="3rd-infantry-division.png" assoc_cat="9" avail="true"/>
+	<clipart id="214" name="4th Infantry Division" file_name="4th-infantry-division.png" assoc_cat="9" avail="true"/>
+	<clipart id="215" name="5th Infantry Division" file_name="5th-infantry-division.png" assoc_cat="9" avail="true"/>
+	<clipart id="216" name="6th Infantry Division" file_name="6th-infantry-division.png" assoc_cat="9" avail="true"/>
+	<clipart id="217" name="7th Infantry Division" file_name="7th-infantry-division.png" assoc_cat="9" avail="true"/>
+	<clipart id="218" name="10th Mountain Division" file_name="10th-mountain-division.png" assoc_cat="9" avail="true"/>
+	<clipart id="219" name="11th Armored Cavalry Regiment" file_name="11th-armored-cavalry-regiment.png" assoc_cat="9" avail="true"/>
+	<clipart id="220" name="24th Infantry Division" file_name="24th-infantry-division.png" assoc_cat="9" avail="true"/>
+	<clipart id="221" name="25th Infantry Division" file_name="25th-infantry-division.png" assoc_cat="9" avail="true"/>
+	<clipart id="222" name="29th Infantry Division" file_name="29th-infantry-division.png" assoc_cat="9" avail="true"/>
+	<clipart id="223" name="82nd Airborne Division" file_name="82nd-airborne-division.png" assoc_cat="9" avail="true"/>
+	<clipart id="224" name="84th Infantry Division" file_name="84th-infantry-division.png" assoc_cat="9" avail="true"/>
+	<clipart id="225" name="101st Airborne Division" file_name="101st-airborne-division.png" assoc_cat="9" avail="true"/>
+	<clipart id="226" name="Army Armor" file_name="army-armor.png" assoc_cat="9" avail="true"/>
+	<clipart id="227" name="Army Artillery" file_name="army-artillery.png" assoc_cat="9" avail="true"/>
+	<clipart id="228" name="Army Cavalry" file_name="army-cavalry.png" assoc_cat="9" avail="true"/>
+	<clipart id="229" name="Army Infantry" file_name="army-infantry.png" assoc_cat="9" avail="true"/>
+	<clipart id="230" name="Drill Sergeant" file_name="drill-sergeant.png" assoc_cat="9" avail="true"/>
+	<clipart id="231" name="First Sergeant" file_name="first-sergeant.png" assoc_cat="9" avail="true"/>
+	<clipart id="232" name="Psychological Operations" file_name="psychological-operations.png" assoc_cat="9" avail="true"/>
+	<clipart id="233" name="Public Affairs" file_name="public-affairs.png" assoc_cat="9" avail="true"/>
+	<clipart id="234" name="Quartermaster Corps" file_name="quartermaster-corps.png" assoc_cat="9" avail="true"/>
+	<clipart id="235" name="Scale of Justice" file_name="scale-of-justice.png" assoc_cat="9" avail="true"/>
+	<clipart id="236" name="Screaming Eagle" file_name="screaming-eagle.png" assoc_cat="9" avail="true"/>
+	<clipart id="237" name="Signal Corps" file_name="signal-corps.png" assoc_cat="9" avail="true"/>
+	<clipart id="238" name="Special Forces" file_name="special-forces.png" assoc_cat="9" avail="true"/>
+	<clipart id="239" name="Transportation Corps" file_name="transportation-corps.png" assoc_cat="9" avail="true"/>
+	<clipart id="240" name="US Army Patch" file_name="us-army-patch.png" assoc_cat="9" avail="true"/>
+	<clipart id="241" name="Aces 3" file_name="aces-3.png" assoc_cat="10" avail="true"/>
+	<clipart id="242" name="American Patriotism 3" file_name="american-patriotism-3.png" assoc_cat="10" avail="true"/>
+	<clipart id="243" name="Bulldog 2" file_name="bulldog-2.png" assoc_cat="10" avail="true"/>
+	<clipart id="244" name="Coxswain" file_name="coxswain.png" assoc_cat="10" avail="true"/>
+	<clipart id="245" name="CPO Badge" file_name="cpo-badge.png" assoc_cat="10" avail="true"/>
+	<clipart id="246" name="Cross 2" file_name="cross-2.png" assoc_cat="10" avail="true"/>
+	<clipart id="247" name="Eagle and Shield" file_name="eagle-and-shield.png" assoc_cat="10" avail="true"/>
+	<clipart id="248" name="Eagle Flag and Book 2" file_name="eagle-flag-and-book-2.png" assoc_cat="10" avail="true"/>
+	<clipart id="249" name="Master CPO Badge" file_name="master-cpo-badge.png" assoc_cat="10" avail="true"/>
+	<clipart id="250" name="Officer Incharge Afloat" file_name="officer-in-charge-afloat.png" assoc_cat="10" avail="true"/>
+	<clipart id="251" name="Officer Incharge Ashore" file_name="officer-in-charge-ashore.png" assoc_cat="10" avail="true"/>
+	<clipart id="252" name="Parachute 2" file_name="parachute-2.png" assoc_cat="10" avail="true"/>
+	<clipart id="253" name="Senior CPO Badge" file_name="senior-cpo-badge.png" assoc_cat="10" avail="true"/>
+	<clipart id="254" name="Star of David 3" file_name="star-of-david-3.png" assoc_cat="10" avail="true"/>
+	<clipart id="255" name="USCG Enlisted Badge" file_name="uscg-enlisted-badge.png" assoc_cat="10" avail="true"/>
+	<clipart id="256" name="USCG Officer Badge" file_name="uscg-officer-badge.png" assoc_cat="10" avail="true"/>
+	<clipart id="257" name="Cutterman Insignia" file_name="cutterman-insignia.png" assoc_cat="11" avail="true"/>
+	<clipart id="258" name="1st Marine Division" file_name="1st-marine-division.png" assoc_cat="11" avail="true"/>
+	<clipart id="259" name="2nd Marine Division" file_name="2nd-marine-division.png" assoc_cat="11" avail="true"/>
+	<clipart id="260" name="3rd Marine Division" file_name="3rd-marine-division.png" assoc_cat="11" avail="true"/>
+	<clipart id="261" name="Abrams Tank" file_name="abrams-tank.png" assoc_cat="11" avail="true"/>
+	<clipart id="262" name="Aces 2" file_name="aces-2.png" assoc_cat="11" avail="true"/>
+	<clipart id="263" name="American Patriotism 2" file_name="american-patriotism-2.png" assoc_cat="11" avail="true"/>
+	<clipart id="264" name="Bulldog" file_name="bulldog.png" assoc_cat="11" avail="true"/>
+	<clipart id="265" name="CH-53e Marines" file_name="ch-53e-marines.png" assoc_cat="11" avail="true"/>
+	<clipart id="266" name="Cross 3" file_name="cross-3.png" assoc_cat="11" avail="true"/>
+	<clipart id="267" name="Drill Instructor" file_name="drill-instructor.png" assoc_cat="11" avail="true"/>
+	<clipart id="268" name="Eagle and Shield 2" file_name="eagle-and-shield-2.png" assoc_cat="11" avail="true"/>
+	<clipart id="269" name="Eagle Flag and Book" file_name="eagle-flag-and-book.png" assoc_cat="11" avail="true"/>
+	<clipart id="270" name="Harrier Jet" file_name="harrier-jet.png" assoc_cat="11" avail="true"/>
+	<clipart id="271" name="Helicopter" file_name="helicopter.png" assoc_cat="11" avail="true"/>
+	<clipart id="272" name="Parachute" file_name="parachute.png" assoc_cat="11" avail="true"/>
+	<clipart id="273" name="POW MIA 2" file_name="pow-mia-2.png" assoc_cat="11" avail="true"/>
+	<clipart id="274" name="Rifle Expert" file_name="rifle-expert.png" assoc_cat="11" avail="true"/>
+	<clipart id="275" name="Scale of Justice 3" file_name="scale-of-justice-3.png" assoc_cat="11" avail="true"/>
+	<clipart id="276" name="Star-of-David 4" file_name="star-of-david-4.png" assoc_cat="11" avail="true"/>
+	<clipart id="277" name="Super Cobra" file_name="super-cobra.png" assoc_cat="11" avail="true"/>
+	<clipart id="278" name="US Marine Corps Emblem" file_name="us-marine-corps-emblem.png" assoc_cat="11" avail="true"/>
+	<clipart id="279" name="Aces" file_name="aces.png" assoc_cat="12" avail="true"/>
+	<clipart id="280" name="Air Warfare Enlisted" file_name="air-warfare-enlisted.png" assoc_cat="12" avail="true"/>
+	<clipart id="281" name="American Patriotism" file_name="american-patriotism.png" assoc_cat="12" avail="true"/>
+	<clipart id="282" name="Blue Angels" file_name="blue-angels.png" assoc_cat="12" avail="true"/>
+	<clipart id="283" name="Chief Petty Officer" file_name="chief-petty-officer.png" assoc_cat="12" avail="true"/>
+	<clipart id="284" name="Dept Of Navy Seal" file_name="dept-of-navy-seal.png" assoc_cat="12" avail="true"/>
+	<clipart id="285" name="Eagle and Shield 3" file_name="eagle-and-shield-3.png" assoc_cat="12" avail="true"/>
+	<clipart id="286" name="F-14" file_name="f-14.png" assoc_cat="12" avail="true"/>
+	<clipart id="287" name="F-18" file_name="f-18.png" assoc_cat="12" avail="true"/>
+	<clipart id="288" name="Fleet Marine Force" file_name="fleet-marine-force.png" assoc_cat="12" avail="true"/>
+	<clipart id="289" name="Naval Flight Officer" file_name="naval-flight-officer.png" assoc_cat="12" avail="true"/>
+	<clipart id="290" name="Naval Officer Insignia" file_name="naval-officer-insignia.png" assoc_cat="12" avail="true"/>
+	<clipart id="291" name="Navy Air Crew" file_name="navy-air-crew.png" assoc_cat="12" avail="true"/>
+	<clipart id="292" name="Navy Cross" file_name="navy-cross.png" assoc_cat="12" avail="true"/>
+	<clipart id="293" name="Navy Seal" file_name="navy-seal.png" assoc_cat="12" avail="true"/>
+	<clipart id="294" name="POW MIA" file_name="pow-mia.png" assoc_cat="12" avail="true"/>
+	<clipart id="295" name="Scale of Justice 2" file_name="scale-of-justice-2.png" assoc_cat="12" avail="true"/>
+	<clipart id="296" name="Seabee Combat Warfare Officer" file_name="seabee-combat-warfare-officer.png" assoc_cat="12" avail="true"/>
+	<clipart id="297" name="Seabees" file_name="seabees.png" assoc_cat="12" avail="true"/>
+	<clipart id="298" name="Special Operations" file_name="special-operations.png" assoc_cat="12" avail="true"/>
+	<clipart id="299" name="Baseball 4" file_name="baseball-4.png" assoc_cat="13" avail="true"/>
+	<clipart id="300" name="Basketball 2" file_name="basketball-2.png" assoc_cat="13" avail="true"/>
+	<clipart id="301" name="Bowling 2" file_name="bowling-2.png" assoc_cat="13" avail="true"/>
+	<clipart id="302" name="Football" file_name="football.png" assoc_cat="13" avail="true"/>
+	<clipart id="303" name="Golf 2" file_name="golf-2.png" assoc_cat="13" avail="true"/>
+	<clipart id="304" name="Soccer 2" file_name="soccer-2.png" assoc_cat="13" avail="true"/>
+	<clipart id="305" name="Swimming 2" file_name="swimming-2.png" assoc_cat="13" avail="true"/>
+	<clipart id="306" name="Tennis 2" file_name="tennis-2.png" assoc_cat="13" avail="true"/>
+	<clipart id="307" name="Track 2" file_name="track-2.png" assoc_cat="13" avail="true"/>
+	<clipart id="308" name="Volleyball 2" file_name="volleyball-2.png" assoc_cat="13" avail="true"/>
+</cliparts>

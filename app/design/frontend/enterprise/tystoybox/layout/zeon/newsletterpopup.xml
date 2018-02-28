@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @category    design
+ * @package     enterprise_toybox
+ */
+
+-->
+<layout version="0.1.0">
+<!--
+Default layout, loads most of the pages
+-->
+    <default>
+        <!-- Newsletter cookie popup -->
+        <reference name="before_body_end">
+            <block type="core/template" name="newsletterpopup" as="newsletterpopup" template="zeon/newsletterpopup/newsletter-popup.phtml" />
+        </reference>
+        <!-- Newsletter subscription on left bar -->
+        <reference name="left">
+            <block type="core/template" name="newsletterleft" template="zeon/newsletterpopup/newsletter-left.phtml" />
+        </reference>
+    </default>
+
+</layout>

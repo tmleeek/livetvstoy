@@ -1,0 +1,97 @@
+<?php
+/**
+ * @category    Mana
+ * @package     ManaPro_FilterAdvanced
+ * @copyright   Copyright (c) http://www.manadev.com
+ * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+/**
+ * Category layered navigation
+ * @author Mana Team
+ * Injected instead of standard catalog/layer/view.phtml.
+ */
+/* @var $this Mana_Filters_Block_View */
+?>
+<?php
+/**
+ * Category layered navigation
+ *
+ * @see Mage_Catalog_Block_Layer_View
+ */
+
+/* @var $core Mana_Core_Helper_Data */
+$core = Mage::helper('mana_core');
+
+/* @var $filterHelper Mana_Filters_Helper_Data */
+$filterHelper = Mage::helper('mana_filters');
+
+?>
+<?php
+$_productListMode = 0;
+$controllerName = strtolower(Mage::app()->getFrontController()->getRequest()->getControllerName());
+$actionName = strtolower(Mage::app()->getFrontController()->getRequest()->getActionName());
+if (($controllerName=='category') && ($actionName=='view')) {
+    $isContentMode = $this->getLayout()->createBlock('catalog/category_view')->isContentMode();
+    $isMixedMode = $this->getLayout()->createBlock('catalog/category_view')->isContentMode();
+    $_productListMode = ($isContentMode || $isMixedMode);
+}
+?>
+<?php
+if (($controllerName=='category') && ($actionName=='view') && ($_productListMode)) { ?>
+    <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('tystoybox_categories')->toHtml(); ?>
+<?php
+} else { ?>
+    <?php if($this->canShowBlock()): ?>
+    <div class="block block-layered-nav">
+       <div class="block-title">
+            <strong><span><?php echo $this->__('Narrow By:') ?></span></strong>
+        </div>
+        <div class="block-content">
+            <?php echo $this->getStateHtml() ?>
+
+            <?php if($this->canShowOptions()): ?>
+                <?php $_filterGroups = Mage::helper('mana_filters')->renderHtml($this, 'groups'); ?>
+                <?php foreach ($_filterGroups as $_filterGroup): ob_start(); ?>
+                    <?php $_filters = $_filterGroup->getFilters(); ?>
+                    <?php foreach ($_filters as $_filter): ?>
+                    <?php if($_filter->getItemsCount()): ?>
+                        <dt class="<?php $filterHelper->renderHtml($this, 'name_css', array('filter' => $_filter)); ?>"
+                            <?php $filterHelper->renderHtml($this, 'name_attributes', array('filter' => $_filter)); ?>
+                        >
+                            <?php $filterHelper->renderHtml($this, 'name_before', array('filter' => $_filter)); ?>
+                            <?php echo $this->__($_filter->getName()) ?>
+                            <?php $filterHelper->renderHtml($this, 'name_after', array('filter' => $_filter)); ?>
+                        </dt>
+                        <dd class="<?php $filterHelper->renderHtml($this, 'value_css', array('filter' => $_filter)); ?>">
+                            <?php echo $_filter->getHtml() ?>
+                        </dd>
+                    <?php endif; ?>
+                    <?php endforeach; ?>
+                    <?php if($_filterGroupHtml = trim(ob_get_clean())) : ?>
+                        <?php $_filterGroupName = $_filterGroup->getName() ? $this->__($_filterGroup->getName()) : $this->__('Shopping Options'); ?>
+
+                        <div class="block-subtitle m-filter-group <?php $filterHelper->renderHtml($this, 'group_css', array('group' => $_filterGroup)); ?>"
+                            <?php $filterHelper->renderHtml($this, 'group_attributes', array('group' => $_filterGroup)); ?>
+                        >
+                            <?php $filterHelper->renderHtml($this, 'group_before', array('group' => $_filterGroup)); ?>
+                            <?php echo $_filterGroupName ?>
+                            <?php $filterHelper->renderHtml($this, 'group_after', array('group' => $_filterGroup)); ?>
+                        </div>
+
+                        <dl class="narrow-by-list" id="narrow-by-list-<?php echo $_filterGroup->getId() ?>">
+                            <?php echo $_filterGroupHtml ?>
+                        </dl>
+                        <script type="text/javascript">decorateDataList('narrow-by-list-<?php echo $_filterGroup->getId() ?>')</script>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            <?php endif; ?>
+        </div>
+    </div>
+    <?php endif; ?>
+<?php
+} ?>
+<script>
+jQuery(document).ready(function () {
+    jQuery('.product-count-layered').hide();
+});
+</script>

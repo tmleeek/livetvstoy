@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Zeon_Paypal>
+            <version>1.0.1</version>
+        </Zeon_Paypal>
+    </modules>
+    <global>
+        <blocks>
+          <paypal>
+            <rewrite>
+              <express_form>Zeon_Paypal_Block_Express_Form</express_form>
+            </rewrite>
+          </paypal>
+        </blocks>
+    </global>
+</config>

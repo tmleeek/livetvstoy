@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Zeon_Customer>
+            <version>1.0.1</version>
+        </Zeon_Customer>
+    </modules>
+    <global>
+        <blocks>
+          <customer>
+            <rewrite>
+              <account_navigation>Zeon_Customer_Block_Account_Navigation</account_navigation>
+            </rewrite>
+          </customer>
+        </blocks>
+    </global>
+
+    <frontend>
+        <routers>
+            <customer>
+                <args>
+                    <modules>
+                        <zeon_customer before="Mage_Customer">Zeon_Customer</zeon_customer>
+                    </modules>
+                </args>
+            </customer>
+        </routers>
+    </frontend>
+</config>

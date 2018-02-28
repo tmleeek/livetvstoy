@@ -1,0 +1,62 @@
+<?php
+/**
+ * Magento Enterprise Edition
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magento Enterprise Edition License
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.magentocommerce.com/license/enterprise-edition
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2013 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://www.magentocommerce.com/license/enterprise-edition
+ */
+?>
+<?php
+/**
+ * @see Mage_Catalog_Block_Seo_Sitemap_
+ */
+?>
+<?php $_items = $this->getCollection(); ?>
+<?php $iterator1 = 0; ?>
+<?php $iterator2 = 1; ?>
+<?php if ($_items->getSize()): ?>
+    <?php //Get inactive categories
+    $falseCat = Mage::helper('zeon_catalogmanager')->getInActiveCategories();
+    ?>
+    <div class="sitemap-main">
+        <div class="sitemap-container">
+            <ul class="sitemap  col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                <?php $i = 0;
+                foreach ($_items as $_item): ?>
+                <?php if (in_array($_item->getId(), $falseCat)) { continue; } ?>
+                <?php if ($this->getLevel($_item) == 0 && $i): ?>
+                    </ul>
+                        <?php if ($iterator1 % 3 == 0): ?></div><div class="sitemap-container"><?php endif; ?>
+                    <ul class="sitemap  col-lg-3 col-md-3 col-sm-3 col-xs-12 <?php if ($iterator2 % 3 == 0): ?> last<?php endif; ?>">
+                    <?php endif; ?>
+                    <li class="level-<?php echo $this->getLevel($_item) ?>" <?php echo $this->getLevel($_item) ? 'style="padding-left:' . $this->getLevel($_item, 2) . '0px;"' : '' ?>><a href="<?php echo $this->getItemUrl($_item) ?>"><?php echo $_item->name ?></a></li>
+                    <?php if ($this->getLevel($_item) == 0): ?>
+                        <?php $iterator1++;
+                        $iterator2++; ?>
+        <?php endif; ?>
+        <?php $i++;
+    endforeach; ?>
+            </ul>
+        </div>
+    </div>
+<?php else: ?>
+    <p class="note-msg"> <?php echo $this->__('There are no %s available.', $this->getItemsTitle()); ?> </p>
+<?php endif ?>

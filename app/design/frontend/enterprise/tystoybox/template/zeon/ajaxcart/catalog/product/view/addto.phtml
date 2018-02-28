@@ -1,0 +1,47 @@
+<?php
+/**
+ * zeonsolutions inc.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://shop.zeonsolutions.com/license-enterprise.txt
+ *
+ * =================================================================
+ *                 MAGENTO EDITION USAGE NOTICE
+ * This package designed for Magento ENTERPRISE edition
+ * =================================================================
+ * zeonsolutions does not guarantee correct work of this extension
+ * on any other Magento edition except Magento ENTERPRISE edition.
+ * zeonsolutions does not provide extension support in case of
+ * incorrect edition usage.
+ * =================================================================
+ *
+ * @category   design
+ * @package    enterprise_default
+ * @version    0.0.1
+ * @copyright  @copyright Copyright (c) 2013 zeonsolutions.Inc. (http://www.zeonsolutions.com)
+ * @license    http://shop.zeonsolutions.com/license-enterprise.txt
+ */
+?>
+
+<?php $_product = $this->getProduct(); ?>
+<?php $productType = $_product->getTypeID(); ?>
+<?php $_wishlistSubmitUrl = $this->helper('wishlist')->getAddUrl($_product); ?>
+<?php
+if ($productType != 'bundle') { ?>
+    <ul class="add-to-links">
+        <?php if ($this->helper('wishlist')->isAllow()) : ?>
+            <li><a href="javascript:void(0);" onclick="<?php echo Mage::getStoreConfigFlag('zeon_ajaxcart/frontend/whishlist_enabled') ? "ajaxCart.addUpdate('ajaxcart/wishlist/add')" : "productAddToCartForm.submitLight(this, '$_wishlistSubmitUrl')"; ?>; return false;" class="link-wishlist"><?php echo $this->__('Add to Wishlist') ?></a></li>
+        <?php endif; ?>
+        <?php
+        $_compareUrl = $this->helper('catalog/product_compare')->getAddUrl($_product);
+        ?>
+        <?php if ($_compareUrl) : ?>
+            <li><span class="separator">|</span> <a href="javascript:void(0);" onclick="ajaxCart.addByUrl('<?php echo $_compareUrl ?>', <?php echo Mage::getStoreConfigFlag('zeon_ajaxcart/frontend/compare_enabled') ? 'true' : 'false'; ?>); return false;" class="link-compare"><?php echo $this->__('Add to Compare') ?></a></li>
+        <?php endif; ?>
+    </ul>
+<?php
+} ?>

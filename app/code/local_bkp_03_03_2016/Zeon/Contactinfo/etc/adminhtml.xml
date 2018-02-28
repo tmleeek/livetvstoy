@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<config>
+    <menu>
+        <zextension>
+            <children>
+                <contactinfo translate="title">
+                    <title>Manage Contact Us Info</title>
+                    <sort_order>10</sort_order>
+                    <children>
+                        <contact_setting translate="title">
+                            <title>Contactinfo Settings</title>
+                            <action>adminhtml/system_config/edit/section/contactinfo</action>
+                            <sort_order>2</sort_order>
+                        </contact_setting>
+                    </children>
+                </contactinfo>
+            </children>
+        </zextension>
+    </menu>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <zextension>
+                        <children>
+                            <contactinfo translate="title">
+                                <title>Manage Contact Us</title>
+                                <sort_order>2</sort_order>
+                                <children>
+                                    <contact_setting>
+                                        <title>Contact Us Settings</title>
+                                        <sort_order>2</sort_order>
+                                    </contact_setting>
+                                </children>
+                            </contactinfo>
+                        </children>
+                    </zextension>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <contactinfo translate="title">
+                                        <title>Contact Us settings</title>
+                                        <sort_order>50</sort_order>
+                                    </contactinfo>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>

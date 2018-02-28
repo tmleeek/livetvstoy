@@ -1,0 +1,7 @@
+<?php
+
+header('Content-type: text/xml; charset=windows-1252');
+$c = curl_init("http://www.walmart.com/footer?mobileResponsive=true");
+curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+echo $result = curl_Exec($c);
+?>

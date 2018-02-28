@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Zeon_Paypalbn>
+            <class>Zeon_Paypalbn_Model</class>
+            <version>0.1.0</version>
+        </Zeon_Paypalbn>
+    </modules>
+    <global>
+        <models>
+            <paypal>
+                <rewrite>
+                    <config>Zeon_Paypalbn_Model_Config</config>
+                </rewrite>
+            </paypal>
+        </models>
+    </global>
+</config>

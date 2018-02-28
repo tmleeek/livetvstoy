@@ -1,0 +1,1410 @@
+#!/usr/bin/env ruby
+# coding: utf-8
+
+require 'rexml/document'
+require 'socket'
+require 'optparse'
+require 'pathname'
+require 'resolv'
+
+$options = Hash.new
+$saved = Hash.new
+
+$options[:roots] = []
+OptionParser.new do |opt|
+  opt.on('-v', '--verbose', 'Show all output of commands') { |o| $options[:verbose] = o}
+  opt.on('-q', '--quiet', "Don't show output of unimportant stuff") { |o| $options[:quiet] = o}
+  opt.on('-x', '--findroots', "Find Mangento root directories that aren't at the webserver root") { |o| $options[:findroots] = o}
+  opt.on('-r', '--root dir', "Magento Root") { |o| $options[:roots].push o}
+end.parse!
+
+Effects = {
+  :off => 0,
+  :bright => 1,
+  :underline => 4,
+  :blink => 5,
+  :invert => 7,
+  :hide => 8,
+  :blackfg => 30,
+  :redfg => 31,
+  :greenfg => 32,
+  :yellowfg => 33,
+  :bluefg => 34,
+  :magentafg => 35,
+  :cyanfg => 36,
+  :whitefg => 37,
+  :defaultfg => 39,
+  :blackbg => 40,
+  :redbg => 41,
+  :greenbg => 42,
+  :yellowbg => 43,
+  :bluebg => 44,
+  :magentabg => 45,
+  :cyanbg => 46,
+  :whitebg => 47,
+  :defaultbg => 49,
+}
+
+def cleareol
+  return "[47;30m[0K"
+end
+
+def colorize(key)
+  effect = Effects[key]
+  return "[#{effect}m"
+end
+
+class Scannable
+  attr_accessor :heading
+  
+  @@matches = Hash.new { |hash, key| hash[key] = Hash.new }
+
+  class << self
+    def matches
+      @@matches[self]
+    end
+    
+    def matches= (newmatches)
+      newmatches.each do |key, value|
+        @@matches[self][key] = value
+      end
+    end
+  end
+  
+  def initialize(*args)
+  end
+  
+  def descriptor
+    self.class.superclass
+  end
+  
+  def header
+    puts
+    puts "#{colorize(:underline)}#{self.descriptor}: #{colorize(:bright)}#{label}#{colorize(:off)}"
+  end
+
+  def printheader
+    if $options[:quiet]
+      @printedheader = false
+    else
+      header
+      @printedheader = true
+    end
+  end
+
+  def printline(line)
+    unless @printedheader
+      header
+      @printedheader = true
+    end
+    if self.heading
+      puts self.heading
+      self.heading = nil
+    end
+    puts line
+  end
+  
+  def okay(data, test, value)
+    data = cleanup(data)
+    if test == :save
+      $saved[value] = data
+      return :note
+    elsif test == :count
+      if $saved[value]
+        $saved[value] += 1
+      else
+        $saved[value] = 1
+      end
+    elsif test == :collect
+      unless $saved[value]
+        $saved[value] = []
+      end
+      $saved[value].push data
+    else
+      if value.class == Symbol
+        value = Integer $saved[value]
+      end
+      if test == "="
+        return data == value
+      elsif test == ">"
+        return data > value
+      elsif test == "<"
+        return data < value
+      elsif test == ">="
+        return data >= value
+      elsif test == "<="
+        return data <= value
+      elsif test == "eq"
+        return data == value
+      elsif test == "ne"
+        return data != value
+      elsif test == :okay
+        return true
+      elsif test == :alsocheck
+        alsoscan [value, data]
+        return :note
+      else
+        return false
+      end
+    end
+  end
+
+  def cleanup(value)
+    if %r(^\d+\.\d+$) =~ value
+      value = Float value
+    elsif %r(^\d+$) =~ value
+      value = Integer value
+    end
+    return(value)
+  end
+  
+  def scanline(line)
+    match = false
+    showline = false
+    self.class.matches.each do |key, tests|
+      if key.is_a? Array
+        (field, value, key) = key
+        unless ($saved[field] == value)
+          key = nil
+        end
+      end
+      if key and (matchdata = (key.match line))
+        match = true
+        if tests.is_a? Array
+          (1..tests.length).to_a.reverse.each do |i|
+            testpairs = tests[i-1].dup
+            endinsert = nil
+            state = nil
+            note = nil
+            testpairs.each do |test, value|
+              if test == :note
+                  note = value
+              else
+                setstate = okay(matchdata[i], test, value)
+                if setstate == :note
+                  unless state
+                    endinsert = colorize(:off) + colorize(:bright)
+                    state = :note
+                  end
+                elsif setstate
+                  unless state == :bad
+                    endinsert = colorize(:off) + colorize(:bright)
+                    state ||= :good
+                  end
+                else
+                  if test == :flag
+                    if value
+                      endinsert = colorize(:off) + colorize(:invert) + " #{value} " + colorize(:off) + colorize(:bright)
+                    else
+                      endinsert = colorize(:off) + colorize(:bright)
+                    end
+                  else
+                    if value.is_a? Symbol
+                      endinsert = colorize(:off) + colorize(:invert) + " (should be #{test} #{$saved[value]} (#{value})) " + colorize(:off) + colorize(:bright)
+                    else
+                      endinsert = colorize(:off) + colorize(:invert) + " (should be #{test} #{value}) " + colorize(:off) + colorize(:bright)
+                    end
+                  end
+                  state = :bad
+                end
+              end
+            end
+            if state == :bad
+              begininsert = colorize(:redbg)
+              showline = true
+              if note and not $notes.member?(note)
+                $notes.push note
+              end
+            elsif state == :good
+              begininsert = colorize(:greenfg)
+              showline = false
+            else
+              begininsert = colorize(:yellowfg)
+            end
+            line.insert(matchdata.end(i), endinsert)
+            line.insert(matchdata.begin(i), begininsert)
+          end
+          line = (colorize(:bright) + line + colorize(:off))
+        elsif tests == :heading
+          unless $options[:verbose]
+            self.heading = line
+            showline = false
+            match = false
+          end
+        end
+      end
+    end
+    if (match or $options[:verbose])
+      unless $options[:quiet] and not showline
+        return line
+      end
+    end
+  end
+
+  def scan
+    $notes = []
+    printheader
+    openstream do |s|
+      while (line = s.gets)
+        if (line = scanline line.chop)
+          printline line
+        end
+      end
+    end
+    if self.class.matches == {}
+      printline colorize(:invert) + 'No match rules defined yet' + cleareol + colorize(:off)
+    end
+    $notes.each do |note|
+      puts cleareol + note
+    end
+    print colorize(:off) + "[0K"
+  end
+end
+
+class ShellCommand < Scannable
+  attr_reader :command
+  
+  @@cmd = Hash.new
+
+  class << self
+    def cmd
+      @@cmd[self]
+    end
+
+    def cmd= (cmd)
+      @@cmd[self] = cmd
+    end
+  end
+
+  def cmd
+    @@cmd[self.class]
+  end
+  
+  def label
+    cmd
+  end
+  
+  def openstream
+    open "|#{cmd} 2>&1" do |s|
+      yield s
+    end
+  end
+end
+
+class Cache < ShellCommand
+  attr_reader :ipaddress
+  attr_reader :port
+  
+  def initialize(ipaddress, port)
+    @ipaddress = ipaddress
+    @port = port
+  end
+
+  def quitcmd
+    "quit"
+  end
+
+  def label
+    if %r(^[\d\.]+$) =~ ipaddress
+      "#{self.class} at #{ipaddress}:#{port}"
+    else
+      "#{self.class} at #{ipaddress}"
+    end
+  end
+
+  def opentcporunixsocket(ipaddress, port)
+    if %r(^[\d\.]+$) =~ ipaddress
+      return TCPSocket.open(ipaddress, port)
+    else
+      return UNIXSocket.open(ipaddress)
+    end
+  end
+  
+  def openstream
+    begin
+      opentcporunixsocket(ipaddress, port) do |s|
+        s.puts cmd + "\r"
+        s.puts quitcmd + "\r"
+        yield s
+      end
+    rescue Exception => e
+      printline colorize(:redbg) + e.message + colorize(:off)
+    end
+  end
+end
+
+class Memcached < Cache
+  self.cmd = "stats"
+  self.matches = {
+    %r(STAT evictions (\d+)) => [{"=" => 0}],
+  }
+end
+
+class Redis < Cache
+  self.cmd = 'info'
+  self.matches = {
+    %r(redis_version:(\s+))     => [{:save => :redis_version}],
+    %r(evicted_keys:(\d+))      => [{"="   => 0}],
+    %r(connected_clients:(\d+)) => [{">"   => 0}],
+  }
+  
+  def initialize(*args)
+    super
+    if $saved[:network_addrs].include? ipaddress
+      puts colorize(:invert) + "Redis is on local host. Up to 50% performance boost if switched to Unix sockets." + colorize(:off)
+    end
+    Sysctl.matches = {
+      %r(vm.overcommit_memory = (\d+)) => [{"="   => 1,
+                                            :note => "Without overcommit_memory set, redis background save may fail under low memory conditions."}],
+    }
+  end
+end
+
+class Sysctl < ShellCommand
+  self.cmd = 'sysctl -a'
+  self.matches = {
+    %r(net.ipv4.tcp_tw_recycle = (\d+))  => [{"="   => 1,
+                                              :note => "tcp_tw_recycle = 1 will minimze excess processes in TIME_WAIT or SYN_RECV."}],
+    %r(net.ipv4.tcp_tw_reuse = (\d+))    => [{"="   => 1,
+                                              :note => "tcp_tw_reuse = 1 will minimze excess processes in TIME_WAIT or SYN_RECV."}],
+    %r(net.ipv4.tcp_fin_timeout = (\d+)) => [{"<="  => 10,
+                                              :note => "a low tcp_fin_timeout will minimze excess processes in TIME_WAIT or SYN_RECV."}],
+  }
+end
+
+class Netstat < ShellCommand
+  self.cmd = 'netstat -nap'
+  self.matches = {
+    %r(^Proto)      => :heading,
+    %r((TIME_WAIT)) => [{:count => :time_wait}],
+    %r((SYN_RECV))  => [{:count => :syn_recv}],
+  }
+
+  def process_saved
+    if $saved[:time_wait]
+      if $saved[:time_wait] < 100
+        printline colorize(:greenfg) + "there are #{$saved[:time_wait]} connections stuck in TIME_WAIT" + colorize(:off)
+      else
+        printline colorize(:redbg) + "there are #{$saved[:time_wait]} connections stuck in TIME_WAIT" + colorize(:off)
+      end
+    end
+    if $saved[:syn_recv]
+      if $saved[:syn_recv] < 100
+        printline colorize(:greenfg) + "there are #{$saved[:syn_recv]} connections stuck in SYN_RECV" + colorize(:off)
+      else
+        printline colorize(:redbg) + "there are #{$saved[:syn_recv]} connections stuck in SYN_RECV" + colorize(:off)
+      end
+    end
+  end
+end
+
+class Iostat < ShellCommand
+  self.cmd = 'iostat -dx 3 6'
+  self.matches = {
+    %r(^Device)                                                                                                              => :heading,
+    %r(^\S+\s+[\d\.]+\s+[\d\.]+\s+[\d\.]+\s+[\d\.]+\s+[\d\.]+\s+[\d\.]+\s+[\d\.]+\s+[\d\.]+\s+([\d\.]+)\s+[\d\.]+\s+[\d\.]+) => [
+      {"<" => 100},
+    ]
+  }
+end
+
+class ScannableFile < Scannable
+  attr_reader :filename
+  
+  def initialize(filename)
+    if %r(^/) =~ filename
+      @filename = filename
+    else
+      @filename = basedir + '/' + filename
+    end
+  end
+
+  def descriptor
+    self.class
+  end
+
+  def label
+    filename
+  end
+
+  def openstream
+    if filename =~ %r(\*)
+      Dir[filename].each do |f|
+        alsoscan [self.class, f]
+      end
+    elsif Pathname.new(filename).directory?
+      Dir.entries(filename).each do |f|
+        unless f =~ %r(^\.)
+          alsoscan [self.class, filename + "/" + f]
+        end
+      end
+    else
+      begin
+        open(filename) do |s|
+          yield s
+        end
+      rescue Exception => e
+        printline colorize(:redbg) + e.message + colorize(:off)
+      end
+    end
+  end
+end
+
+class CpuInfo < ScannableFile 
+  def initialize(*args)
+    @filename = "/proc/cpuinfo"
+  end
+  self.matches = {
+    %r(^(processor)) => [{:count => :processorcount}],
+  }
+end
+
+class SelinuxConf < ScannableFile
+  def initialize(*args)
+    @filename = "/etc/selinux/config"
+  end
+  self.matches = {
+    %r(^SELINUX=(\w+)) => [{"ne" => "enforcing"}],
+  }
+end
+
+class Dmesg < ShellCommand
+  self.cmd = 'dmesg'
+  self.matches = {
+    %r(^(SELinux):  Initializing.$) => [{:alsocheck => SelinuxConf,
+                                         :note => "SELinux being enabled and not properly configured may break many things."}],
+    %r((segfault))                  => [{:flag => nil,
+                                         :note => "Any segfaulting process should be understood."}],
+    %r((Out of memory:.*))          => [{:flag => "Ran out of memory",
+                                         :note => "Running out of memory can cause performance and intermittent problems"}],
+  }
+end
+
+class Vmstat < ShellCommand
+  self.cmd = 'vmstat 1 10'
+  self.matches = {
+    %r(\sr\s+b\s) => :heading,
+    #     r     b   swpd  free  buff  cache   si      so
+    %r(^\s+\d+\s+\d+\s+\d+\s+\d+\s+\d+\s+\d+\s+(\d+)\s+(\d+)) => [{"="   => 0,
+                                                                   :note => "You are swapping.  Do you need more memory?"},
+                                                                  {"="   => 0,
+                                                                   :note => "You are swapping.  Do you need more memory?"}],
+  }
+end
+
+class Mpmstat < ShellCommand
+  self.cmd = 'mpstat -P ALL'
+end
+
+class Free < ShellCommand
+  self.cmd = 'free -mo'
+  self.matches = {
+    %r(total)               => :heading,
+    %r(Swap:\s+\d+\s+(\d+)) => [{"=" => 0,
+                                 :note => "Swap non-zero indicates that swapping has occured in the past.\n  If this is small, it may not be an issue;\n  if it's large, then something nasty happened sometime since the last reboot."}],
+  }
+end
+
+class Uptime < ShellCommand
+  self.cmd = 'uptime'
+  self.matches = {
+    %r(load average: ([\d\.]+), ([\d\.]+), ([\d\.]+)) => [{"<" => 100,
+                                                           :note => "The load overage is unually high."},
+                                                          {"<" => 100,
+                                                           :note => "The load overage is unually high."},
+                                                          {"<" => 100,
+                                                           :note => "The load overage is unually high."}],
+  }
+end
+
+class Last < ShellCommand
+  self.cmd = 'last'
+  self.matches = {
+    %r(^reboot.*(\w\w\w \w\w\w +\d+ \d\d:\d\d - \d\d\:\d\d)) => [{:okay => nil}],
+  }
+end
+
+class Ethtool < ShellCommand
+  def initialize(interface)
+    super()
+    self.class.cmd = "ethtool #{interface}"
+  end
+  self.matches = {
+    %r(Link detected: (\w+)) => [{"=" => "yes"}],
+  }
+end
+
+class Ifconfig < ShellCommand
+  self.cmd = 'ifconfig -a'
+  self.matches = {
+    %r(^(\S+)\s)                                                => [{:alsocheck => Ethtool}],
+    %r(inet addr:(\S+)\s)                                       => [{:collect => :network_addrs}],
+    %r(inet6 addr:\s*([0-9a-f\:]+))                             => [{:collect => :network_addrs}],
+    %r(errors:(\d+) dropped:(\d+) overruns:(\d+) frame:(\d+))   => [{"=" => 0,
+                                                                     :note => "Network errors may indicate physical issues."},
+                                                                    {"=" => 0,
+                                                                     :note => "Dropped packets may indicate physical issues."},
+                                                                    {"=" => 0,
+                                                                     :note => "Network overruns may indicate physical issues."},
+                                                                    {"=" => 0,
+                                                                     :note => "Framing errors may indicate physical issues."}],
+    %r(errors:(\d+) dropped:(\d+) overruns:(\d+) carrier:(\d+)) => [{"=" => 0,
+                                                                     :note => "Network errors may indicate physical issues."},
+                                                                    {"=" => 0,
+                                                                     :note => "Dropped packets may indicate physical issues."},
+                                                                    {"=" => 0,
+                                                                     :note => "Network overruns may indicate physical issues."},
+                                                                    {"=" => 0,
+                                                                     :note => "Framing errors may indicate physical issues."}],
+  }
+end
+
+class Iptables < ShellCommand
+  self.cmd = 'iptables -L -n -v'
+  self.matches = {
+    %r(^Chain) => :heading,
+  }
+end
+
+class Lsmod < ShellCommand
+  self.cmd = 'lsmod'
+  self.matches = {
+    %r(^(ip_tables)) => [{:alsocheck => Iptables}],
+  }
+end
+
+class Collection
+  attr_reader :args
+  attr_accessor :children
+  attr_accessor :heading
+
+  def initialize(*args)
+    @args = args
+  end
+
+  def scan
+  end
+
+  def also_check
+    if children
+      return children.map {|child| [child, *args]}
+    else
+      return []
+    end
+  end
+end
+
+class Apache < Collection
+  def initialize(*args)
+    super
+    @children = [Httpdt, HttpdV, HttpdS, HttpdM]
+  end
+end
+
+class ScannableLog < ScannableFile
+  def logisrotated?(filename)
+    $saved[:rotatedlogs].any do |logpat|
+      File.fnmatch? logpat, filename, File::FNM_PATHNAME
+    end
+  end
+
+  def scan
+    super
+    unless logisrotated? filename
+      printline colorize(:redbg) + "#{filename} is not being rotated by logrotate" + cleareol + colorize(:off)
+    end
+  end
+end
+
+class PhpFpmErrorLog < ScannableLog
+  self.matches = {
+    %r((seems busy)) => [{:flag => "Do this"}],
+    %r(said into stderr: "(.*)") => [{:flag => "Investigate this"}],
+  }
+end
+
+class PhpFpmSlowLog < ScannableLog
+end
+
+class PhpFpmConf < ScannableFile
+  self.matches = {
+    %r(^\s*include\s*=\s*(\S+))                     => [{:alsocheck => PhpFpmConf}],
+    %r(^\s*error_log\s*=\s*(\S+))                   => [{:alsocheck => PhpFpmErrorLog}],
+    %r(^\s*slowlog\s*=\s*(\S+))                     => [{:alsocheck => PhpFpmSlowLog}],
+    %r(^\s*emergency_restart_interval\s*=\s*(\S+))  => [{:save      => :emergencyrestartinterval}],
+    %r(^\s*emergency_restart_threshold\s*=\s*(\S+)) => [{:save      => :emergencyrestartthreshold}],
+    %r(^\s*process_control_timeout\s*=\s*(\S+))     => [{:save      => :processcontroltimeout}],
+  }
+
+  def process_saved
+#    unless $saved[:emergencyrestartinterval]
+#      printline colorize(:invert) + "set emergency_restart_interval" + colorize(:off)
+#    end
+#    unless $saved[:emergencyrestartthreshold]
+#      printline colorize(:invert) + "set emergency_restart_threshold" + colorize(:off)
+#    end
+#    unless $saved[:processcontroltimeout]
+#      printline colorize(:invert) + "set process_control_timeout" + colorize(:off)
+#    end
+  end
+end
+
+class RedisConf < ScannableFile
+  self.matches = {
+    %r(^\s*(maxmemory)) => [{:flag => "Don't set maxmemory"}],
+  }
+end
+
+class UnameA < ShellCommand
+  self.cmd = 'uname -a'
+  self.matches = {
+    %r(\s\S+\s(\S+)) => [{:save => :kernel_version}]
+  }
+end
+
+class DfHt < ShellCommand
+  self.cmd = 'df -hT'
+  self.matches = {
+    %r(\s(\d+)\%)   => [{"<"   => 75}],
+    %r(^([\d\.]+):) => [{:flag => "NFS Mount",
+                         :note => "An NFS mounted filesystem isn't necessarily an issue,\n  but if magento is running from this partition, make certain it's performant."}],
+  }
+end
+
+class DfHit < ShellCommand
+  self.cmd = 'df -hiT'
+  self.matches = {
+    %r(\s(\d+)\%) => [{"<" => 75}],
+  }
+end
+
+class DocumentRoot < Scannable
+  attr_reader :rootpath
+
+  def initialize(rootpath)
+    @rootpath = Pathname.new rootpath
+  end
+
+  def descriptor
+    self.class
+  end
+
+  def label
+    rootpath
+  end
+  
+  def scanroot(rootpath)
+    etcpath = rootpath + 'app/etc'
+    unless $saved[:magento_roots]
+      $saved[:magento_roots] = []
+    end
+    $saved[:magento_roots].push rootpath
+    ["local.xml", "enterprise.xml"].each do |xmlfile|
+      if (etcpath + xmlfile).exist?
+        alsoscan [MagentoXmlFile, etcpath + xmlfile]
+      end
+    end
+    if (rootpath + 'app/Mage.php').exist?
+      alsoscan [MagentoVersion, rootpath]
+    end
+    if (logpath = rootpath + 'var/log/exception.log').exist?
+      alsoscan [MagentoExceptionLog, logpath]
+    end
+    if (htaccesspath = rootpath + '.htaccess').exist?
+      alsoscan [HtAccess, htaccesspath]
+    end
+  end
+  
+  def findallrootpaths(rootpath)
+    rootpaths = []
+    if rootpath.exist?
+      etcpath = rootpath + "app/etc"
+      if etcpath.exist?
+        rootpaths.push rootpath
+      else
+        begin
+          Dir.entries(rootpath).grep(%r(^[^\.])) {|f| Pathname.new f}.select {|file| File.directory? rootpath + file}.each do |dir|
+            etcpath = rootpath + dir + "app/etc"
+            if etcpath.exist?
+              rootpaths.push(rootpath + dir)
+            else
+              rootpaths.concat findallrootpaths(rootpath + dir)
+            end
+          end
+        rescue Exception => e
+          printline colorize(:redbg) + e.message + colorize(:off)
+        end
+      end
+      end
+    return(rootpaths)
+  end
+  
+  def scan
+    printheader
+    if rootpath.exist?
+      etcpath = rootpath + "app/etc"
+      if etcpath.exist?
+        scanroot rootpath
+      else
+        printline colorize(:redbg) + rootpath + " is not a magento root." + cleareol + colorize(:off)
+        if $options[:findroots]
+          findallrootpaths(rootpath).each do |dir|
+            printline colorize(:invert) + "But #{dir} is." + cleareol + colorize(:off)
+            scanroot rootpath + dir
+          end
+        end
+      end
+    else
+      printline colorize(:redbg) + rootpath + " does not exist" + colorize(:off)
+    end
+  end
+end
+
+class WebUser < Collection
+  attr_reader :userid
+
+  def initialize(userid)
+    @userid = userid
+  end
+
+  def scan
+#    crondir = Pathname.new "/var/spool/cron/"
+#    if (cronfile = crondir + userid).exist?
+#      alsoscan [UserCrontab, cronfile]
+#    end
+  end
+end
+
+class NginxLog < ScannableLog
+  def basedir
+    $saved[:nginxroot]
+  end
+  self.matches = {
+  }
+end
+
+class NginxErrorLog < ScannableLog
+  def basedir
+    $saved[:nginxroot]
+  end
+  self.matches = {
+    %r(\[error\].*\] (.*)$) => [{:flag => nil,
+                                 :note => "Investigate this error."}],
+  }
+end
+
+class NginxConf < ScannableFile
+  def basedir
+    $saved[:nginxroot]
+  end
+  self.matches = {
+    %r(^\s*include\s+(\S+);)                => [{:alsocheck => NginxConf}],
+    %r(^\s*worker_processes\s+(\d+))        => [{"="        => :processorcount}],
+    %r(^\s*user\s+(\d+))                    => [{:alsocheck => WebUser}],
+    %r(^\s*root\s+([/a-z0-9_\.\*-]+))       => [{:alsocheck => DocumentRoot}],
+    %r(^\s*access_log\s+([/a-z0-9_\.\*-]+)) => [{:alsocheck => NginxLog}],
+    %r(^\s*error_log\s+([/a-z0-9_\.\*-]+))  => [{:alsocheck => NginxErrorLog}],
+    %r(^\s*server_tokens\s+(\S+))           => [{"="        => "off",
+                                                 :note      => "turn off server_tokens for security reasons"}],
+  }
+end
+
+class MysqlLog < ScannableLog
+  self.matches = {
+    %r(^(\d+\s+\d+:\d+:\d+).*(error))i                              => [{:flag => "YYMMDD HH:MM:SS"},
+                                                                        {:flag => nil}],
+    %r(^(\d+\s+\d+:\d+:\d+).*(Database was not shut down normally)) => [{:flag => "YYMMDD HH:MM:SS"},
+                                                                        {:flag => nil}],
+  }
+end
+
+class SysCrontab < ScannableFile
+  self.matches = {
+    %r(^[\#]+(cron\.sh))  => [{:count => :cron}],
+    %r(^[\#]+(cron\.php)) => [{:flag  => "should call cron.sh, not cron.php"}],
+  }
+end
+
+class UserCrontab < ScannableFile
+  self.matches = {
+    %r(^[\#]+(cron\.sh))  => [{:count => :cron}],
+    %r(^[\#]+(cron\.php)) => [{:flag  => "should call cron.sh, not cron.php"}],
+  }
+end
+
+class SysCrontabs < Collection
+  def scan
+    alsoscan [SysCrontab, '/etc/crontab']
+    alsoscan [SysCrontab, '/etc/cron.d/*']
+    if Pathname.new('/var/spool/cron/crontabs').directory?
+      alsoscan [UserCrontab, '/var/spool/cron/crontabs/*']
+    else
+      alsoscan [UserCrontab, '/var/spool/cron/*']
+    end
+  end
+end
+
+class NginxV < ShellCommand
+  def initialize(command)
+    super()
+    self.class.cmd = "#{command} -V"
+  end
+
+  self.matches = {
+    %r(--prefix=([/a-z\.]+))         => [{:save => :nginxroot}],
+    %r(--conf-path=([/a-z\.]+))      => [{:alsocheck => NginxConf}],
+    %r(--error-log-path=([/a-z\.]+)) => [{:alsocheck => NginxErrorLog}],
+    %r(--http-log-path=([/a-z\.]+))  => [{:alsocheck => NginxLog}],
+  }
+end
+
+class NginxExe < Collection
+  def initialize(*args)
+    super
+    @children = [NginxV]
+    end
+end
+
+class Ps < ShellCommand
+  self.cmd = 'ps aux'
+  self.matches = {
+    %r(^root.*\s([/a-z]*apache2?)$)       => [{:alsocheck => Apache,
+                                               :save      => :apache}],
+    %r(^root.*\s([/a-z]*httpd)$)          => [{:alsocheck => Apache,
+                                               :save      => :apache}],
+    %r(nginx: master process .* -c (\S*)) => [{:alsocheck => NginxConf}],
+    %r(nginx: master process (\S*))       => [{:alsocheck => NginxExe,
+                                               :save      => :nginx}],
+    %r((memcached).*-m (\d+))             => [{:save      => :memcache},
+                                              {">"        => 1024}],
+    %r(redis-server\s+([\d\.]+):(\d+))    => [{:alsocheck => Redis,
+                                               :save      => :redis}],
+    %r(redis-server\s+([a-z\./]+))        => [{:alsocheck => RedisConf,
+                                               :save      => :redis}],
+    %r(mysqld.*--log-error=([/\.\w]+))    => [{:alsocheck => MysqlLog}],
+    %r(php-fpm: master process \((\S+)\)) => [{:alsocheck => PhpFpmConf}],
+  }
+  
+end
+
+class Httpdt < ShellCommand
+  def initialize(command)
+    super()
+    self.class.cmd = "#{command} -t"
+  end
+
+  self.matches = {
+    %r((.*warn.*))  => [{:flag => "!!!! WARNING !!!!"}],
+    %r((.*error.*)) => [{:flag => "!!!!!! ERROR !!!!!!"}],
+    %r((Syntax OK)) => [{:okay => nil}],
+  }
+end
+
+class ApacheLog < ScannableLog
+  def basedir
+    $saved[:httpdroot]
+  end
+  self.matches = {
+  }
+end
+
+class ApacheErrorLog < ScannableLog
+  def basedir
+    $saved[:httpdroot]
+  end
+  self.matches = {
+    %r(\[error\].*\] (.*)$) => [{:flag => nil,
+                                 :note => "Investigate this error."}],
+  }
+end
+
+class ApacheConf < ScannableFile
+  def basedir
+    $saved[:httpdroot]
+  end
+  def cleanup(value)
+    if %r(^"(.*)"$) =~ value
+      value = $1
+    end
+    if %r(^(.*)/$) =~ value
+      value = $1
+    end
+    return value
+  end
+
+  self.matches = {
+    %r(^\s*DocumentRoot\s+(\S+))i           => [{:alsocheck => DocumentRoot}],
+    %r(^\s*CustomLog\s+([/a-z0-9_\.\*-]+))i => [{:alsocheck => ApacheLog}],
+    %r(^\s*ErrorLog\s+([/a-z0-9_\.\*-]+))i  => [{:alsocheck => ApacheErrorLog}],
+    %r(^\s*Include\s+(\S+))i                => [{:alsocheck => ApacheConf}],
+    %r(^\s*User\s+(\S+))i                   => [{:alsocheck => WebUser}],
+  }
+end
+
+class HttpdV < ShellCommand
+  def initialize(command)
+    self.class.cmd = "#{command} -V"
+  end
+
+  self.matches = {
+    %r(Server MPM:\s+(\S+))             => [{:okay      => nil}],
+    %r(Server version:\s*Apache/(\S+))  => [{:save      => :apache_version}],
+    %r(^ -D HTTPD_ROOT="(\S+)")         => [{:save      => :httpdroot}],
+    %r(^ -D SERVER_CONFIG_FILE="(\S+)") => [{:alsocheck => ApacheConf}],
+    %r(^ -D DEFAULT_ERRORLOG="(\S+)")   => [{:alsocheck => ApacheErrorLog}],
+  }
+end
+
+class MagentoExceptionLog < ScannableLog
+  self.matches = {
+    %r(exception\s'([^']*)' with message '([^']*)') => [{:flag => nil},
+                                                        {:flag => nil,
+                                                         :note => "Investigate this exception."}],
+    %r(app/code/local/([^/]+))                      => [{:flag => "not Magento code",
+                                                         :note => "local code is out of scope for magento support."}],
+    %r(app/code/community/([^/]+))                  => [{:flag => "not Magento code",
+                                                         :note => "community code is out of scope for magento support."}],
+  }
+end
+
+class HtAccess < ScannableFile
+end
+
+class Messages < ScannableLog
+  def initialize
+    super('/var/log/messages')
+  end
+  self.matches = {
+    %r((ERROR)) => [{:flag => nil}]
+  }
+end
+
+class HttpdS < ShellCommand
+  def initialize(command)
+    super()
+    self.class.cmd = "#{command} -S"
+  end
+
+  self.matches = {
+    %r(default server (\S+)\s+\(([^:]+):) => [{:okay => nil},
+                                              {:alsocheck => ApacheConf}],
+    %r(namevhost (\S+)\s+\(([^:]+):)      => [{:okay => nil},
+                                              {:alsocheck => ApacheConf}],
+  }
+end
+
+class PhpV < ShellCommand
+  self.cmd = 'php -v'
+  self.matches = {
+    %r(PHP (\d+\.\d+)) => [{"ne" => "5.7"}],
+  }
+end
+
+class PhpM < ShellCommand
+  self.cmd = 'php -m'
+  self.matches = {
+    %r(^(bcmath)$)   => [{:save => :bcmath}],
+    %r(^(memcache)$) => [{:save => :cache}],
+    %r(^(redis)$)    => [{:save => :cache}],
+  }
+
+  def process_saved
+    unless $saved[:bcmath]
+      printline colorize(:invert) + "bcmath is a required php module" + colorize(:off)
+    end
+    unless $saved[:cache]
+      printline colorize(:invert) + "either memcache or redis modules are required" + colorize(:off)
+    end
+  end
+end
+
+class PhpI < ShellCommand
+  self.cmd = 'php -i'
+  self.matches = {
+                           %r(^([a-z]+)$)i                                 => [{:save => :section}],
+    [:section, "session",  %r(^session.gc_maxlifetime => (\d+) => (\d+))]  => [{"="   => 1440},
+                                                                               {"="   => 1440}],
+    [:section, "session",  %r(^session.gc_probability => (\d+) => (\d+))]  => [{"="   => 1},
+                                                                               {"="   => 1}],
+    [:section, "session",  %r(^session.cookie_lifetime => (\d+) => (\d+))] => [{"="   => 0},
+                                                                               {"="   => 0}],
+    [:section, "Core",     %r(^PHP Version => (\S+))]                      => [{:save => :php_version}],
+    [:section, "Core",     %r(^memory_limit => (\d+)M => (\d+)M)]          => [{">="  => 256},
+                                                                               {">="  => 256}],
+    [:section, "Core",     %r(^max_execution_time => (\d+) => (\d+))]      => [{"="   => 18000,
+                                                                                :note => "max_execution_time should be set very high to assure that indexing completes."},
+                                                                               {"="   => 18000}],
+    [:section, "Core",     %r(^max_input_vars => (\d+) => (\d+))]          => [{">="  => 2000,
+                                                                                :note => "max_input_vars should be from 2000 to 5000 (or even more if needed)"},
+                                                                               {">="  => 2000}],
+    [:section, "Core",     %r(^auto_prepend_file => (.+) => (.+))]         => [{"eq"  => "no value",
+                                                                                :note => "auto_prepend_file may cause issues"},
+                                                                               {"eq"  => "no value"}],
+    [:section, "Core",     %r(^auto_append_file => (.+) => (.+))]          => [{"eq"  => "no value",
+                                                                                :note => "auto_append_file may cause issues"},
+                                                                               {"eq"  => "no value"}],
+    [:section, "Core",     %r(^disable_functions => (.+) => (.+))]         => [{"eq"  => "no value",
+                                                                                :note => "disable_functions may cause issues"},
+                                                                               {"eq"  => "no value"}],
+    [:section, "Core",     %r(^open_basedir => (.+) => (.+))]              => [{"eq"  => "no value",
+                                                                                :note => "open_basedir is not supported."},
+                                                                               {"eq"  => "no value"}],
+    [:section, "Core",     %r(^safe_mode => (.+) => (.+))]                 => [{"eq"  => "Off",
+                                                                                :note => "safe_mode is not supported."},
+                                                                               {"eq"  => "Off"}],
+    [:section, "memcache", %r(^Version => (\S+))]                          => [{"eq"  => "3.0.5",
+                                                                                :save => :memcache_version}],
+    [:section, "mysql",    %r(^Client API version => (.+))]                => [{:save => :mysql_client_api_version}],
+  }
+end
+
+class Php < Collection
+  def initialize(*args)
+    super
+    @children = [PhpV, PhpM, PhpI]
+  end
+end
+
+class HttpdM < ShellCommand
+  def initialize(command)
+    super()
+    self.class.cmd = "#{command} -M"
+  end
+
+  self.matches = {
+    %r((php5_module)) => [{:alsocheck => Php}]
+  }
+end
+
+class MysqlCommand < ShellCommand
+  attr_reader :hostname
+  attr_reader :username
+  attr_reader :password
+  attr_reader :dbname
+
+  def initialize(hostname, username, password, dbname)
+    @hostname = hostname
+    @username = username
+    @password = password
+    @dbname = dbname
+  end
+  
+  def label
+    cmd
+  end
+  
+  def openstream
+    if password == ''
+      shellcmd = "mysql -h#{hostname} -u#{username} -e'#{cmd}'"
+    else
+      shellcmd = "mysql -h#{hostname} -u#{username} -p'#{password}' -e'#{cmd}'"
+    end
+    open("|#{shellcmd} 2>&1") do |s|
+      yield s
+    end
+  end
+end
+
+class MysqlStatus < MysqlCommand
+  self.cmd = 'show global status'
+  self.matches = {
+    %r(Aborted_clients\s(\S+))    => [{"<" =>   1000}],
+    %r(Aborted_connects\s(\S+))   => [{"<" =>   1000}],
+    %r(Table_locks_waited\s(\S+)) => [{"<" =>   100}],
+    %r((Access denied.*))         => [{:flag => "Password issue?"}],
+  }
+end
+
+class MysqlVariables < MysqlCommand
+  self.cmd = 'show global variables'
+  self.matches = {
+    %r(innodb_log_file_size\s(\S+)) => [{">"   => 128*1024*1024,
+                                         :note => "innodb_log_file_size should be >=128MB."}],
+    %r(innodb_buffer_pool_size\s(\S+)) => [{">"   => 128*1024*1024,
+                                         :note => "innodb_log_file_size should be >=128MB."}],
+    %r(max_heap_table_size\s(\S+))  => [{">"   => 128*1024*1024,
+                                         :save => :heap_table_size}],
+    %r(tmp_table_size\s(\S+))       => [{">"   => 128*1024*1024,
+                                         "="   => :heap_table_size,
+                                         :note => "tmp_table_size and max_heap_table_size should both have the same value and should both be >=128MB."}],
+    %r((Access denied.*))           => [{:flag => "Password issue?"}],
+  }
+end
+
+class MysqlInnodbStatus < MysqlCommand
+  self.cmd = 'show engine innodb status\\G'
+  self.matches = {
+    %r((Access denied.*)) => [{:flag => "Password issue?"}],
+  }
+end
+
+class MysqlProcessList < MysqlCommand
+  self.cmd = 'show processlist'
+  self.matches = {
+    %r((Access denied.*)) => [{:flag => "Password issue?"}],
+  }
+end
+
+class MysqlSlaveStatus < MysqlCommand
+  self.cmd = 'show slave status'
+  self.matches = {
+    %r((Access denied.*)) => [{:flag => "Password issue?"}],
+  }
+end
+
+class Mysql < Collection
+  def initialize(*args)
+    super
+    @children = [MysqlStatus, MysqlVariables, MysqlInnodbStatus, MysqlProcessList, MysqlSlaveStatus]
+  end
+end
+
+class LogRotateConf < ScannableFile
+  self.matches = {
+    %r(^\s*include\s+(\S+))     => [{:alsocheck => LogRotateConf}],
+    %r(^(/[/a-z0-9_\.\*-]+)) => [{:collect => :rotatedlogs}],
+  }
+end
+
+class LogRotate < ScannableFile
+  def initialize
+    super('/etc/cron.daily/logrotate')
+  end
+  self.matches = {
+    %r(^/usr/sbin/logrotate\s+(\S+)) => [{:alsocheck => LogRotateConf}]
+  }
+end
+
+class MagentoVersion < ShellCommand
+  attr_reader :path
+  
+  def initialize(path)
+    @path = path
+    self.class.cmd = %Q(php -r "require '#{path}/app/Mage.php'; echo Mage::getVersion();")
+  end
+
+  def label
+    "Magento install at #{path}"
+  end
+  
+  def scan
+    printheader
+    openstream do |s|
+      if version = s.gets
+        $saved[:magento_version] = version
+        printline colorize(:greenfg) + version + colorize(:off)
+      else
+        printline colorize(:redbg) + "couldn't read the version" + colorize(:off)
+      end
+    end
+  end
+end
+
+class MagentoXmlFile < ScannableFile
+  attr_reader :filename
+  
+  def initialize(filename)
+    @filename = Pathname.new filename
+  end
+
+  def label
+    filename
+  end
+
+  def gettext(session, elementname)
+    if element = session.elements[elementname]
+      return element.text
+    end
+  end
+  
+  def scan
+    printheader
+    if $options[:verbose]
+      openstream do |s|
+        while (line = s.gets)
+          puts line
+        end
+      end
+    end
+    doc = REXML::Document.new File.new(filename, "r")
+    ["cache", "full_page_cache"].each do |foo|
+      doc.elements.each("config/global/#{foo}") do |cache|
+        if backend = gettext(cache,"backend")
+          if backend == "memcached"
+            if ipaddress = gettext(cache, "memcached/servers/server/host")
+              if port = gettext(cache, "memcached/servers/server/port")
+                back = Memcached
+                printline colorize(:invert) + "config/global/#{foo}/memcached/servers/server #{backend} on #{ipaddress}:#{port}." + cleareol + colorize(:off)
+                alsoscan [Memcached, ipaddress, port]
+              else
+                printline colorize(:redbg) + "port not properly defined in config/global/#{foo}/memcached/servers/server/port" + cleareol + colorize(:off)
+              end
+            else
+              printline colorize(:redbg) + "host not properly defined in config/global/#{foo}/memcached/servers/server/host" + cleareol + colorize(:off)
+            end
+          elsif backend == "Cm_Cache_Backend_Redis"
+            if ipaddress = gettext(cache, "backend_options/server")
+              if port = gettext(cache, "backend_options/port")
+                back = Redis
+                printline colorize(:invert) + "config/global/#{foo}/backend_options #{backend} on #{ipaddress}:#{port}." + cleareol + colorize(:off)
+                alsoscan [Redis, ipaddress, port]
+              else
+                printline colorize(:redbg) + "port not properly defined in config/global/#{foo}/backend_options/port" + cleareol + colorize(:off)
+              end
+            else
+              printline colorize(:redbg) + "ipaddress not properly defined in config/global/#{foo}/backend_options/server" + cleareol + colorize(:off)
+            end
+          end
+        end
+      end
+    end
+    if redis_session = doc.elements["config/global/redis_session"]
+      if ipaddress = gettext(redis_session, "host")
+        if port = gettext(redis_session, "port")
+          printline colorize(:invert) + "/config/global/redis_session on #{ipaddress}:#{port}." + cleareol + colorize(:off)
+          alsoscan [Redis, ipaddress, port]
+        else
+          printline colorize(:redbg) + "port not properly defined in config/global/redis_session" + cleareol + colorize(:off)
+        end
+      else
+        printline colorize(:redbg) + "host not properly defined in config/global/redis_session" + cleareol + colorize(:off)
+      end
+    end
+    if resources = doc.elements["config/global/resources"]
+      connection = resources.elements["default_setup/connection"]
+      if ipaddress = gettext(connection, "host")
+        if username = gettext(connection, "username")
+          if password = gettext(connection, "password")
+            if dbname = gettext(connection, "dbname")
+              printline colorize(:invert) + "/config/global/resources database #{dbname} on #{username}\@#{ipaddress}." + cleareol + colorize(:off)
+              alsoscan [Mysql, ipaddress, username, password, dbname]
+            else
+              printline colorize(:redbg) + "dbname not properly defined in default_setup/connection" + cleareol + colorize(:off)
+            end
+          else
+            printline colorize(:redbg) + "password not properly defined in default_setup/connection" + cleareol + colorize(:off)
+          end
+        else
+          printline colorize(:redbg) + "username not properly defined in default_setup/connection" + cleareol + colorize(:off)
+        end
+      else
+        printline colorize(:redbg) + "ipaddress not properly defined in default_setup/connection" + cleareol + colorize(:off)
+      end
+    end
+  end
+end
+
+class Hostname < Scannable
+  def descriptor
+    self.class
+  end
+
+  def label
+    ""
+  end
+
+  def scan
+    Resolv::DNS.open do |dns|
+      printheader
+      $saved[:hostname] = Socket.gethostname
+      if ($saved[:hostname] =~ %r(\.)) and (resources = dns.getresources($saved[:hostname], Resolv::DNS::Resource::IN::A))
+        unless $options[:quiet]
+          printline colorize(:invert) + "#{$saved[:hostname]} is in the DNS." + cleareol + colorize(:off)
+        end
+      else
+        printline colorize(:redbg) + "#{$saved[:hostname]} is not in the DNS; may cause issues with outgoing email, etc." + cleareol + colorize(:off)
+      end
+    end
+  end
+end
+
+$oldchecks = []
+$checks = [CpuInfo, LogRotate, Hostname, UnameA, Netstat, Ifconfig, DfHt, DfHit, Ps, SysCrontabs, Sysctl, Iostat, Vmstat, Dmesg, Messages, Lsmod, Free, Uptime, Last]
+
+def alsoscan(item)
+  unless ($checks.include? item) or ($oldchecks.include? item)
+    $checks.unshift item
+  end
+end
+
+def showsummary
+  cmd = "sha1sum #{$0}"
+  sha1sum = `#{cmd}`
+  sha1sum = sha1sum.split(%r(\s+))[0]
+  
+  puts
+  puts cleareol + colorize(:underline) + colorize(:bright) + "Summary" + colorize(:off)
+  puts cleareol + "Healthcheck version: #{sha1sum}"
+  puts cleareol + "Magento version: #{$saved[:magento_version]}"
+  puts cleareol + "Kernel version: #{$saved[:kernel_version]}"
+  if $saved[:apache_version]
+    puts cleareol + "Apache version: #{$saved[:apache_version]}"
+  end
+  puts cleareol + "Hostname: #{$saved[:hostname]}"
+  puts cleareol + "Number of processors: #{$saved[:processorcount]}"
+  if $saved[:nginx]
+    puts cleareol + "Running nginx"
+  end
+  if $saved[:memcache_version]
+    puts cleareol + "memcache version: #{$saved[:memcache_version]}"
+  end
+  if $saved[:redis_version]
+    puts cleareol + "Redis version: #{$saved[:redis_version]}"
+  end
+  if $saved[:php_version]
+    puts cleareol + "PHP version: #{$saved[:php_version]}"
+  end
+  if $saved[:mysql_client_api_version]
+    puts cleareol + "Mysql Client API version: #{$saved[:mysql_client_api_version]}"
+  end
+  puts cleareol + "Network interfaces: #{$saved[:network_addrs].join(', ')}"
+  puts cleareol + "Magento roots:"
+  if $saved[:magento_roots]
+    puts cleareol + "\t" + $saved[:magento_roots].join("\n\t")
+  else
+    puts cleareol + colorize(:redbg) + "Couldn't find any magento roots" + colorize(:off)
+  end
+  if $saved[:cron] != 1
+    puts cleareol + colorize(:redbg) + "cron.sh is called in #{$saved[:cron] || 0} places." + colorize(:off)
+  end
+  print colorize(:off)
+end
+
+if Process.uid != 0
+    puts colorize(:redbg) + "Not running as root.  May not be able to get all info." + colorize(:off)
+end
+
+$options[:roots].each do |dir|
+  $checks.push [DocumentRoot, dir]
+end
+
+while check = $checks.shift do
+  if check.is_a? Array
+    objclass = check.shift
+    begin
+      item = objclass.new *check
+      $oldchecks.unshift [objclass, *check.dup]
+    rescue Exception => e
+      puts colorize(:redbg) + e.message + colorize(:off)
+    end
+  else
+    $oldchecks.unshift check
+    begin
+      item = check.new
+    rescue Exception => e
+      puts colorize(:redbg) + e.message + colorize(:off)
+    end
+  end
+  item.scan
+  item.heading = nil
+  if item.respond_to? :process_saved
+    item.process_saved
+  end
+  if item.respond_to? :also_check
+    item.also_check.reverse.each do |value|
+      alsoscan value
+    end
+  end
+  #puts $checks.inspect
+end
+showsummary

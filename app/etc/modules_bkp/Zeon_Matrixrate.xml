@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * This module handles the Matrixrate Customization as per client Request. 
+ * Shipping customization is as per request. 
+ * Matrixrate Customization done by Zeon. Matrixrate Customization done by Zeon. 
+ *
+ * @keywords Matrixrate, Matrixrate Shipping, Matrixrate Customization
+ * @author Suhas Dhoke<suhas.dhoke@zeonsolutions.com>
+ */
+-->
+
+<config>
+    <modules>
+        <Zeon_Matrixrate>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Zeon_Matrixrate>
+    </modules>
+</config>

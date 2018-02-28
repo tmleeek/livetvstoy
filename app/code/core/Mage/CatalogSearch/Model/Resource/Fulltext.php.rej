@@ -1,0 +1,79 @@
+--- app/code/core/Mage/CatalogSearch/Model/Resource/Fulltext.php
++++ app/code/core/Mage/CatalogSearch/Model/Resource/Fulltext.php
+@@ -152,7 +152,6 @@
+         $statusVals     = Mage::getSingleton('catalog/product_status')->getVisibleStatusIds();
+         $allowedVisibilityValues = $this->_engine->getAllowedVisibility();
+ 
+-        $websiteId = Mage::app()->getStore($storeId)->getWebsite()->getId();
+         $lastProductId = 0;
+         while (true) {
+             $products = $this->_getSearchableProducts($storeId, $staticFields, $productIds, $lastProductId);
+@@ -165,8 +164,7 @@
+             foreach ($products as $productData) {
+                 $lastProductId = $productData['entity_id'];
+                 $productAttributes[$productData['entity_id']] = $productData['entity_id'];
+-                $productChildren = $this->_getProductChildrenIds($productData['entity_id'], $productData['type_id'],
+-                    $websiteId);
++                $productChildren = $this->_getProductChildIds($productData['entity_id'], $productData['type_id']);
+                 $productRelations[$productData['entity_id']] = $productChildren;
+                 if ($productChildren) {
+                     foreach ($productChildren as $productChildId) {
+@@ -542,15 +540,14 @@
+         return $this->_productTypes[$typeId];
+     }
+ 
+-/**
++    /**
+      * Return all product children ids
+      *
+-     * @param $productId
+-     * @param $typeId
+-     * @param null|int $websiteId
+-     * @return array|null
++     * @param int $productId Product Entity Id
++     * @param string $typeId Super Product Link Type
++     * @return array
+      */
+-    protected function _getProductChildrenIds($productId, $typeId, $websiteId = null)
++    protected function _getProductChildIds($productId, $typeId)
+     {
+         $typeInstance = $this->_getProductTypeInstance($typeId);
+         $relation = $typeInstance->isComposite()
+@@ -562,17 +559,10 @@
+                 ->from(
+                     array('main' => $this->getTable($relation->getTable())),
+                     array($relation->getChildFieldName()))
+-                ->where("main.{$relation->getParentFieldName()} = ?", $productId);
++                ->where("{$relation->getParentFieldName()}=?", $productId);
+             if (!is_null($relation->getWhere())) {
+                 $select->where($relation->getWhere());
+             }
+-
+-            Mage::dispatchEvent('prepare_product_children_id_list_select', array(
+-                'select'        => $select,
+-                'entity_field'  => 'main.product_id',
+-                'website_field' => $websiteId
+-            ));
+-
+             return $this->_getReadAdapter()->fetchCol($select);
+         }
+ 
+@@ -580,18 +570,6 @@
+     }
+ 
+     /**
+-     * Return all product children ids
+-     *
+-     * @param int $productId Product Entity Id
+-     * @param string $typeId Super Product Link Type
+-     * @return array|null
+-     */
+-    protected function _getProductChildIds($productId, $typeId)
+-    {
+-        return $this->_getProductChildrenIds($productId, $typeId);
+-    }
+-
+-    /**
+      * Retrieve Product Emulator (Varien Object)
+      *
+      * @return Varien_Object

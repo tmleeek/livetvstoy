@@ -1,0 +1,62 @@
+
+/*tystoybox character slider css -- start */
+
+    .cat-slider .bx-wrapper {
+        width: 765px;
+        margin: 0px !important;
+        margin-top: 3px !important;
+        position: relative;
+        padding: 0 35px;
+        float: left;
+    }
+    .bx-wrapper .bx-next {
+        right: 0px;
+    }
+    .bx-wrapper .bx-prev {
+        left: 0px;
+    }
+    .bx-wrapper .bx-controls-direction a {
+        z-index: 9;
+    }
+
+    .cat-slider .bx-viewport {
+        padding-top: 26px !important;
+        margin-top: -26px !important;
+        height: 66px !important;
+        height: 72px !important;
+    }
+    .tvs-slider .bx-viewport ul li {
+        position: static !important;
+    }
+      .last-slide > a{
+        position: relative;
+        display: block;
+    }
+    .last-slide .show-tooltip{
+        display: none;
+        right: 0px;
+    }
+    .last-slide .show-tooltip .tip-arrow{
+        float: right;
+        right: 20px;
+    }
+    .last-slide .show-tooltip .tooltip-middle{
+        white-space: nowrap;
+    }
+    .cat-slider .bx-wrapper img{
+        min-width: 55px;
+        min-height: 40px;
+    }
+    .tvs-slider .show-tooltip .tooltip-middle{
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    @media only screen and (max-width:980px){
+        .cat-slider .bx-wrapper {
+            width: 512px;
+        }
+        .tvs-slider .bx-viewport ul li {
+            min-width: 55px !important;
+        }
+    }
+/*tystoybox character slider css -- end */

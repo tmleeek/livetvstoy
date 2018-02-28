@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+    @category   CRM4Ecommerce
+    @package    CRM4Ecommerce_AdminStartupPage
+    @author     Philip Nguyen <philip@crm4ecommerce.com>
+    @link       http://crm4ecommerce.com
+-->
+<config>
+    <modules>
+        <CRM4Ecommerce_AdminStartupPage>
+            <active>false</active>
+            <codePool>local</codePool>
+            <depends>
+                <CRM4Ecommerce_CRMCore/>
+            </depends>
+        </CRM4Ecommerce_AdminStartupPage>
+    </modules>
+</config> 

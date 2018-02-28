@@ -1,0 +1,139 @@
+<?php
+//Stores The Base Path Of the Website
+if (Mage::getSingleton('customer/session')->isLoggedIn()) {
+    $customerData = Mage::getSingleton('customer/session')->getCustomer();
+    $customer = $customerData->getId();
+    $flag = "false";
+} else {
+    $customer = "Guest";
+    $flag = "true";
+}
+$base_project =  Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB);//Stores The Base Path Of the Website
+
+// Get The Posts or Get Variable of the form and set
+//The product Id in personalized Page.
+$posts = $this->getRequest()->getParams();
+
+// Retrieved the Super Attribute (configurable option) and Custom options in vars.
+$superAttribute = isset($posts['super_attribute']) ? serialize($posts['super_attribute']) : '';
+$customOptions  = isset($posts['options']) ? serialize($posts['options']) : '';
+
+$selectedOptions = $this->getAttributeLabels();
+
+if (isset($posts['product_id']) && !empty($posts['product_id'])) {
+    $product_id = $posts['product_id'];
+} else {
+    $product_id = $posts['id'];
+}
+
+$session = Mage::getSingleton("customer/session");
+$sessionId = $session->getEncryptedSessionId();
+/* Code for add to cart via Artifi */
+
+//Fetch the SKU in relation to the product Id
+$_product = Mage::getSingleton('catalog/product')->load($product_id);
+//$sku = Mage::getModel('catalog/product')->load($product_id)->getSku();
+$sku = $_product->getSku();
+
+?>
+<form>
+    <input type="hidden" id="product_id" value="<?php echo $product_id; ?>">
+</form>
+
+<?php
+$websiteId = Mage::getStoreConfig('personalize/mycustom_group/mycustom_field1'); //Set the website id
+$includeScript = Mage::getStoreConfig('personalize/mycustom_group/mycustom_field'); //Set the artifi include script
+$webApiclientKey = Mage::getStoreConfig('personalize/mycustom_group/artifi_web_api_client_key'); //Set the website id
+$base_url =  Mage::getStoreConfig('personalize/mycustom_group/artifi_domain'); //Set the artifi domain url.
+$_poptropicaDetails = Mage::getSingleton('customer/session')->getPoptropicaDetails();
+
+// It is a personalized (artifi) product then first check if the Avatar details are set in session or not.
+if (!$_poptropicaDetails && !isset($_poptropicaDetails['id'])) {
+    // If data is not set in session then redirect user to poptropica listing page.
+    Mage::app()->getFrontController()->getResponse()->setRedirect($this->getUrl('poptropica'));
+    return;
+}
+
+echo $includeScript;
+?>
+<script language="javascript">
+    var sku_call = '<?php echo $sku; ?>';
+    var userId_call = '<?php if ($customer != 'Guest') {
+    echo $customer;
+} else echo"$sessionId"; ?>';
+    var flag_call = <?php echo $flag; ?>;
+    var designId_call = '<?php echo isset($_GET['design_id']) ? $_GET['design_id'] : ''; ?>';
+    var base_url = '<?php echo $base_project; ?>';
+    var website_id = <?php echo $websiteId; ?>;
+    var webApiclientKey = "<?php echo $webApiclientKey; ?>";
+</script>
+<!-- Div where the artify product Comes -->
+<div id="artifi-container"></div>
+
+<!--Script to call Addto cart function from another server-->
+<script type="text/javascript">// <![CDATA[
+    function receiveMessage(event)
+    {
+        var object = event.data;
+        // this object will have two params
+        // object.action - it will have action name for e.g. "addtocart"
+        // object.data - this will a nested object which will have all previous data
+        var data = object.data;
+
+        addtocart(data.custmizeProductId, data.userId, data.productCode, data.sku, data.attributes, data.savedDesigns);
+        // also in this "data" object you'll receive additional array named "savedDesign"
+    }
+
+    if (window.addEventListener){
+        addEventListener("message", receiveMessage, false)
+    } else {
+        attachEvent("onmessage", receiveMessage)
+    }
+    // ]]></script>
+
+<!-- The Script to add the Artify Js into the file-->
+
+<script type="text/javascript" language="javascript">// <![CDATA[
+    $(document).ready(function(){
+        //Artifi.Initialize(sku_call, website_id, userId_call, flag_call , "artifi-container", '100%', 600, designId_call, "");
+        var extraQueryString = 'char=poptropica&AvatarName=<?php echo $_poptropicaDetails['avatar']; ?>&AvatarId=<?php echo $_poptropicaDetails['id']; ?>';
+        var cartQueryString  = 'Quantity=<?php echo isset($posts['qty']) ? $posts['qty'] : 1; ?>&Size=<?php echo urlencode(implode(',', $selectedOptions)); ?>&SuperAttribute=<?php echo $superAttribute; ?>&Options=<?php echo addslashes($customOptions) ?>';
+        var containerId = 'artifi-container';
+        var iFrameWidth = '100%';
+        var iFrameHeight = 600;
+        //check for ipad and mobile view
+        var deviceName = isIPad() ? "ipad" : "desktop";
+        if(deviceName == "ipad") {
+            iFrameHeight = 960;
+        } else if ((jQuery(window).width() <= 1024 && jQuery(window).width() >= 768)) {
+            iFrameHeight = 960;
+        } else if (jQuery(window).width() < 767) {
+            iFrameHeight = 990;
+        }
+        Artifi.Initialize(sku_call, website_id, userId_call, flag_call, containerId, iFrameWidth, iFrameHeight, designId_call, webApiclientKey, extraQueryString, cartQueryString);
+    });
+    // ]]></script>
+
+<!-- This Js function is called to add product in cart -->
+<script>
+    function addtocart(designId, userId, productCode, sku, attributes, savedDesigns)
+    {
+        var product_id = productCode;
+        var userId = userId;
+        var designId = designId;
+        var sku = sku;
+        var product_id = document.getElementById("product_id").value;
+        var personalize_id = '<?php echo isset($_GET['personalize_id']) ? $_GET['personalize_id'] : ''; ?>';
+        $.ajax({
+            type: "POST",
+            url: '<?php echo $base_project; ?>personalize',
+            //data: "designId="+designId+ "&userId="+userId+ "&productCode="+productCode+ "&sku="+sku+"&product_id="+product_id+"&personalize_id="+personalize_id,
+            data: "designId="+designId+ "&userId="+userId+ "&productCode="+productCode+ "&sku="+sku+"&product_id="+product_id+"&personalize_id="+personalize_id+"&savedDesigns="+savedDesigns+"&attributes="+attributes+"&qty=<?php echo isset($posts['qty']) ? $posts['qty'] : 1; ?>&super_attribute=<?php echo addslashes($superAttribute); ?>&options=<?php echo addslashes($customOptions); ?>"+"&child_product=<?php echo $posts['child_product'] ?>",
+            // appears as $_GET['id'] @ ur backend side
+            success: function(data) {
+                // data is ur artifi-container
+                window.location.href='<?php echo $base_project; ?>checkout/cart/';
+            }
+        });
+    }
+</script>

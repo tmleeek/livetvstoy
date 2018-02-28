@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layout version="0.1.0">
+    <personalize_index_index><!-- Unique Handler for View in controller in body tag -->
+
+        <reference name="root">
+            <action method="setTemplate"><template>page/1column.phtml</template></action>
+        </reference>
+        <reference name="content"><!-- The position of phtml in th block -->
+            <block  type="personalize/view" name="personalize" template="zeon/personalize.phtml" />
+            <!--   type=blockGroup  name=Unique      template=Path of phtml/view -->
+        </reference>
+    </personalize_index_index>
+    <checkout_onepage_success>
+        <reference name="before_body_end">
+            <block  type="core/template"  name="personalize_success" template="zeon/checkout_success.phtml" />
+        </reference>
+
+    </checkout_onepage_success>
+
+ <!--
+    Product view page
+    -->
+    <catalog_product_view>
+        <reference name="product.info">
+            <action method="setTemplate" ifconfig="zeon_ajaxcart/general/is_enabled">
+                <template>zeon/ajaxcart/catalog/product/view/view.phtml</template>
+            </action>
+        </reference>
+        <reference name="product.info.addto">
+            <action method="setTemplate" ifconfig="zeon_ajaxcart/general/is_enabled">
+                <template>zeon/ajaxcart/catalog/product/view/addto.phtml</template>
+            </action>
+        </reference>
+
+        <reference name="product.info.addtocart">
+            <action method="setTemplate" ifconfig="zeon_ajaxcart/general/is_enabled">
+                <template>zeon/ajaxcart/catalog/product/view/addtocart.phtml</template>
+            </action>
+        </reference>
+        <reference name="catalog.product.related">
+            <action method="setTemplate" ifconfig="zeon_ajaxcart/general/is_enabled">
+                <template>zeon/ajaxcart/catalog/product/list/related.phtml</template>
+            </action>
+        </reference>
+        <reference name="product.info">
+            <!-- remove name="catalog.product.related" / -->
+            <block type="enterprise_targetrule/catalog_product_list_related" name="catalog.product.related" as="relatedProducts" template="targetrule/catalog/product/list/related.phtml" ifconfig="zeon_ajaxcart/general/is_enabled">
+                <action method="setColumnCount">
+                    <columns>3</columns>
+                </action>
+                <block type="enterprise_targetrule/catalog_product_item" name="catalog.product.related.item" template="zeon/ajaxcart/targetrule/catalog/product/list/related/item.phtml" />
+            </block>
+        </reference>
+    </catalog_product_view>
+
+
+
+    <!-- Code to Override the view of product view ends-->
+    <!--
+    Category default layout
+    -->
+
+
+
+    <catalog_category_default translate="label">
+        <label>Catalog Category (Non-Anchor)</label>
+        <reference name="content">
+            <remove name="product_list" />
+
+            <block type="personalize/product_list" name="zproduct_list" template="zeon/product/list.phtml">
+                    <block type="catalog/product_list_toolbar" name="product_list_toolbar" template="catalog/product/list/toolbar.phtml">
+                        <block type="page/html_pager" name="product_list_toolbar_pager"/>
+                        <!-- The following code shows how to set your own pager increments -->
+                        <!--
+                            <action method="setDefaultListPerPage"><limit>4</limit></action>
+                            <action method="setDefaultGridPerPage"><limit>9</limit></action>
+                            <action method="addPagerLimit"><mode>list</mode><limit>2</limit></action>
+                            <action method="addPagerLimit"><mode>list</mode><limit>4</limit></action>
+                            <action method="addPagerLimit"><mode>list</mode><limit>6</limit></action>
+                            <action method="addPagerLimit"><mode>list</mode><limit>8</limit></action>
+                            <action method="addPagerLimit" translate="label"><mode>list</mode><limit>all</limit><label>All</label></action>
+                        -->
+                    </block>
+                    <action method="addColumnCountLayoutDepend"><layout>empty</layout><count>6</count></action>
+                    <action method="addColumnCountLayoutDepend"><layout>one_column</layout><count>5</count></action>
+                    <action method="addColumnCountLayoutDepend"><layout>two_columns_left</layout><count>4</count></action>
+                    <action method="addColumnCountLayoutDepend"><layout>two_columns_right</layout><count>4</count></action>
+                    <action method="addColumnCountLayoutDepend"><layout>three_columns</layout><count>3</count></action>
+                    <action method="setToolbarBlockName"><name>product_list_toolbar</name></action>
+                </block>
+        </reference>
+    </catalog_category_default>
+
+
+
+<!--
+    Shopping cart item renderer
+    -->
+    <checkout_cart_index>
+        <reference name="checkout.cart">
+            <action method="setCartTemplate" ifconfig="zeon_ajaxcart/general/is_enabled">
+                <value>zeon/ajaxcart/checkout/cart.phtml</value>
+            </action>
+            <action method="setEmptyTemplate" ifconfig="zeon_ajaxcart/general/is_enabled">
+                <value>checkout/cart/noItems.phtml</value>
+            </action>
+            <action method="chooseTemplate" ifconfig="zeon_ajaxcart/general/is_enabled"/>
+            <action method="addItemRender" ifconfig="zeon_ajaxcart/general/is_enabled">
+                <type>default</type>
+                <block>checkout/cart_item_renderer</block>
+                <template>zeon/ajaxcart/checkout/cart/item/default.phtml</template>
+            </action>
+            <action method="addItemRender" ifconfig="zeon_ajaxcart/general/is_enabled">
+                <type>simple</type>
+                <block>checkout/cart_item_renderer</block>
+                <template>zeon/ajaxcart/checkout/cart/item/default.phtml</template>
+            </action>
+            <action method="addItemRender" ifconfig="zeon_ajaxcart/general/is_enabled">
+                <type>grouped</type>
+                <block>checkout/cart_item_renderer_grouped</block>
+                <template>zeon/ajaxcart/checkout/cart/item/default.phtml</template>
+            </action>
+            <action method="addItemRender" ifconfig="zeon_ajaxcart/general/is_enabled">
+                <type>configurable</type>
+                <block>checkout/cart_item_renderer_configurable</block>
+                <template>zeon/ajaxcart/checkout/cart/item/default.phtml</template>
+            </action>
+            <action method="addItemRender" ifconfig="zeon_ajaxcart/general/is_enabled">
+                <type>bundle</type>
+                <block>bundle/checkout_cart_item_renderer</block>
+                <template>zeon/ajaxcart/checkout/cart/item/default.phtml</template>
+            </action>
+            <action method="addItemRender" ifconfig="zeon_ajaxcart/general/is_enabled">
+                <type>downloadable</type>
+                <block>downloadable/checkout_cart_item_renderer</block>
+                <template>zeon/ajaxcart/downloadable/checkout/cart/item/default.phtml</template>
+            </action>
+            <action method="addItemRender" ifconfig="zeon_ajaxcart/general/is_enabled">
+                <type>giftcard</type>
+                <block>enterprise_giftcard/checkout_cart_item_renderer</block>
+                <template>zeon/ajaxcart/checkout/cart/item/default.phtml</template>
+            </action>
+        </reference>
+        <reference name="checkout.cart.crosssell">
+            <!-- <action method="setTemplate"><template>zeon/ajaxcart/checkout/cart/crosssell.phtml</template></action> -->
+            <action method="setTemplate" ifconfig="zeon_ajaxcart/general/is_enabled">
+                <template>zeon/ajaxcart/targetrule/checkout/cart/crosssell.phtml</template>
+            </action>
+        </reference>
+    </checkout_cart_index>
+
+</layout>

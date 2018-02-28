@@ -1,0 +1,12 @@
+--- app/code/core/Enterprise/Index/Model/Indexer.php
++++ app/code/core/Enterprise/Index/Model/Indexer.php
+@@ -76,6 +76,9 @@
+     {
+         if (is_null($this->_processesCollection)) {
+             $this->_processesCollection = $this->_factory->getResourceModel('enterprise_index/process_collection');
++            $this->_app->dispatchEvent('enterprise_index_exclude_process_before',
++                array('collection' => $this->_processesCollection)
++            );
+             $this->_processesCollection->initializeSelect();
+ 
+             $processes = array();

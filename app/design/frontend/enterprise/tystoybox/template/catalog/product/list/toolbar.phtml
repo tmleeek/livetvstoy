@@ -1,0 +1,156 @@
+<?php                                                                                                                                                                                           
+/**                                                                                                                                                                                             
+ * Magento Enterprise Edition                                                                                                                                                                   
+ *                                                                                                                                                                                              
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magento Enterprise Edition License
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.magentocommerce.com/license/enterprise-edition
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     enterprise_default
+ * @copyright   Copyright (c) 2013 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://www.magentocommerce.com/license/enterprise-edition
+ */
+?>
+<?php
+/**
+ * Product list toolbar
+ *
+ * @see Mage_Catalog_Block_Product_List_Toolbar
+ */
+?>
+<?php if($this->getCollection()->getSize()): ?>
+
+<div class="toolbar">
+
+    <?php
+    $controllerName = strtolower($this->getRequest()->getControllerName());
+    $actionName     = strtolower($this->getRequest()->getActionName());
+    if ($controllerName != 'advanced' && $actionName != 'result') { ?>
+        <div class="filter-col-block">
+            <div class="filter-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+            </div>
+            <span class="title">Filter Results</span>
+         </div>
+    <?php
+    } ?>
+    <div class="pager">
+        <p class="amount">
+            <?php echo $this->__('Showing <strong>%s-%s</strong> of <strong>%s</strong>', $this->getFirstNum(), $this->getLastNum(), $this->getTotalNum()) ?>
+        </p>
+
+        <div class="limiter">
+            <a title="<?php echo $this->__('View All') ?>" href="<?php echo $this->getLimitUrl('all') ?>" onclick="setLocation('<?php echo $this->getLimitUrl('all') ?>');"><?php echo $this->__('View All') ?></a>
+        </div>
+
+        <?php echo $this->getPagerHtml() ?>
+
+    </div>
+    <?php if( $this->isExpanded() ): ?>
+    <div class="sorter">
+        <?php if( $this->isEnabledViewSwitcher() ): ?>
+        <p class="view-mode">
+            <?php $_modes = $this->getModes(); ?>
+            <?php if($_modes && count($_modes)>1): ?>
+<!--            <label><?php //echo $this->__('View as') ?>:</label>-->
+            <?php $_i=1; $_fix=''; foreach ($this->getModes() as $_code=>$_label): ?>
+                <?php if ($_i==1 && strtolower($_code)=='list') $_fix='-fix'; ?>
+                <?php if($this->isModeActive($_code)): ?>
+                    <strong class="<?php echo strtolower($_code); echo $_fix; ?>" title="<?php echo $_label ?>"><?php echo $_label ?></strong>
+                <?php else: ?>
+                    <a class="<?php echo strtolower($_code); echo $_fix; ?>" title="<?php echo $_label ?>" href="<?php echo $this->getModeUrl($_code) ?>" onclick="setLocation('<?php echo $this->getModeUrl($_code) ?>');"><?php echo $_label ?></a>
+                <?php endif; ?>
+            <?php $_i++; endforeach; ?>
+            <?php endif; ?>
+        </p>
+        <?php endif; ?>
+        <?php
+        $sortOrderArray = array(
+            'price',
+            'bestselling_products',
+            'name',
+            'new_arrival',
+			//'best_seller'
+        );
+        $existingSortArray = $this->getAvailableOrders();
+        $finalSortOrder = array();
+//echo "Characters";
+//print_r($existingSortArray);
+        foreach($sortOrderArray as $_key1 => $_order1) {
+            foreach($existingSortArray as $ky => $valu) {
+
+                if ($_order1 == $ky) {
+                    $finalSortOrder[$ky] = $valu;
+                    continue;
+                }
+            }
+        }
+	$finalSortOrder = array_merge($finalSortOrder, array('new_arrival'=>"Newest"));
+        $this->setAvailableOrders($finalSortOrder);
+	
+	//$getavailableorders = $this->getAvailableOrders();
+        //$getavailableorders = array_merge($getavailableorders, array('entity_id'=>"Newest"));
+	
+        ?>
+
+        <div class="sort-by left" >
+            <select onchange="setLocation(this.value)" class="dropkick-select">
+            <?php foreach($this->getAvailableOrders() as $_key=>$_order): ?>
+                <?php $_order = ('best_seller' == strtolower($_order)) ? 'Best Sellers' : $_order;?>
+
+                <?php if ($_order == 'Position'): ?>
+                <option value="<?php echo $this->getOrderUrl($_key, 'asc') ?>"<?php if($this->isOrderCurrent($_key) && $this->getCurrentDirection() == 'asc'): ?> selected="selected"<?php endif; ?>>
+                    <?php echo $this->__('Sort Products By:'); ?>
+                </option>
+                <?php elseif($_order == 'Name') : ?>
+                <option value="<?php echo $this->getOrderUrl($_key, 'asc') ?>"<?php if($this->isOrderCurrent($_key) && $this->getCurrentDirection() == 'asc'): ?> selected="selected"<?php endif; ?>>
+                    <?php echo $this->__('Name (A-Z)'); ?>
+                </option>
+                <option value="<?php echo $this->getOrderUrl($_key, 'desc') ?>"<?php if($this->isOrderCurrent($_key) && $this->getCurrentDirection() == 'desc'): ?> selected="selected"<?php endif; ?>>
+                    <?php echo $this->__('Name (Z-A)'); ?>
+                </option>
+                <?php elseif($_order == 'Price') : ?>
+                <option value="<?php echo $this->getOrderUrl($_key, 'asc') ?>"<?php if($this->isOrderCurrent($_key) && $this->getCurrentDirection() == 'asc'): ?> selected="selected"<?php endif; ?>>
+                    <?php echo $this->__($_order) .' '. $this->__('(Low to High)'); ?>
+                </option>
+                <option value="<?php echo $this->getOrderUrl($_key, 'desc') ?>"<?php if($this->isOrderCurrent($_key) && $this->getCurrentDirection() == 'desc'): ?> selected="selected"<?php endif; ?>>
+                    <?php echo $this->__($_order) .' '. $this->__('(High to Low)'); ?>
+                </option>
+                <?php elseif($_order == 'Best Seller') : ?>
+                <option value="<?php echo $this->getOrderUrl($_key, 'desc') ?>"<?php if($this->isOrderCurrent($_key) && $this->getCurrentDirection() == 'desc'): ?> selected="selected"<?php endif; ?>>
+                    <?php echo $this->__($_order) ?>
+                </option>
+                <?php elseif($_order == 'Newest') : ?>
+                <option value="<?php echo $this->getOrderUrl($_key, 'desc') ?>"<?php if($this->isOrderCurrent($_key) && $this->getCurrentDirection() == 'desc'): ?> selected="selected"<?php endif; ?>>
+                <?php echo $this->__($_order); ?>
+                </option>
+                <?php else : ?>
+                <option value="<?php echo $this->getOrderUrl($_key, 'asc') ?>"<?php if($this->isOrderCurrent($_key)): ?> selected="selected"<?php endif; ?>>
+                    <?php echo $this->__($_order) ?>
+                </option>
+                <?php endif; ?>
+
+            <?php endforeach; ?>
+            </select>
+        </div>
+    </div>
+    <?php endif; ?>
+
+
+</div>
+<?php endif ?>

@@ -1,0 +1,165 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @category   Zeon
+ * @package    Zeon_Attributemapping
+ */
+ -->
+<config>
+
+    <modules>
+        <Zeon_Attributemapping>
+            <version>0.1.4</version>
+        </Zeon_Attributemapping>
+    </modules>
+
+    <frontend>
+        <routers>
+            <attributemapping>
+                <use>standard</use>
+                <args>
+                    <module>Zeon_Attributemapping</module>
+                    <frontName>attributemapping</frontName>
+                </args>
+            </attributemapping>
+        </routers>
+        <layout>
+            <updates>
+                <attributemapping>
+                    <file>zeon/attributemapping.xml</file>
+                </attributemapping>
+            </updates>
+        </layout>
+    </frontend>
+
+    <admin>
+         <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <zeon_attributemapping before="Mage_Adminhtml">Zeon_Attributemapping_Adminhtml</zeon_attributemapping>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+
+    <adminhtml>
+        <layout>
+            <updates>
+                <attributemapping>
+                    <file>zeon/attributemapping.xml</file>
+                </attributemapping>
+            </updates>
+        </layout>
+    </adminhtml>
+
+    <global>
+         <blocks>
+            <zeon_attributemapping>
+                <class>Zeon_Attributemapping_Block</class>
+            </zeon_attributemapping>
+         </blocks>
+
+         <helpers>
+             <zeon_attributemapping>
+                 <class>Zeon_Attributemapping_Helper</class>
+             </zeon_attributemapping>
+         </helpers>
+
+         <models>
+            <zeon_attributemapping>
+                <class>Zeon_Attributemapping_Model</class>
+                <resourceModel>zeon_attributemapping_resource</resourceModel>
+            </zeon_attributemapping>
+            <zeon_attributemapping_resource>
+                <class>Zeon_Attributemapping_Model_Resource</class>
+                <entities>
+                    <attributemapping>
+                        <table>zeon_attribute_flat</table>
+                    </attributemapping>
+                </entities>
+            </zeon_attributemapping_resource>
+        </models>
+
+        <resources>
+            <zeon_attributemapping_setup>
+                <setup>
+                    <module>Zeon_Attributemapping</module>
+                    <class>Mage_Eav_Model_Entity_Setup</class>
+                </setup>
+                <connection>
+                    <use>default_setup</use>
+                </connection>
+            </zeon_attributemapping_setup>
+            <zeon_attributemapping_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </zeon_attributemapping_write>
+            <zeon_attributemapping_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </zeon_attributemapping_read>
+        </resources>
+    </global>
+
+    <default>
+        <zeon_attributemapping>
+            <top_menu>
+                <active>1</active>
+                <get_categories>3,4,5,6,7,8</get_categories>
+                <personalized_category>3</personalized_category>
+                <sublink_count>4</sublink_count>
+                <attribute_list>brand,character,shop_by_age</attribute_list>
+                <clearence_text>Clearance</clearence_text>
+                <clearence_url>clearance/</clearence_url>
+                <menublock_identifier>site_top_menu</menublock_identifier>
+                <attribute_list_count>12</attribute_list_count>
+                <seeall_enable>1</seeall_enable>
+                <sublink_count_char>2</sublink_count_char>
+                <char_menu1>a,b,c,d,e,f,g,h</char_menu1>
+                <char_menu2>i,j,k,l,m,n,o,p,q,r,s</char_menu2>
+                <char_menu3>t,u,v,w,x,y,z</char_menu3>
+                <set_category_menu>0</set_category_menu>
+                <static_blockinmenu></static_blockinmenu>
+                <menu_seeall_enable>0</menu_seeall_enable>
+                <root_menu_clickable>0</root_menu_clickable>
+            </top_menu>
+            <front_scroller>
+                <active>1</active>
+                <item_count>12</item_count>
+                <slider_attribute>character</slider_attribute>
+                <character_block>character_list_block</character_block>
+            </front_scroller>
+            <url_rewritemanage>
+                <active>1</active>
+                <url_prefix>html</url_prefix>
+                <characterpage_url>all-characters</characterpage_url>
+            </url_rewritemanage>
+        </zeon_attributemapping>
+    </default>
+
+    <crontab>
+        <jobs>
+            <cps_attribute_url_rewrites>
+                <schedule>
+                    <cron_expr>56 0 * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>zeon_attributemapping/Urlcron::setAttributeUrls</model>
+                </run>
+            </cps_attribute_url_rewrites>
+            <cps_site_menu>
+                <schedule>
+                    <cron_expr>57 0 * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>zeon_attributemapping/Menucron::setSiteTopMenu</model>
+                </run>
+            </cps_site_menu>
+        </jobs>
+    </crontab>
+
+</config>

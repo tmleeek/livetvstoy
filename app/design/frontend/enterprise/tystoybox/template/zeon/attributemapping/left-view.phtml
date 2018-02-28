@@ -1,0 +1,40 @@
+<?php
+/**
+ * Zeon
+ * Manufacturer list all module
+ *
+ * @category   Zeon
+ * @package    Zeon_Manufacturer
+ * @copyright  Copyright (c) 2008 Zeon Solutions.
+ * @license    http://www.opensource.org/licenses/gpl-3.0.html GNU General Public License version 3
+ */
+?>
+<?php
+/**
+ * Attribute List All
+ *
+ * @see Zeon_Attributemapping_Block_View
+ */
+?>
+<?php $_attributeList = $this->getAttributeList();
+$attributeData = $this->getAttributeData();
+$_imageUrl = Mage::getBaseUrl('media');
+$helper = Mage::helper('zeon_attributemapping');
+?>
+
+<div class="left-attribute-list">
+    <ul class="left-attribute-list-links">
+    <?php foreach ($_attributeList as $attribute): ?>
+    <?php $attributeUrl = $helper->getAttributeUrl($attribute['option_id'], $attribute['request_path']); ?>
+        <li>
+            <a href="<?php echo $attributeUrl ?>" onclick="setLocation('<?php echo $attributeUrl ?>');" title="<?php echo $this->htmlEscape($attribute['value']) ?>"><?php echo $this->htmlEscape($attribute['value']) ?></a>
+        </li>
+    <?php endforeach ?>
+    </ul>
+</div>
+
+<script type="text/javascript">
+			jQuery(document).ready(function() {
+				jQuery('body.attributemapping-index-view').addClass('cat-listing');
+			});
+</script>

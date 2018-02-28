@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">    
+    <default>
+        <reference name="head">
+            <action method="addCss" ifconfig="magalter_crossup/configuration/enable"><stylesheet>magalter_crossup/styles.css</stylesheet></action>           
+        </reference>      
+         <reference name = "before_body_end">
+            <block type = "magalter_crossup/products" name="magalter.crossup.products" as = "magalter.crossup.products" />          
+        </reference>     
+    </default>  
+    <checkout_cart_index>
+        <reference name = "before_body_end">
+            <block type = "magalter_crossup/products" name="magalter.crossup.products.template" template="magalter_crossup/wrapper.phtml" as = "magalter.crossup.products.template" />          
+        </reference>   
+    </checkout_cart_index> 
+</layout>

@@ -1,0 +1,109 @@
+<?php
+/**
+ * 
+ * @category   CRM4Ecommerce
+ * @package    CRM4Ecommerce_AdminStartupPage
+ * @author     Philip Nguyen <philip@crm4ecommerce.com>
+ * @link       http://crm4ecommerce.com
+ * @see        CRM4Ecommerce_AdminStartupPage_Block_Adminhtml_Dashboard_Status
+ */
+?>
+<div class="entry-edit">
+    <div class="entry-edit-head">
+        <h4 class="icon-head head-edit-form fieldset-legend"><?php echo $this->__('Module Status') ?></h4>
+    </div>
+    <div class="fieldset">
+        <table cellspacing="0" class="form-list" style="width: 100%;">
+            <tbody>
+                <tr>
+                    <td class="label"><?php echo $this->__('Module Status') ?></td>
+                    <td class="value">
+                        <?php if (Mage::getStoreConfig('crm4ecommerce_adminstartuppage/general/status') == CRM4Ecommerce_CRMCore_Model_Option_ModuleStatus::STATUS_ENABLED) { ?>
+                        <img title="<?php echo $this->__('Enabled');?>" alt="<?php echo $this->__('Enabled');?>" src="<?php echo $this->getSkinUrl('images/crm4ecommerce/adminstartuppage/yes.gif'); ?>">
+                        <?php echo $this->__('Enabled');?>
+                        <?php } else if (Mage::getStoreConfig('crm4ecommerce_adminstartuppage/general/status') == CRM4Ecommerce_CRMCore_Model_Option_ModuleStatus::STATUS_DISABLED) { ?>
+                        <img title="<?php echo $this->__('Disabled');?>" alt="<?php echo $this->__('Disabled');?>" src="<?php echo $this->getSkinUrl('images/crm4ecommerce/adminstartuppage/no.png'); ?>">
+                        <?php echo $this->__('Disabled');?>
+                        <?php } else { ?>
+                        <img title="<?php echo $this->__('Expired');?>" alt="<?php echo $this->__('Expired');?>" src="<?php echo $this->getSkinUrl('images/crm4ecommerce/adminstartuppage/no.png'); ?>">
+                        <?php echo $this->__('Expired');?>
+                        <?php } ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label"><?php echo $this->__('Module Version') ?></td>
+                    <td class="value">
+                        <?php echo Mage::helper('adminstartuppage')->getVersion(); ?>
+                        <a href="http://www.crm4ecommerce.com/magento-admin-startup-page.html/" style="text-decoration: none;" target="_blank">(<?php echo $this->__('Find new version') ?>)</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label"><?php echo $this->__('Serial Key Information') ?></td>
+                    <td class="value">
+                        <?php echo Mage::getStoreConfig('crm4ecommerce_adminstartuppage/general/serial_infor'); ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label"><?php echo $this->__('Register Date') ?></td>
+                    <td class="value">
+                        <?php echo Mage::getStoreConfig('crm4ecommerce_adminstartuppage/general/start_date'); ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label"><?php echo $this->__('Expire Date') ?></td>
+                    <td class="value">
+                        <?php echo Mage::getStoreConfig('crm4ecommerce_adminstartuppage/general/expire_date'); ?>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="entry-edit-head">
+        <h4 class="icon-head head-edit-form fieldset-legend"><?php echo $this->__('Module Settings') ?></h4>
+    </div>
+    <div class="fieldset">
+        <table cellspacing="0" class="form-list" style="width: 100%;">
+            <tbody>                
+                <tr>
+                    <td class="label"><?php echo $this->__('Admin Router Key') ?></td>
+                    <td class="value">
+                        <?php echo Mage::getStoreConfig('crm4ecommerce_adminstartuppage/settings/admin_ruoter_key'); ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label"><?php echo $this->__('Current Startup Page') ?></td>
+                    <td class="value">
+                        <a style="text-decoration: none;" href="<?php echo $this->getUrl(Mage::getSingleton('admin/session')->getUser()->getStartupPageUrl()); ?>"><?php echo Mage::getSingleton('admin/session')->getUser()->getStartupPageUrl(); ?></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>    
+    
+    <?php if (Mage::getSingleton('admin/session')->isAllowed('admin/system/config/crm4ecommerce_adminstartuppage')) { ?>
+    <div class="fieldset" style="margin-top: 20px;">
+        <button onclick="window.open('<?php echo $this->getUrl('adminhtml/system_config/edit/section/crm4ecommerce_adminstartuppage/'); ?>', '_self');" class="scalable" type="button" >
+            <span><?php echo $this->__('Change Status & Settings')?></span>
+        </button> 
+        <?php if (Mage::getStoreConfig('crm4ecommerce_adminstartuppage/general/status')
+                && Mage::getSingleton('admin/session')->isAllowed(CRM4Ecommerce_AdminStartupPage_Helper_Data::ACL_CHANGE_STARTUP_PAGE)) { ?>
+        <button onclick="window.open('<?php echo $this->getUrl('adminhtml/system_account/index/'); ?>', '_self');" class="scalable" type="button" >
+            <span><?php echo $this->__('Change Startup Page')?></span>
+        </button>
+        <?php } ?>
+        <?php if (Mage::getStoreConfig('crm4ecommerce_adminstartuppage/general/status')
+                && Mage::getSingleton('admin/session')->isAllowed(CRM4Ecommerce_AdminStartupPage_Helper_Data::ACL_CLEAR_REGISTER_INFORMATION)) { ?>
+        <script type="text/javascript">
+        clearAllRegisterInformation = function() {
+            if (window.confirm("<?php echo $this->__("Do you really want clear all register information settings?")?>")) {
+                window.open('<?php echo $this->getUrl('adminhtml/adminstartuppage_dashboard/clearAllRegisterInformation/'); ?>', '_self');
+            }
+        };
+        </script>
+        <button onclick="clearAllRegisterInformation()" class="scalable" type="button" >
+            <span><?php echo $this->__('Clear All Register Information')?></span>
+        </button>
+        <?php } ?>
+    </div>
+    <?php } ?>
+</div>

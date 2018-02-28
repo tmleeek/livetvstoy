@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<categories>
+	<chains show_all_button="0">
+			<cat name="Chain Cat 1"></cat>
+			<cat name="Chain Cat 2"></cat>
+	</chains>
+	<cliparts show_all_button="0">
+			<cat name="Academic"></cat>
+			<cat name="Expressions"></cat>
+			<cat name="Faith"></cat>
+			<cat name="Interests"></cat>
+			<cat name="Mascot"></cat>
+			<cat name="Sports"></cat>
+			<cat name="Zodiac"></cat>
+			<cat name="Signet"></cat>
+			<cat name="Air Force"></cat>
+			<cat name="Army"></cat>
+			<cat name="Coast Guard"></cat>
+			<cat name="Marines"></cat>
+			<cat name="Navy"></cat>
+			<cat name="Sports Top"></cat>
+	</cliparts>
+	<wording show_all_button="true">
+		<cat name="Any Occasion"></cat>
+		<cat name="Birthday"></cat>
+		<cat name="Holiday Greetings"></cat>
+		<cat name="Faith/Religious"></cat>
+		<cat name="Romantic"></cat>
+	</wording>
+	<font show_all_button="0">
+		<cat name="Serif"></cat>
+		<cat name="Sans Serif"></cat>
+		<cat name="Script"></cat>
+		<cat name="Blackletter"></cat>
+		<cat name="Monogram"></cat>
+		<cat name="Basic Fonts"></cat>
+		<cat name="Engraving Fonts 1"></cat>
+	</font>
+	<color show_all_button="0">
+		<cat name="Basic Colors"></cat>
+		<cat name="Ribbon Colors"></cat>
+		<cat name="Seal Colors"></cat>
+	</color>
+	<paper show_all_button="0">
+		<cat name="Red"></cat>
+		<cat name="Magenta"></cat>
+		<cat name="Maroon/Burgundy"></cat>
+		<cat name="Yellow"></cat>
+		<cat name="Blue"></cat>
+	</paper>
+</categories>

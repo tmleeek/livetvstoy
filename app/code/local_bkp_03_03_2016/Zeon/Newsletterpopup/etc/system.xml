@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Zeon Solutions, Inc.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Zeon Solutions License
+ * that is bundled with this package in the file LICENSE_ZE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.zeonsolutions.com/license/
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@zeonsolutions.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * versions in the future. If you wish to customize this extension for your
+ * needs please refer to http://www.zeonsolutions.com for more information.
+ *
+ * @category    Zeon
+ * @package     Zeon_CatalogManager
+ * @copyright   Copyright (c) 2014 Zeon Solutions, Inc. All Rights Reserved.(http://www.zeonsolutions.com)
+ * @license     http://www.zeonsolutions.com/license/
+ */
+-->
+<config>
+    <sections>
+        <newsletter translate="label" module="newsletterpopup">
+            <groups>
+                <subscription translate="label">
+                    <fields>
+                        <active_popup translate="label comment">
+                            <label>Enable Subscription Popup</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Enable/Disable the newsletter popup on all pages.</comment>
+                        </active_popup>
+                        <active_lefttemplate translate="label comment">
+                            <label>Enable Subscription on Left Column</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>101</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Enable/Disable the newsletter subscription template on left column.</comment>
+                        </active_lefttemplate>
+                    </fields>
+                </subscription>
+            </groups>
+        </newsletter>
+    </sections>
+</config>

@@ -1,0 +1,39 @@
+<?php
+/**
+ * zeonsolutions inc.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://shop.zeonsolutions.com/license-enterprise.txt
+ *
+ * =================================================================
+ *                 MAGENTO EDITION USAGE NOTICE
+ * This package designed for Magento ENTERPRISE edition
+ * =================================================================
+ * zeonsolutions does not guarantee correct work of this extension
+ * on any other Magento edition except Magento ENTERPRISE edition.
+ * zeonsolutions does not provide extension support in case of
+ * incorrect edition usage.
+ * =================================================================
+ *
+ * @category   design
+ * @package    enterprise_default
+ * @version    0.0.1
+ * @copyright  @copyright Copyright (c) 2013 zeonsolutions.Inc. (http://www.zeonsolutions.com)
+ * @license    http://shop.zeonsolutions.com/license-enterprise.txt
+ */
+?>
+
+<?php
+$_product = $this->getProduct();
+$_helper = $this->helper('catalog/output');
+?>
+<p class="product-image">
+    <?php
+    $_img = '<img src="' . $this->helper('catalog/image')->init($_product, 'image')->resize(275) . '" alt="' . $this->htmlEscape($_product->getImageLabel()) . '" title="' . $this->htmlEscape($_product->getImageLabel()) . '" />';
+    echo $_helper->productAttribute($_product, $_img, 'image');
+    ?>
+</p>

@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Phpcmsframework_Customtabs>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Phpcmsframework_Customtabs>
+    </modules>
+</config>

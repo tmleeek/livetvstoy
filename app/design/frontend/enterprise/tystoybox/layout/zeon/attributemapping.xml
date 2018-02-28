@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<!-- /** * @category design * @package enterprise_toybox */ -->
+<layout version="0.1.0">
+    <!-- Default layout, loads most of the pages -->
+    <default>
+        <!-- Newsletter cookie popup -->
+        <reference name="top.menu">
+            <block type="core/template" name="slider.menu" as="slider.menu"
+                before="catalog.topnav" template="zeon/attributemapping/slider.phtml" />
+        </reference>
+    </default>
+
+    <!-- Character listing page -->
+    <attributemapping_index_view>
+        <reference name="head">
+            <action method="addItem"><type>skin_js</type><name>js/bxslider/jquery.bxslider.min.js</name></action>
+        </reference>
+        <reference name="breadcrumbs.container">
+            <block type="zeon_attributemapping/view" name="category.title"
+                after="breadcrumbs" template="zeon/attributemapping/list-title.phtml" />
+        </reference>
+        <reference name="left">
+            <block type="zeon_attributemapping/view" name="character_menu"
+                before="newsletterleft" template="zeon/attributemapping/left-view.phtml" />
+        </reference>
+
+        <reference name="content">
+            <block type="zeon_attributemapping/view" name="characters_list"
+                template="zeon/attributemapping/view.phtml" >
+                <block type="cms/block" name="character_list_block">
+                    <action method="setBlockId">
+                        <block_id>character_list_block</block_id>
+                    </action>
+                </block>
+            </block>
+            <block type="reports/product_viewed" name="recently.product.viewed" after="-" template="reports/product_viewed.phtml" />
+        </reference>
+    </attributemapping_index_view>
+
+    <attributemapping_index_option>
+        <reference name="head">
+            <action method="addItem"><type>skin_js</type><name>js/bxslider/jquery.bxslider.min.js</name></action>
+        </reference>
+        <reference name="breadcrumbs.container">
+            <block type="zeon_attributemapping/optionlist" name="category.title"
+                after="breadcrumbs" template="zeon/attributemapping/list-title.phtml" />
+        </reference>
+        <reference name="left">
+            <block type="zeon_attributemapping/optionlist" name="character_menu"
+                before="newsletterleft" template="zeon/attributemapping/left-view.phtml" />
+        </reference>
+
+        <reference name="content">
+            <block type="zeon_attributemapping/optionlist" name="attribute_list"
+                template="zeon/attributemapping/option-list.phtml" />
+            <block type="reports/product_viewed" name="recently.product.viewed"
+                after="-" template="reports/product_viewed.phtml">
+                <action method="setData">
+                    <name>number_of_products</name>
+                    <value>4</value>
+                </action>
+            </block>
+        </reference>
+
+    </attributemapping_index_option>
+
+    <!-- Character product listing page -->
+    <attributemapping_index_index>
+        <reference name="head">
+            <action method="addItem"><type>skin_js</type><name>js/bxslider/jquery.bxslider.min.js</name></action>
+        </reference>
+        <reference name="breadcrumbs.container">
+            <block type="zeon_attributemapping/title" name="category.title"
+                after="breadcrumbs" template="zeon/attributemapping/title.phtml" />
+        </reference>
+        <reference name="content">
+            <block type="zeon_attributemapping/title" name="attribute.description"
+                before="cms.products" template="zeon/attributemapping/description.phtml" />
+            <block type="reports/product_viewed" name="recently.product.viewed"
+                after="-" template="reports/product_viewed.phtml">
+                <action method="setData">
+                    <name>number_of_products</name>
+                    <value>4</value>
+                </action>
+            </block>
+        </reference>
+        <update handle="cms_page_layered" />
+        <!-- add category products to content column -->
+        <reference name="cms.products">
+            <block type="zeon_attributemapping/productlist" name="product_list"
+                template="catalog/product/list.phtml">
+                <block type="catalog/product_list_toolbar" name="product_list_toolbar"
+                    template="catalog/product/list/toolbar.phtml">
+                    <block type="page/html_pager" name="product_list_toolbar_pager" />
+                </block>
+                <action method="setDefaultDirection"><string>desc</string></action>
+                <action method="setToolbarBlockName">
+                    <name>product_list_toolbar</name>
+                </action>
+            </block>
+        </reference>
+        <reference name="before_body_end">
+            <block type="mana_filters/layer" name="mana_layer" as="mana_layer"
+                before="-" />
+        </reference>
+    </attributemapping_index_index>
+</layout>

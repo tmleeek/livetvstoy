@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <global>
+        <catalog>
+            <product>
+                <options>
+                    <bundle>
+                        <types>
+                            <partyplanner translate="label" module="bundle">
+                                <label>Party Planner</label>
+                            </partyplanner>
+                        </types>
+                    </bundle>
+                </options>
+            </product>
+        </catalog>
+        <blocks>
+            <bundle>
+                <rewrite>
+                    <catalog_product_view_type_bundle>Zeon_Bundle_Block_Catalog_Product_View_Type_Bundle</catalog_product_view_type_bundle>
+                    <catalog_product_view_type_bundle_option_partyplanner>Zeon_Bundle_Block_Catalog_Product_View_Type_Bundle_Option_Partyplanner</catalog_product_view_type_bundle_option_partyplanner>
+                    <adminhtml_catalog_product_composite_fieldset_options_type_partyplanner>Zeon_Bundle_Block_Adminhtml_Catalog_Product_Composite_Fieldset_Options_Type_Partyplanner</adminhtml_catalog_product_composite_fieldset_options_type_partyplanner>
+                    <adminhtml_catalog_product_edit_tab_bundle_option_selection>Zeon_Bundle_Block_Adminhtml_Catalog_Product_Edit_Tab_Bundle_Option_Selection</adminhtml_catalog_product_edit_tab_bundle_option_selection>
+                    <adminhtml_catalog_product_edit_tab_bundle_option_search_grid>Zeon_Bundle_Block_Adminhtml_Catalog_Product_Edit_Tab_Bundle_Option_Search_Grid</adminhtml_catalog_product_edit_tab_bundle_option_search_grid>
+                </rewrite>
+            </bundle>
+            <zeon_bundle>
+                <class>Zeon_Bundle_Block</class>
+            </zeon_bundle>
+        </blocks>
+        <helpers>
+        	<bundle>
+        		<rewrite>
+        			<catalog_product_configuration>Zeon_Bundle_Helper_Catalog_Product_Configuration</catalog_product_configuration>
+        		</rewrite>
+        	</bundle>
+        </helpers>
+        <models>
+            <bundle>
+                <rewrite>
+                    <product_type>Zeon_Bundle_Model_Product_Type</product_type>
+                    <resource_option_collection>Zeon_Bundle_Model_Resource_Option_Collection</resource_option_collection>
+                </rewrite>
+            </bundle>
+            <bundle_resource>
+                <rewrite>
+                    <option_collection>Zeon_Bundle_Model_Resource_Option_Collection</option_collection>
+                </rewrite>
+            </bundle_resource>
+        </models>
+        <catalog>
+            <product>
+                <type>
+                    <bundle translate="label" module="bundle">
+                        <label>Bundle Product</label>
+                        <model>bundle/product_type</model>
+                        <composite>1</composite>
+                        <allowed_selection_types>
+                            <simple/>
+                            <virtual/>
+                            <configurable/><!-- Allow configurable products for selection -->
+                        </allowed_selection_types>
+                        <price_model>bundle/product_price</price_model>
+                        <index_data_retreiver>bundle/catalogIndex_data_bundle</index_data_retreiver>
+                        <index_priority>40</index_priority>
+                        <price_indexer>bundle/indexer_price</price_indexer>
+                        <stock_indexer>bundle/indexer_stock</stock_indexer>
+                    </bundle>
+                </type>
+                <options>
+                    <bundle>
+                        <types>
+                            <select translate="label" module="bundle">
+                                <label>Drop-down</label>
+                            </select>
+                            <radio translate="label" module="bundle">
+                                <label>Radio Buttons</label>
+                            </radio>
+                            <checkbox translate="label" module="bundle">
+                                <label>Checkbox</label>
+                            </checkbox>
+                            <multi translate="label" module="bundle">
+                                <label>Multiple Select</label>
+                            </multi>
+                        </types>
+                    </bundle>
+                </options>
+            </product>
+        </catalog>
+    </global>
+    <frontend>
+        <routers>
+            <bundle>
+                <args>
+                    <modules>
+                        <zeon before="Mage_Bundle">Zeon_Bundle</zeon>
+                    </modules>
+                </args>
+            </bundle>
+        </routers>
+    </frontend>
+</config>

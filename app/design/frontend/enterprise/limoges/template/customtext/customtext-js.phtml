@@ -1,0 +1,5 @@
+<?php $product = Mage::registry('current_product');
+if($product->getIsSharedCustomOption()) {
+?>
+<script src="<?php echo $this->getSkinUrl('js/customtext/customtext.js'); ?>"></script>
+<?php } ?>

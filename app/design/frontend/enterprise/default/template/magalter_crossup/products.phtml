@@ -1,0 +1,111 @@
+<?php 
+    $scope = $this->getRelatedUpsells(); 
+    $helper = $this->_outputHelper;
+?> 
+<div class="magalter-crossup-checkout-wrapper">    
+  
+    <?php foreach ($scope as $key => $products): ?>   
+    <?php if(!$products->getSize()): continue; endif; ?>
+        <?php $rule = $this->getRuleByKey($key); ?>               
+        <div class="cart magalter-crossup-products" id="magalter-crossup-rule-<?php echo $rule->getId(); ?>">          
+            <div class="magalter-crossup-rule-image" id="magalter-crossup-rule-image-<?php echo $rule->getId(); ?>">                     
+                 <!-- product images -->
+                 <?php $i=0; foreach ($products as $product): ?>      
+                    <div <?php if($i): ?>style="display:none;"<?php endif; ?> id="product-image-<?php echo $product->getId(); ?>">
+                         <?php echo $this->getImage($product, 80, 80); ?>
+                    </div>
+                <?php $i++; endforeach; ?>                  
+            </div> 
+            <div class="magalter-crossup-rule-description">
+              <?php if(trim($rule->getName())): ?>
+                <h3><?php echo $rule->getName(); ?></h3>
+              <?php endif; ?>
+              <?php echo $rule->getDescription(); ?>                
+            </div>             
+            <div class="magalter-crossup-product-details">           
+                <?php foreach ($products as $product): ?> 
+                <div class="magalter-crossup-product-description" id="magalter-crossup-product-description-<?php echo $rule->getId(); ?>-<?php echo $product->getId(); ?>" style="display:none;">
+                    <?php $_productNameStripped = $this->stripTags($product->getName(), null, true); ?>
+                    <div><h2 class="product-name"><a href="<?php echo $product->getProductUrl() ?>" title="<?php echo $_productNameStripped; ?>"><?php echo $product->getName(); ?></a></h2></div>
+                    <div><?php echo $product->getShortDescription(); ?></div>
+                    <div class="magalter-crossup-description-image">  
+                        <a href='<?php echo $product->getProductUrl() ?>' title='<?php echo $helper->stripTags($helper->getImageLabel($product, 'small_image'), null, true) ?>' class='product-image magalter-crossup-image'>
+                            <img src='<?php echo $this->helper('catalog/image')->init($product, 'small_image')->resize(135, 135); ?>' width='135' height='135' alt='<?php echo $this->stripTags($helper->getImageLabel($product, 'small_image'), null, true); ?>' />
+                        </a> 
+                    </div>                            
+                    <div class="magalter-crossup-description-action">
+                        <button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->_outputHelper->getAddToCartUrl($product) ?>')"><span><span><?php echo $this->__('Add to Cart') ?></span></span></button>
+                        <button type="button" title="<?php echo $this->__('View Details') ?>" class="button btn-cart" onclick="setLocation('<?php echo $product->getProductUrl() ?>')"><span><span><?php echo $this->__('View Details') ?></span></span></button>
+                    </div> 
+                </div>
+                <div class="product-info-crossup">
+                     <h2 class="product-name">
+                        <a onmouseover ="monitorLinksHover('<?php echo $product->getId() ?>', '<?php echo $rule->getId(); ?>')" href="<?php echo $product->getProductUrl() ?>"><?php echo $product->getName(); ?></a>
+                     </h2>  
+                     <?php echo $this->getPriceHtml($product, true) ?> 
+                     <div class="magalter-crossup-product-info" id="magalter-crossup-product-info-<?php echo $rule->getId(); ?>-<?php echo $product->getId(); ?>"></div>  
+                     <button style="float:right" type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->_outputHelper->getAddToCartUrl($product) ?>')"><span><span><?php echo $this->__('Add to Cart') ?></span></span></button> 
+                </div>                  
+               <?php endforeach; ?>  
+            </div>         
+        </div>
+    <?php endforeach; ?>
+       
+</div>
+<script type="text/javascript"> 
+    
+    decorateGeneric($$('ul.products-grid'), ['odd','even','first','last']);
+
+             
+    var magalterUpsellsCalculateOffsets = function(el, rel) {
+        var pos = new magalterOffsets({element: $(el), relative: $(rel)});   
+        pos.align();     
+    }
+
+
+    $$('.magalter-crossup-product-info').each(function(el) { 
+        var info = el.id.split('-');        
+        var productId = info.pop();
+        var ruleId = info.pop();        
+        var descriptionId = 'magalter-crossup-product-description-' + ruleId + '-' + productId;         
+        magalterUpsellsCalculateOffsets(descriptionId, el.id);        
+        var effect = new magalterEffect([{trigger: el.id, element: descriptionId}], {});      
+        effect.interactive = 1; 
+        effect.effect = 1; 
+        effect.effectDuration = 0.3;     
+        effect.interact();
+       
+    });
+   
+  var magalterUpsellsLock = false;  
+   var monitorLinksHover = function(product, rule) {    
+       if(!magalterUpsellsLock) {
+           var el = $('magalter-crossup-rule-'+ rule).down('*[id=product-image-' + product + ']');            
+           if(!el.visible()) {
+              magalterUpsellHideAll(rule);
+              magalterUpsellShow(el);
+           }          
+       }            
+   } 
+   
+   var magalterUpsellHideAll = function(rule) {
+       
+       $$('#magalter-crossup-rule-image-' + rule + ' div').each(function(el) {
+           el.hide();
+       });          
+     
+   }
+   
+   var magalterUpsellShow = function(element) {
+        
+        Effect.Appear(element, {
+             duration: 0.3, 
+             beforeStart: arguments[2] || function() { magalterUpsellsLock = true; },
+             afterFinish: arguments[1] || function() { magalterUpsellsLock = false; }        
+        });      
+        
+        return this;
+    };
+   
+</script>
+  

@@ -1,0 +1,131 @@
+<?xml version="1.0"?>
+<!-- /** * Magento Enterprise Edition * * NOTICE OF LICENSE * * This source 
+    file is subject to the Magento Enterprise Edition License * that is bundled 
+    with this package in the file LICENSE_EE.txt. * It is also available through 
+    the world-wide-web at this URL: * http://www.magentocommerce.com/license/enterprise-edition 
+    * If you did not receive a copy of the license and are unable to * obtain 
+    it through the world-wide-web, please send an email * to license@magentocommerce.com 
+    so we can send you a copy immediately. * * DISCLAIMER * * Do not edit or 
+    add to this file if you wish to upgrade Magento to newer * versions in the 
+    future. If you wish to customize Magento for your * needs please refer to 
+    http://www.magentocommerce.com for more information. * * @category Zeon * 
+    @package Zeon_Responsys * @copyright * @license */ -->
+<config>
+    <modules>
+        <Zeon_Responsys>
+            <version>0.1.0</version>
+        </Zeon_Responsys>
+    </modules>
+    
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <responsys after="Mage_Adminhtml">Zeon_Responsys_Adminhtml</responsys>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+    <adminhtml>
+        <layout>
+            <updates>
+                <responsys>
+                    <file>responsys.xml</file>
+                </responsys>
+            </updates>
+        </layout>
+    </adminhtml>
+    
+    <global>
+        <blocks>
+            <responsys>
+                <class>Zeon_Responsys_Block</class>
+            </responsys>
+        </blocks>
+        <helpers>
+            <responsys>
+                <class>Zeon_Responsys_Helper</class>
+            </responsys>
+        </helpers>
+        
+        <models>
+            <responsys>
+                <class>Zeon_Responsys_Model</class>
+                <resourceModel>zeon_responsys_resource</resourceModel>
+            </responsys>
+            <responsys_resource>
+                <class>Zeon_Responsys_Model_Resource</class>
+            </responsys_resource>
+        </models>
+            
+        <resources>
+            <responsys_setup>
+                <setup>
+                    <module>Zeon_Responsys</module>
+                    <class>Mage_Eav_Model_Entity_Setup</class>
+                </setup>
+                <connection>
+                    <use>default_setup</use>
+                </connection>
+            </responsys_setup>
+            <responsys_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </responsys_write>
+            <responsys_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </responsys_read>
+        </resources>
+        <events>
+            <!-- Newsletter subscription success -->
+            <responsys_merge_list>
+                <observers>
+                    <responsys>
+                        <type>model</type>
+                        <class>responsys/observer</class>
+                        <method>updateMemberList</method>
+                    </responsys>
+                </observers>
+            </responsys_merge_list>
+            <!-- regisration success -->
+            <customer_register_success>
+                <observers>
+                    <responsys>
+                        <type>model</type>
+                        <class>responsys/observer</class>
+                        <method>customerRegisterResponsys</method>
+                    </responsys>
+                </observers>
+            </customer_register_success>
+            <!-- checkout registration success -->
+            <checkout_submit_all_after>
+               <observers>
+                  <responsys>
+                     <class>responsys/observer</class>
+                        <method>checkoutCustomerRegistered</method>
+                  </responsys>
+               </observers>
+            </checkout_submit_all_after>
+        </events>
+    </global>
+    
+    <default>
+        <responsys>
+            <general>
+                <responsys_wsdl_url>https://ws5.responsys.net/webservices/wsdl/ResponsysWS_Level1.wsdl</responsys_wsdl_url>
+                <responsys_wsdl_endpoint>https://ws5.responsys.net/webservices/services/ResponsysWSService</responsys_wsdl_endpoint>
+                <responsys_interact_uri>urn:ws.rsys.com</responsys_interact_uri>
+                <responsys_username></responsys_username>
+                <responsys_password></responsys_password>
+                <enable_debug>1</enable_debug>
+            </general>
+        </responsys>
+    </default>
+    
+
+</config>

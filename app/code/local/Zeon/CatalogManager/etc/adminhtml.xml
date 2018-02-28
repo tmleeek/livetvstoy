@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Zeon Solutions, Inc.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Zeon Solutions License
+ * that is bundled with this package in the file LICENSE_ZE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.zeonsolutions.com/license/
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@zeonsolutions.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * versions in the future. If you wish to customize this extension for your
+ * needs please refer to http://www.zeonsolutions.com for more information.
+ *
+ * @category    Zeon
+ * @package     Zeon_CatalogManager
+ * @copyright   Copyright (c) 2014 Zeon Solutions, Inc. All Rights Reserved.(http://www.zeonsolutions.com)
+ * @license     http://www.zeonsolutions.com/license/
+ */
+-->
+<config>
+    <menu>
+        <zextension>
+            <children>
+                <zeon_catalogmanager_menu translate="title" module="zeon_catalogmanager">
+                    <title>Catalog Manager</title>
+                    <sort_order>40</sort_order>
+                    <children>
+                        <zeon_catalogmanager_bestproducts translate="title" module="zeon_catalogmanager">
+                            <title>Best Seller Product Listing</title>
+                            <sort_order>1</sort_order>
+                            <action>adminhtml/index/best</action>
+                        </zeon_catalogmanager_bestproducts>
+                        <zeon_catalogmanager_featuredproducts translate="title" module="zeon_catalogmanager">
+                            <title>Featured Product Listing</title>
+                            <sort_order>2</sort_order>
+                            <action>adminhtml/index/featured</action>
+                        </zeon_catalogmanager_featuredproducts>
+                        <zeon_catalogmanager_homepageoption1 translate="title" module="zeon_catalogmanager">
+                            <title>Homepage - Custom Option 1</title>
+                            <sort_order>3</sort_order>
+                            <action>adminhtml/index/homepageoption1</action>
+                        </zeon_catalogmanager_homepageoption1>
+                        <zeon_catalogmanager_homepageoption2 translate="title" module="zeon_catalogmanager">
+                            <title>Homepage - Custom Option 2</title>
+                            <sort_order>4</sort_order>
+                            <action>adminhtml/index/homepageoption2</action>
+                        </zeon_catalogmanager_homepageoption2>
+                        <zeon_catalogmanager_homepageoption3 translate="title" module="zeon_catalogmanager">
+                            <title>Homepage - Custom Option 3</title>
+                            <sort_order>5</sort_order>
+                            <action>adminhtml/index/homepageoption3</action>
+                        </zeon_catalogmanager_homepageoption3>
+                        <zeon_catalogmanager_popularproducts translate="title" module="zeon_catalogmanager">
+                            <title>Most Popular Products Listing</title>
+                            <sort_order>6</sort_order>
+                            <action>adminhtml/index/popular</action>
+                        </zeon_catalogmanager_popularproducts>
+                        <zeon_catalogmanager_content_block_top_right translate="title" module="zeon_catalogmanager">
+                            <title>Slider Products For Top Right Content Block</title>
+                            <sort_order>7</sort_order>
+                            <action>adminhtml/index/contentblocktopright</action>
+                        </zeon_catalogmanager_content_block_top_right>
+                        <zeon_catalogmanager_setting translate="title" module="zeon_catalogmanager">
+                            <title>Catalog Manager Settings</title>
+                            <sort_order>8</sort_order>
+                            <action>adminhtml/system_config/edit/section/zeon_catalogmanager</action>
+                        </zeon_catalogmanager_setting>
+                    </children>
+                </zeon_catalogmanager_menu>
+            </children>
+        </zextension>
+    </menu>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <zextension>
+                        <children>
+                            <zeon_catalogmanager_menu translate="title" module="zeon_catalogmanager">
+                                <title>Catalog Manager Setting</title>
+                                <sort_order>40</sort_order>
+                                <children>
+                                    <zeon_catalogmanager_bestproducts module="zeon_catalogmanager">
+                                        <title>Best Seller Product Listing</title>
+                                        <sort_order>1</sort_order>
+                                    </zeon_catalogmanager_bestproducts>
+                                    <zeon_catalogmanager_featuredproducts module="zeon_catalogmanager">
+                                        <title>Featured Product Listing</title>
+                                        <sort_order>2</sort_order>
+                                    </zeon_catalogmanager_featuredproducts>
+                                    <zeon_catalogmanager_giftproducts_for_baby translate="title" module="zeon_catalogmanager">
+                                        <title>Homepage - Custom Option 3</title>
+                                        <sort_order>5</sort_order>
+                                    </zeon_catalogmanager_giftproducts_for_baby>
+                                    <zeon_catalogmanager_giftproducts_for_him translate="title" module="zeon_catalogmanager">
+                                        <title>Homepage - Custom Option 1</title>
+                                        <sort_order>3</sort_order>
+                                    </zeon_catalogmanager_giftproducts_for_him>
+                                    <zeon_catalogmanager_giftproducts_for_her translate="title" module="zeon_catalogmanager">
+                                        <title>Homepage - Custom Option 2</title>
+                                        <sort_order>4</sort_order>
+                                    </zeon_catalogmanager_giftproducts_for_her>
+                                    <zeon_catalogmanager_popularproducts module="zeon_catalogmanager">
+                                        <title>Most Popular Products Listing</title>
+                                        <sort_order>6</sort_order>
+                                    </zeon_catalogmanager_popularproducts>
+                                    <zeon_catalogmanager_setting module="zeon_catalogmanager">
+                                        <title>Catalog Manager Settings</title>
+                                        <sort_order>7</sort_order>
+                                    </zeon_catalogmanager_setting>
+                                </children>
+                            </zeon_catalogmanager_menu>
+                        </children>
+                    </zextension>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <zeon_catalogmanager>
+                                        <title>CPS Extensions - Catalog Manager Module</title>
+                                        <sort_order>1003</sort_order>
+                                    </zeon_catalogmanager>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>

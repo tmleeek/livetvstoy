@@ -1,0 +1,168 @@
+<?php $_option = $this->getOption(); ?>
+<?php $_selections = $_option->getSelections() ?>
+<?php list($_defaultQty, $_canChangeQty) = $this->_getDefaultValues();
+
+$_canChangeQty = 1;
+
+$_helper = $this->helper('catalog/output');
+
+/* @var $cart Mage_Checkout_Model_Cart */
+$controllerName = $this->getRequest()->getControllerName();
+$actionName = $this->getRequest()->getActionName();
+$id = $this->getRequest()->getParam('id');
+$inputBoxArray = array();
+$inputBoxValue = array();
+if ($id && $controllerName == 'cart' && $actionName == 'configure') {
+    $cart = Mage::helper( 'checkout/cart' )->getCart();
+    $item = $cart->getQuote()->getItemById( $id );
+    if ($_partyPlanerData = $item->getBuyRequest()):
+        if (isset ($_partyPlanerData['bundle_option_qty']) && !empty ($_partyPlanerData['bundle_option_qty'])) {
+            $inputBoxValue = $_partyPlanerData['bundle_option_qty'];
+            $inputBoxArray = array_keys($_partyPlanerData['bundle_option_qty']);
+        }
+    endif;
+}
+?>
+<dt>
+    <label <?php if ($_option->getRequired()) echo ' class="required title"' ?>>
+        <?php echo $this->escapeHtml($_option->getTitle()) ?><?php if ($_option->getRequired()) echo '<em>*</em>' ?>
+        <span class="plannerheader-right"></span>
+    </label>
+    <span class="sub-title"><?php echo $this->escapeHtml($_option->getSubtitle()); ?></span>
+</dt>
+<dd<?php if ($_option->decoratedIsLast){?> class="last"<?php }?>>
+    <div class="input-box">
+    <?php if (count($_selections) == 1 && $_option->getRequired()): ?>
+        <?php echo $this->getSelectionQtyTitlePrice($_selections[0]) ?>
+        <input type="hidden" name="bundle_option[<?php echo $_option->getId() ?>]" value="<?php echo $_selections[0]->getSelectionId() ?>"/>
+    <?php else:?>
+
+        <?php foreach($_selections as $key => $_selection): ?>
+        	<?php
+            $defaultValue = 1;
+            if (!empty ($inputBoxArray)) {
+                if (in_array( $_selection->getSelectionId(), $inputBoxArray)) {
+                    $defaultValue = $inputBoxValue[$_selection->getSelectionId()];
+                }
+            }
+			if ($key % 3 == 0) { ?>
+            	<ul class="options-list">
+            <?php
+			} ?>
+            <li class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <div class="small-img col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                	<?php
+					$_img = '<img src="'.$this->helper('catalog/image')->init($_selection, 'thumbnail')->resize(100).'" alt="'.$this->escapeHtml($this->getImageLabel()).'" title="'.$this->escapeHtml($this->getImageLabel()).'" />';
+	                echo $_helper->productAttribute($_selection, $_img, 'thumbnail');
+					?>
+                </div>
+                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+
+                     <?php //print_r($_selection->getQuantityPartySupplies()); ?>
+                    <label for="bundle-option-<?php echo $_option->getId() ?>-<?php echo $_selection->getSelectionId() ?>-label"><?php echo $this->getSelectionPrice($_selection) ?></label>
+                    <?php //echo $this->getSelectionPrice($_selection) ?>
+
+
+					<?php
+                    // Check, if the current product is configurable or not.
+                    if ('configurable' == $_selection->getTypeId()):
+                        // If YES then load it first.
+                        $_cproduct = Mage::getModel('catalog/product')->load($_selection->getId());
+
+                        // Then first unset the old data and then get all the configurable attributes of new product.
+                        Mage::getBlockSingleton('catalog/product_view_type_configurable')->unsetData();
+                        $_configurable = Mage::getBlockSingleton('catalog/product_view_type_configurable')->setData('product', $_cproduct);
+
+                        // And then converted them from JSON format.
+                        $_cdata = json_decode($_configurable->getJsonConfig());
+
+                        // Loop on the configurable attributes to display the dropdown.
+                        foreach($_cdata->attributes as $_data):
+                    ?>
+
+                        <select name="super_attribute[<?php echo $_data->id; ?>]" id="attribute<?php echo $_data->id; ?>" class="required-entry super-attribute-select">
+                            <option value=""><?php echo $_data->label; ?></option>
+                        <?php foreach($_data->options as $_attr_options): ?>
+                              <option value="<?php echo $_attr_options->id; ?>"><?php echo $_attr_options->label; ?></option>
+                        <?php endforeach; ?>
+                        </select>
+                    <?php
+                        endforeach;
+                    endif;
+                    ?>
+
+
+
+				</div>
+                <div class="qty-holder col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <input onkeyup="bundle.changeOptionQty(this, event, 'bundle-option-<?php echo $_option->getId() ?>-<?php echo $_selection->getSelectionId() ?>')" onblur="bundle.changeOptionQty(this, event, 'bundle-option-<?php echo $_option->getId() ?>-<?php echo $_selection->getSelectionId() ?>')" <?php if (!$_canChangeQty) echo ' disabled="disabled"' ?> id="bundle-option-<?php echo $_selection->getSelectionId() ?>-qty-input" class="input-text qty<?php if (!$_canChangeQty) echo ' qty-disabled' ?>" type="text" name="bundle_option_qty[<?php echo $_selection->getSelectionId() ?>]" value="<?php echo $defaultValue ?>"/>
+                        <div class="qtybtn-set">
+                        <input type='button' value='' class='qtyplus' onclick="incrementQty('bundle-option-<?php echo $_selection->getSelectionId() ?>-qty-input')" />
+                        <input type='button' value='' class='qtyminus' onclick="decrementQty('bundle-option-<?php echo $_selection->getSelectionId() ?>-qty-input')" />
+                        </div>
+
+                        <input onclick="bundle.changeSelection(this, <?php echo $_selection->getSelectionId() ?>)" class="change-container-classname checkbox bundle-option-<?php echo $_option->getId() ?> <?php if ($_option->getRequired()) echo 'validate-one-required-by-name' ?>" id="bundle-option-<?php echo $_option->getId() ?>-<?php echo $_selection->getSelectionId() ?>" type="checkbox" name="bundle_option[<?php echo $_option->getId() ?>][]"<?php if ($this->_isSelected($_selection)) echo ' checked="checked"' ?><?php if (!$_selection->isSaleable()) echo ' disabled="disabled"' ?> value="<?php echo $_selection->getSelectionId() ?>"/>
+                    </div>
+
+                    <?php if($_option->getRequired()): ?>
+                        <?php echo $this->setValidationContainer('bundle-option-'.$_option->getId().'-'.$_selection->getSelectionId(), 'bundle-option-'.$_option->getId().'-container') ?>
+                    <?php endif; ?>
+
+                <?php
+                // Check, if the current product is configurable or not.
+                if ('configurable' == $_selection->getTypeId()): ?>
+                <div id="child-name-div" class="avatar-name">No name entered</div>
+                <?php
+                endif; ?>
+
+             </li>
+             <?php
+			if ($key % 3 == 2) { ?>
+            	</ul>
+            <?php
+			} ?>
+        <?php endforeach; ?>
+
+        <?php
+		if ($key % 3 != 2) { ?>
+        </ul>
+        <?php
+		} ?>
+
+        <span id="bundle-option-<?php echo $_option->getId() ?>-tier-prices"> </span>
+        <div id="bundle-option-<?php echo $_option->getId() ?>-container"></div>
+    <?php endif; ?>
+    </div>
+</dd>
+<script type="text/javascript">
+    function incrementQty(fieldName)
+    {
+        // Get its current value
+        var currentVal = parseInt(jQuery('#'+fieldName).val());
+        // If is not undefined
+        if (!isNaN(currentVal)) {
+            // Increment
+            jQuery('#'+fieldName).val(currentVal+1);
+        } else {
+            // Otherwise put a 0 there
+            jQuery('#'+fieldName).val(0);
+        }
+        jQuery('#'+fieldName).keyup();
+    }
+        // This button will decrement the value till 0
+    function decrementQty(fieldName)
+    {
+        // Get its current value
+        var currentVal = parseInt(jQuery('#'+fieldName).val());
+        // If it isn't undefined or its greater than 0
+        if (!isNaN(currentVal) && currentVal > 0) {
+            // Decrement one
+            jQuery('#'+fieldName).val(currentVal - 1);
+        } else {
+            // Otherwise put a 0 there
+            jQuery('#'+fieldName).val(0);
+        }
+        jQuery('#'+fieldName).keyup();
+    }
+
+</script>

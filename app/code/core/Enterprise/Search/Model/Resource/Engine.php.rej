@@ -1,0 +1,106 @@
+--- app/code/core/Enterprise/Search/Model/Resource/Engine.php
++++ app/code/core/Enterprise/Search/Model/Resource/Engine.php
+@@ -103,13 +103,11 @@
+     /**
+      * Initialize search engine adapter
+      *
+-     * @param array $options
+-     *
+      * @return Enterprise_Search_Model_Resource_Engine
+      */
+-    protected function _initAdapterWithParams(array $options = array())
++    protected function _initAdapter()
+     {
+-        $this->_adapter = $this->_getAdapterModelWithParams('solr', $options);
++        $this->_adapter = $this->_getAdapterModel('solr');
+ 
+         $this->_adapter->setAdvancedIndexFieldPrefix($this->getFieldsPrefix());
+         if (!$this->_canAllowCommit()) {
+@@ -120,23 +118,11 @@
+     }
+ 
+     /**
+-     * Initialize search engine adapter
+-     *
+-     * @deprecated
+-     *
+-     * @return Enterprise_Search_Model_Resource_Engine
+-     */
+-    protected function _initAdapter()
+-    {
+-        return $this->_initAdapterWithParams();
+-    }
+-
+-    /**
+      * Set search engine adapter
+      */
+-    public function __construct(array $options = array())
++    public function __construct()
+     {
+-        $this->_initAdapterWithParams($options);
++        $this->_initAdapter();
+     }
+ 
+     /**
+@@ -305,6 +291,8 @@
+     /**
+      * Retrieve allowed visibility values for current engine
+      *
++     * @see
++     *
+      * @return array
+      */
+     public function getAllowedVisibility()
+@@ -316,7 +304,7 @@
+      * Prepare index array
+      *
+      * @param array $index
+-     * @param string|null $separator
++     * @param string $separator
+      * @return array
+      */
+     public function prepareEntityIndex($index, $separator = null)
+@@ -336,13 +324,12 @@
+ 
+     /**
+      * Retrieve search engine adapter model by adapter name
++     * Now supporting only Solr search engine adapter
+      *
+      * @param string $adapterName
+-     * @param array $options
+-     *
+      * @return object
+      */
+-    protected function _getAdapterModelWithParams($adapterName, array $options = array())
++    protected function _getAdapterModel($adapterName)
+     {
+         switch ($adapterName) {
+             case 'solr':
+@@ -355,26 +342,12 @@
+                 break;
+         }
+ 
+-        $adapter = Mage::getSingleton($modelName, $options);
++        $adapter = Mage::getSingleton($modelName);
+ 
+         return $adapter;
+     }
+ 
+     /**
+-     * Retrieve search engine adapter model by adapter name
+-     *
+-     * @deprecated
+-     *
+-     * @param string $adapterName
+-     *
+-     * @return object
+-     */
+-    protected function _getAdapterModel($adapterName)
+-    {
+-        return $this->_getAdapterModelWithParams($adapterName);
+-    }
+-
+-    /**
+      * Define if selected adapter is available
+      *
+      * @return bool

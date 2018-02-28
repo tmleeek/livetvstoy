@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Zeon Solutions, Inc.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Zeon Solutions License
+ * that is bundled with this package in the file LICENSE_ZE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.zeonsolutions.com/license/
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@zeonsolutions.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * versions in the future. If you wish to customize this extension for your
+ * needs please refer to http://www.zeonsolutions.com for more information.
+ *
+ * @category    Zeon
+ * @package     Zeon_All
+ * @copyright   Copyright (c) 2014 Zeon Solutions, Inc. All Rights Reserved.(http://www.zeonsolutions.com)
+ * @license     http://www.zeonsolutions.com/license/
+ */
+-->
+<config>
+    <modules>
+        <Zeon_All>
+            <version>0.1.0</version>
+        </Zeon_All>
+    </modules>
+    <global>
+        <models>
+            <zeon_all>
+                <class>Zeon_All_Model</class>
+            </zeon_all>
+        </models>
+        <helpers>
+            <zeon_all>
+                <class>Zeon_All_Helper</class>
+            </zeon_all>
+        </helpers>
+    </global>
+    <adminhtml>
+        <cms>
+            <browser>
+                <extensions>
+                    <allowed>
+                        <jpg>1</jpg>
+                        <jpeg>1</jpeg>
+                        <png>1</png>
+                        <gif>1</gif>
+                        <pdf>1</pdf>
+                    </allowed>
+                    <media_allowed>
+                        <flv>1</flv>
+                        <swf>1</swf>
+                        <avi>1</avi>
+                        <mov>1</mov>
+                        <rm>1</rm>
+                        <wmv>1</wmv>
+                        <pdf>1</pdf>
+                    </media_allowed>
+                </extensions>
+            </browser>
+        </cms>
+    </adminhtml>
+</config>

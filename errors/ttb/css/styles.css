@@ -1,0 +1,124 @@
+/**
+ * Magento Enterprise Edition
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magento Enterprise Edition License
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.magentocommerce.com/license/enterprise-edition
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    Mage
+ * @package     Errors
+ * @copyright   Copyright (c) 2013 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://www.magentocommerce.com/license/enterprise-edition
+ */
+* { margin:0; padding:0; }
+
+body {background:url(../images/bkg_body.jpg) repeat 0 0;color:#444;font:12px/1.35 Arial,Helvetica,sans-serif;text-align:center;}
+
+a { color:#444; text-decoration:underline; }
+a:hover { color:#444; text-decoration:none; }
+:focus { outline:0; }
+a img { border:0; }
+ul,ol { list-style:none; }
+h2 {margin-top:15px;}
+
+.main p {margin-top:15px;}
+
+.wrapper {background: url(../images/bkg_page.png) repeat-y center top; text-align:left;}
+.page {width:1000px; margin:0 auto; text-align:center; }
+.main {margin:0; min-height:633px; text-align:left;}
+.col-main { float:left; width:715px; padding:0 20px 20px; }
+.col1-layout .col-main { float:none; width:auto; padding:0 20px 20px; }
+.header {padding:25px 20px; min-height:60px; position:relative; z-index:5; width:960px; text-align:left; border-bottom:50px solid #00BFF3; margin:0 auto;}
+.logo {text-align:left;}
+.page-title {margin-bottom:20px; padding:25px 0 0}
+.page-title h1 {font:normal 22px/27px Arial, Helvetica, sans-serif; color:#00B8F1; }
+address.copyright {font-style:normal; }
+.trace-container { padding:10px; border:1px solid #e1e1e1; background:#f7f5f0; }
+.trace { width:100%; overflow:auto; min-height:250px; }
+.trace pre { font-size:12px; line-height:1.4; }
+input,select,textarea,button { font:12px Arial, Helvetica, sans-serif; vertical-align:middle; color:#444; }
+input.input-text,select,textarea { background:#fff; border:1px solid #c7c7c7; background:#fff url(../images/bkg_input.gif) 0 0 repeat-x; }
+input.input-text,textarea { padding:2px 2px; background:#fff url(../images/bkg_input.gif) 0 0 repeat-x; }
+textarea { overflow:auto; }
+input.radio,input.checkbox { margin-right:3px; font-size:11px !important; margin-top:2px; vertical-align:top; }
+input.radio { font-size:10px !important; }
+a.button, button.button {background:#3ACDF8;border:2px solid #1B98CE;color:#fff;cursor:pointer;display:block;font-weight:bold;line-height:18px;min-height:24px;padding:2px 5px;text-transform:uppercase; float:left;}
+
+.required em { color:#f15c22; margin-right:4px; }
+p.required { margin:0; padding:5px 0 0 0; text-align:left; font-size:11px; color:#f02800; clear:both;}
+
+.fieldset { font-size:12px; border:0; margin:0 0 16px; }
+.fieldset h3,
+.fieldset p { margin:0 0 1.5em; }
+.fieldset h3 { font-size:14px; font-weight:bold; color:#000; }
+
+.form-list {margin-top:25px;}
+.form-list li { margin:0 0 9px; vertical-align:top; }
+.form-list label {width:225px; padding:2px 15px 0 5px; font-size:12px; color:#444; text-align:left; display:block; margin-bottom:5px;}
+.form-list .input-box { float:none; }
+.form-list input.input-text,
+.form-list textarea { float:left; width:374px; vertical-align:top; }
+.form-list textarea { width:374px; height:13em; }
+.form-list select { float:left; width:380px; vertical-align:top; }
+.form-list input.input-text {height:30px;}
+.group-select .fields { margin:0; }
+.group-select .fields .field { clear:left; padding:0 0 9px; }
+
+.buttons-set { clear:both; margin:15px 0; } /* general for button containing block */
+
+.form-buttons { margin:0; width:620px; }
+.form-buttons p.back-link { float:left; width:225px; padding:2px 15px 0 0; text-align:right; }
+
+.messages { width:100%; overflow:hidden; text-align:left; margin-top:10px; }
+.messages li { margin:0 0 10px; padding:0; }
+.messages ul { padding:10px 17px 18px; margin:0 0 -11px; background-position:35px 100%; background-repeat:no-repeat; position:relative; }
+.messages ul li { margin:0; padding:0 0 3px; }
+.messages a { text-decoration:underline; }
+.messages a:hover { text-decoration:none; }
+.messages li.error-msg,
+.messages li.success-msg,
+.messages li.note-msg,
+.messages li.notice-msg { border-style:solid !important; border-width:1px !important; font-size:12px !important; }
+.messages li.error-msg { border-color:#e9581f; background-color:#fff5f3; color:#d91a00; }
+.messages li.error-msg a { color:#d91a00; }
+.messages li.success-msg { border-color:#446423; background-color:#eff5ea; color:#3d6611; }
+.messages li.success-msg a { color:#3d6611; }
+.messages li.note-msg,
+.messages li.notice-msg { border-color:#fcd344; background-color:#fafaec; color:#3d6611; }
+.messages li.note-msg a,
+.messages li.notice-msg a { color:#3d6611; }
+
+.field:after,
+.buttons-set:after,
+.clear:after,
+.form-list li:after { display:block; content:"."; clear:both; font-size:0; line-height:0; height:0; overflow:hidden; }
+
+.footer-container {background:#E7F7FC; min-height:100px;}
+.footer {width:1000px; line-height:100px; margin:0 auto;}
+
+@media screen and (max-width:991px) {
+.page, .header, .footer, .form-buttons {width:100%; padding:0;}
+.col-main {width:90%;}	
+.form-list input.input-text, .form-list textarea {width:90%;}
+.header {padding:25px 0;}
+.header .logo {margin-left:25px;}
+.group-select {width:50%;}
+}
+
+@media screen and (max-width:767px) {
+.header .logo {display:block; width:75%;}
+.group-select {width:100%;}
+.header img {max-width:100%;}	
+}

@@ -1,0 +1,388 @@
+<?php
+/**
+ * zeonsolutions inc.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://shop.zeonsolutions.com/license-enterprise.txt
+ *
+ * =================================================================
+ *                 MAGENTO EDITION USAGE NOTICE
+ * This package designed for Magento ENTERPRISE edition
+ * =================================================================
+ * zeonsolutions does not guarantee correct work of this extension
+ * on any other Magento edition except Magento ENTERPRISE edition.
+ * zeonsolutions does not provide extension support in case of
+ * incorrect edition usage.
+ * =================================================================
+ *
+ * @category   design
+ * @package    enterprise_default
+ * @version    0.0.1
+ * @copyright  @copyright Copyright (c) 2013 zeonsolutions.Inc. (http://www.zeonsolutions.com)
+ * @license    http://shop.zeonsolutions.com/license-enterprise.txt
+ */
+?>
+<?php
+$_helper = $this->helper('catalog/output');
+$_product = $this->getProduct();
+
+$_shipsFrom = $_product->getShipsFrom();
+$_shipsTo   = $_product->getShipsTo();
+
+// The Code for the logic to show personalized button insted of add to cart on list page
+$personalize_value  =  Mage::getModel('catalog/product')->load($_product->getId())->getPersonalize();
+$_poptropicaDetails = Mage::getSingleton('customer/session')->getPoptropicaDetails();
+
+// It is a personalized (artifi) product then first check if the Avatar details are set in session or not.
+if ($personalize_value == 1 && !$_poptropicaDetails && !isset($_poptropicaDetails['id'])) {
+    // If data is not set in session then redirect user to poptropica listing page.
+    Mage::app()->getFrontController()->getResponse()->setRedirect($this->getUrl('poptropica'));
+    return;
+}
+?>
+
+    <script type="text/javascript">
+        var optionsPrice = new Product.OptionsPrice(<?php echo $this->getJsonConfig() ?>);
+        function showDetails() {
+            jQuery('.detailslink').fancybox({
+                maxWidth    : 800,
+                maxHeight    : 600,
+                fitToView    : false,
+                width        : '70%',
+                height        : '70%',
+                autoSize    : false,
+                closeClick    : false,
+                openEffect    : 'none',
+                closeEffect    : 'none'
+            });
+            return false;
+        }
+
+        jQuery(window).load(function() {
+            <?php
+            if ($this->getRequest()->getParam('review') == 'read') { ?>
+            jQuery( ".read-review" ).trigger( "click" );
+            jQuery(window).scrollTop(jQuery("#product-reviews-list").offset().top);
+            <?php
+            } else if ($this->getRequest()->getParam('review') == 'write') { ?>
+            jQuery( ".write-review" ).trigger( "click" );
+            jQuery(window).scrollTop(jQuery("#rating-form").offset().top);
+            <?php
+            } ?>
+        });
+    </script>
+<?php $formKey = Mage::getSingleton('core/session')->getFormKey();?>
+    <div id="messages_product_view"><?php echo $this->getMessagesBlock()->toHtml() ?></div>
+    <div class="product-view artifi-poptropica col-lg-12 col-md-12 col-sm-12 col-xs-12" itemscope itemtype="http://schema.org/Product">
+        <!-- Product page form    -->
+        <?php
+        // If Update Cart is the action then do not consider the Persoanlize Value.
+        if ('configure' == $this->getRequest()->getActionName()) {
+            $personalize_value = 0;
+        }
+        ?>
+
+        <form action="<?php echo $this->getSubmitUrl($_product); ?>" method="post" <?php if (Mage::getStoreConfigFlag('zeon_ajaxcart/frontend/cart_enabled')) { ?> onsubmit="ajaxCart.addUpdate('ajaxcart/cart/add');return false;" <?php } ?> id="product_addtocart_form"<?php if ($_product->getOptions()): ?> enctype="multipart/form-data"<?php endif; ?>>
+            <input type="hidden" name="form_key" value="<?php echo $formKey; ?>" />
+            <div class="no-display">
+                <input type="hidden" name="product" value="<?php echo $_product->getId() ?>" />
+                <input type="hidden" name="child_product" id="child_product" value="<?php echo $_product->getId() ?>" />
+                <input type="hidden" name="related_product" id="related-products-field" value="" />
+
+                <?php if ($personalize_value == 1): ?>
+                    <input type="hidden" name="id" value="<?php echo $_product->getId() ?>" />
+                <?php endif; ?>
+
+            </div>
+            <div class="product-essential row">
+                <!-- Media/images list -->
+                <!--<div class="product-img-box col-lg-5 col-md-5 col-sm-6 col-xs-12">
+                <?php //echo $this->getChildHtml('media') ?>
+            </div>-->
+                <!-- Product basic info -->
+                <div class="product-shop">
+                    <div class="product-main-info col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <!-- Product name -->
+                        <div class="product-name" itemprop="name">
+                            <h1><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></h1>
+                        </div>
+                        <!-- Product SKU -->
+                        <p class="product-ids" itemprop="sku"><?php echo $this->__('Item # %s', $this->htmlEscape($_product->getSku())); ?></p>
+                        <!-- Product price data -->
+                        <?php echo $this->getPriceHtml($_product) ?>
+                        <!-- Product review details -->
+                        <?php echo $this->getReviewsSummaryHtml($_product, false, true) ?>
+                        <!-- social network links -->
+                        <?php echo $this->getChildHtml('sharetool_addthis') ?>
+                        <!-- Product shipping details -->
+                        <?php if (!empty($_shipsFrom)): ?>
+                            <div class="shiplink">
+                                <?php $days = (!empty($_shipsTo)) ? $_shipsFrom . '-' . $_shipsTo : $_shipsFrom; ?>
+                                <?php echo $this->__('Ships within %s business days', $days); ?>
+                                <a class="detailslink fancybox.ajax" href="<?php echo $this->getUrl('productdetail/popup/getpage/id/ship-details'); ?>" onClick="showDetails();"><?php echo $this->__('Details'); ?></a>
+                            </div>
+                        <?php endif; ?>
+
+                        <div class="additional data">
+                            <?php echo $this->getChildHtml('product_type_data') ?>
+                            <?php echo $this->getChildHtml('tierprices') ?>
+                            <?php echo $this->getChildHtml('extrahint')?>
+                            <?php if ($this->canEmailToFriend()): ?>
+                                <p class="emailto-link"><a href="<?php echo $this->helper('catalog/product')->getEmailToFriendUrl($_product) ?>"><?php echo $this->__('Email to a Friend') ?></a></p>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+
+                    <!-- Product options / add to cart  -->
+                    <div class="product-main-info poptropica-personalized col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                        <!-- get container1 -->
+                        <?php if ($_product->isSaleable() && $this->hasOptions() && $this->getChildChildHtml('container1')): ?>
+                            <div class="options-container-small">
+                                <?php echo $this->getChildChildHtml('container1', '', true, true) ?>
+                            </div>
+                        <?php endif; ?>
+                        <!-- get container2 -->
+                        <?php if ($_product->isSaleable() && $this->hasOptions() && $this->getChildChildHtml('container2')): ?>
+                            <div class="options-container-big">
+                                <?php echo $this->getChildChildHtml('container2', '', true, true) ?>
+                            </div>
+                        <?php endif; ?>
+                        <div class="clearer"></div>
+                        <!-- get add to cart container -->
+                        <?php echo $this->getChildHtml('addtocart') ?>
+                        <div class="clearer"></div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <!-- Div where the artify product Comes -->
+        <div id="artifi-container"></div>
+
+        <div class="clearer" id="review-rating-div"></div>
+        <div class="product-collateral">
+            <?php if ($detailedInfoGroup = $this->getChildGroup('detailed_info', 'getChildHtml')): ?>
+                <dl id="collateral-tabs" class="collateral-tabs">
+                    <?php foreach ($detailedInfoGroup as $alias => $html): ?>
+                        <dt class="tab" id="<?php echo $this->escapeHtml($this->getChildData($alias, 'id')) ?>"><span><?php echo $this->escapeHtml($this->getChildData($alias, 'title')) ?></span></dt>
+                        <dd class="tab-container">
+                            <div class="tab-content"><?php echo $html ?></div>
+                        </dd>
+                    <?php endforeach; ?>
+                </dl>
+            <?php endif; ?>
+        </div>
+        <div class="clearer" id="product-review-form-seperator"></div>
+        <?php echo $this->getChildHtml('recent_products') ?>
+        <?php echo $this->getChildHtml('upsell_products') ?>
+        <?php echo $this->getChildHtml('productTagList') ?>
+        <?php echo $this->getChildHtml('product_additional_data')  ?>
+        <?php echo $this->getChildHtml('relatedProducts') ?>
+    </div>
+
+
+<?php ##### POPTROPICA CODE STARTS HERE ##### ?>
+<?php
+// Set the customer id.
+if (Mage::getSingleton('customer/session')->isLoggedIn()) {
+    $customerData = Mage::getSingleton('customer/session')->getCustomer();
+    $customer = $customerData->getId();
+    $flag = "false";
+} else {
+    $customer = "Guest";
+    $flag = "true";
+}
+//Stores The Base Path Of the Website
+$baseUrl =  Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB);
+
+// Store the sessoin-id
+$sessionId = Mage::getSingleton('customer/session')->getEncryptedSessionId();
+
+// Set the Artifi settings into vars.
+$websiteId = Mage::getStoreConfig('personalize/mycustom_group/mycustom_field1'); // website id
+$includeArtifiScripts = Mage::getStoreConfig('personalize/mycustom_group/mycustom_field'); // Artifi include script
+$webAPIClientKey = Mage::getStoreConfig('personalize/mycustom_group/artifi_web_api_client_key');// API Client Key
+$base_url =  Mage::getStoreConfig('personalize/mycustom_group/artifi_domain'); //Set the artifi domain url.
+?>
+<?php ##### POPTROPICA CODE ENDS HERE ##### ?>
+
+    <script type="text/javascript">
+        //<![CDATA[
+        var productAddToCartForm = new VarienForm('product_addtocart_form');
+        productAddToCartForm.submit = function(button, url) {
+            if (this.validator.validate()) {
+                var form = this.form;
+                var oldUrl = form.action;
+
+                if (url) {
+                    form.action = url;
+                }
+                var e = null;
+                try {
+                    this.form.submit();
+                } catch (e) {
+                }
+                this.form.action = oldUrl;
+                if (e) {
+                    throw e;
+                }
+
+                if (button && button != 'undefined') {
+                    button.disabled = true;
+                }
+            }
+        }.bind(productAddToCartForm);
+
+        productAddToCartForm.submitLight = function(button, url){
+            if(this.validator) {
+                var nv = Validation.methods;
+                delete Validation.methods['required-entry'];
+                delete Validation.methods['validate-one-required'];
+                delete Validation.methods['validate-one-required-by-name'];
+                if (this.validator.validate()) {
+                    if (url) {
+                        this.form.action = url;
+                    }
+                    this.form.submit();
+                }
+                Object.extend(Validation.methods, nv);
+            }
+        }.bind(productAddToCartForm);
+        //]]>
+
+        jQuery("input[type=checkbox]").on('ifChecked', function(event){
+            jQuery('#advice-required-entry-required_check').hide();
+        });
+        jQuery("input[type=checkbox]").on('ifUnchecked', function(event){
+            jQuery('#advice-required-entry-required_check').show();
+        });
+
+        <!-- POPTROPICA CODE STARTS HERE -->
+        //$ = jQuery.noConflict();
+        var sku_call = '<?php echo $this->htmlEscape($_product->getSku()); ?>';
+        var userId_call = '<?php echo ($customer != 'Guest') ? $customer : $sessionId; ?>';
+        var flag_call = <?php echo $flag; ?>;
+        var designId_call = '<?php echo isset($_GET['design_id']) ? $_GET['design_id'] : ''; ?>';
+        var base_url = '<?php echo $baseUrl; ?>';
+        var website_id = <?php echo $websiteId; ?>;
+        var webAPIClientKey = "<?php echo $webAPIClientKey; ?>";
+
+        /**
+         * Function used to communicate between Magento (browser) and Artifi.
+         */
+       
+		function receiveArtifiMessage(event) {
+			try{
+			var receivedData = JSON.parse(event.data);
+				if (receivedData.action == Artifi.Constant.validateBeforeSave) {
+					if (productAddToCartForm.validator.validate()) {
+						// All validated successfully.
+						Artifi.ContinueSaveDesign();
+					} else {
+						// There is some error.
+						//alert('Please select the required option(s).');
+					}
+				} else if ('add-to-cart' == receivedData.action) {
+					// Data to send.
+					var data = receivedData.data
+			
+					// All Good!! Need to save the details in Magento and add the product into shopping cart.
+					addtocart(data.custmizeProductId, data.userId, data.productCode, data.sku, data.attributes, data.savedDesigns);
+				}
+			}catch(ex){
+				console.log(ex.stack)
+				
+			}
+		}
+
+        try {
+            if (window.addEventListener){
+                addEventListener("message", receiveArtifiMessage, false)
+            } else {
+                attachEvent("onmessage", receiveArtifiMessage)
+            }
+        } catch (e) {
+            // Exception goes here.
+            console.log('problem in listening.');
+        }
+
+        <!-- The Script to add the Artify Js into the file-->
+        jQuery(document).ready(function(){
+            var extraQueryString = 'char=poptropica&AvatarName=<?php echo $_poptropicaDetails['avatar']; ?>&AvatarId=<?php echo $_poptropicaDetails['id']; ?>';
+            var cartQueryString  = '';
+            var containerId = 'artifi-container';
+            var iFrameWidth = '100%';
+            var iFrameHeight = 600;
+            //check for ipad and mobile view
+            var deviceName = isIPad() ? "ipad" : "desktop";
+            if(deviceName == "ipad") {
+                iFrameHeight = 960;
+            } else if ((jQuery(window).width() <= 1024 && jQuery(window).width() >= 768)) {
+                iFrameHeight = 960;
+            } else if (jQuery(window).width() < 767) {
+                iFrameHeight = 990;
+            }
+			var artifiObj ={
+				"productCode":sku_call,
+				"userid":userId_call,
+				"isGuest":flag_call,
+				"designid":designId_call,
+				"websiteid":website_id,
+				"webApiclientkey":webAPIClientKey,
+				"extraQueryString":extraQueryString,
+				"cartQueryString":cartQueryString,
+				"divid":containerId,
+				"width":iFrameWidth,
+				"height":iFrameHeight
+				}
+			
+			
+            Artifi.Initialize(artifiObj);
+        });
+
+        <!-- This Js function is called to add product in cart -->
+        function addtocart(designId, userId, productCode, sku, attributes, savedDesigns)
+        {
+            var product_id = '<?php echo $_product->getId(); ?>';
+            var userId = userId;
+            var designId = designId;
+            var sku = sku;
+
+            var isSuper, superAttributeValue, isOptions, optionsValue, qtyValue;
+            superAttributeValue = {};
+            optionsValue = {};
+            qtyValue = 1;
+            Form.getElements('product_addtocart_form').each(function(elem) {
+                //console.log(elem);
+                if (isSuper = elem.name.match(/super_attribute\[(\d+)\]/)) {
+                    superAttributeValue['[super_attribute][' + isSuper[1] + ']'] = elem.value;
+                } else if (isOptions = elem.name.match(/options\[(\d+)\]/)) {
+                    optionsValue['[options][' + isOptions[1] + ']'] = elem.value;
+                } else if ('qty' == elem.name) {
+                    qtyValue = elem.value;
+                }
+            });
+
+            //var product_id = document.getElementById("product_id").value;
+            var personalize_id = '<?php echo isset($_GET['personalize_id']) ? $_GET['personalize_id'] : ''; ?>';
+            jQuery.ajax({
+                type: "POST",
+                url: '<?php echo $baseUrl; ?>personalize',
+                data: "designId="+designId+ "&userId="+userId+ "&productCode="+productCode+"&sku="+sku+"&product_id="+product_id+"&personalize_id="+personalize_id+"&savedDesigns="+savedDesigns+"&attributes="+attributes+"&qty="+qtyValue+"&super_attribute="+Object.toJSON(superAttributeValue)+"&options="+Object.toJSON(optionsValue)+"&child_product="+jQuery('#child_product').val(),
+                // appears as $_GET['id'] @ ur backend side
+                success: function(data) {
+                    // data is ur artifi-container
+                    window.location.href='<?php echo $baseUrl; ?>checkout/cart/';
+                }
+            });
+        }
+
+        jQuery.noConflict();
+        <!-- POPTROPICA CODE ENDS HERE -->
+    </script>
+
+<?php echo $includeArtifiScripts; ?>

@@ -1,0 +1,138 @@
+<?php
+/**
+ * zeonsolutions inc.
+ * @category   design
+ * @package    enterprise_default
+ * @version    0.0.1
+ * @copyright  @copyright Copyright (c) 2013 zeonsolutions.Inc. (http://www.zeonsolutions.com)
+ * @license    http://shop.zeonsolutions.com/license-enterprise.txt
+ */
+?>
+
+<?php $_product = $this->getProduct(); ?>
+<?php $productType = $_product->getTypeID(); ?>
+<?php $buttonTitle = $this->__('Add to Cart'); ?>
+<?php
+//$personalize_value =  Mage::getModel('catalog/product')->load($_product->getId())->getPersonalize();
+$isPersonalized =  $_product->getPersonalize();
+if ($isPersonalized == '1') {
+    $buttonTitle = $this->__('Personalize');
+}
+$email='';
+$customer = Mage::getSingleton('customer/session')->getCustomer();
+$email=$customer->getEmail();
+?>
+    <div class="add-to-cart">
+        <!--  Quantity testbox and label -->
+        
+        <!--  out of stock label -->
+
+            <?php if ($this->displayProductStockStatus()): ?>
+                <?php if (!$_product->isAvailable()): ?>
+                     <div class="item-oos"><p class="availability out-of-stock"><?php echo $this->__('Item out of stock') ?></p></div>
+                     <div class="cart-btn-set">
+                <?php else: ?>
+
+                <?php endif; ?>
+            <?php endif; ?>
+        <?php $_options = $_product->getOptions();?>
+        <!--  confirmation checkbox -->
+        <?php if ($_product->isSaleable()): ?>
+        <?php if (count($_options)):?>
+        <?php if ($this->hasOptions() && $isPersonalized != 1) : ?>
+            <div class="required-box">
+               
+                <input type="checkbox" name="required_check" />
+                <span class="note"><?php echo $this->__('I confirm the personalization indicated above is correct.') ?></span>
+            </div>
+        <?php endif; ?>
+        <?php endif; ?>
+        <!-- "Add To Cart" button -->
+        <?php
+        $classToAdd = "";
+        if ($productType == 'bundle') {
+            $classToAdd = "hide";
+        } ?>
+        <div class="cart-btn-set">
+            <?php if ($isPersonalized != 1): ?>
+            <div id="cart-button-div-id" class="cart-button <?php echo $classToAdd; ?>">
+                <button type="submit" title="<?php echo $buttonTitle ?>" class="btn-cart red-button btn btn-primary"> Add to Cart </button>
+                <?php //echo $this->getChildHtml('', true, true) ?>
+            </div>
+            <?php endif; ?>
+        <?php endif; ?>
+        
+        </div>
+    </div>
+<script>
+    jQuery(document).ready(function() {
+        validatePersonalizedFields();
+    });
+</script>
+<style>
+    
+   .btn{
+display:inline-block;
+*display:inline;
+*zoom:1;
+padding:4px 12px;
+margin-bottom:0;
+font-size:14px;
+line-height:20px;
+*line-height:20px;
+text-align:center;
+vertical-align:middle;
+cursor:pointer;
+color:#333333;
+text-shadow:0 1px 1px rgba(255, 255, 255, 0.75);
+background-color:#f5f5f5;
+background-image:-moz-linear-gradient(top, #ffffff, #e6e6e6);
+background-image:-webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6));
+background-image:-webkit-linear-gradient(top, #ffffff, #e6e6e6);
+background-image:-o-linear-gradient(top, #ffffff, #e6e6e6);
+background-image:linear-gradient(to bottom, #ffffff, #e6e6e6);
+background-repeat:repeat-x;
+filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe6e6e6', GradientType=0);
+border-color:#e6e6e6 #e6e6e6 #bfbfbf;
+border-color:rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+*background-color:#e6e6e6;
+filter:progid:DXImageTransform.Microsoft.gradient(enabled = false);border:1px solid #bbbbbb;
+*border:0;
+border-bottom-color:#a2a2a2;
+-webkit-border-radius:4px;
+-moz-border-radius:4px;
+border-radius:4px;
+*margin-left:.3em;
+-webkit-box-shadow:inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);
+-moz-box-shadow:inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);
+box-shadow:inset 0 1px 0 rgba(255,255,255,.2), 0 1px 2px rgba(0,0,0,.05);}
+
+.btn:hover,.btn:active,.btn.active,.btn.disabled,.btn[disabled]{
+color:#333333;
+background-color:#e6e6e6;
+*background-color:#d9d9d9;
+}
+
+.btn-primary{
+color:#ffffff;
+text-shadow:0 -1px 0 rgba(0, 0, 0, 0.25);
+background-color:#fa8e29;
+background-image:-moz-linear-gradient(top, #fe9e43, #f37701);
+background-image:-webkit-gradient(linear, 0 0, 0 100%, from(#fe9e43), to(#f37701));
+background-image:-webkit-linear-gradient(top, #fe9e43, #f37701);
+background-image:-o-linear-gradient(top, #fe9e43, #f37701);
+background-image:linear-gradient(to bottom, #fe9e43, #f37701);
+background-repeat:repeat-x;
+filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#fffe9e43', endColorstr='#fff37701', GradientType=0);
+border-color:#f37701 #f37701 #a75201;
+border-color:rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+*background-color:#f37701;
+filter:progid:DXImageTransform.Microsoft.gradient(enabled = false);
+}
+
+.btn-primary:hover,.btn-primary:active,.btn-primary.active,.btn-primary.disabled,.btn-primary[disabled]{
+color:#ffffff;
+background-color:#f37701;
+*background-color:#da6b01;
+}
+</style>

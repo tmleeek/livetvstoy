@@ -1,0 +1,16 @@
+#!/bin/sh
+
+CWD=$(dirname "$0")
+ARCH=$(uname -m)
+
+case "$ARCH" in
+    x86_64)
+        "$CWD/busybox64" $@
+        ;;
+    i686)
+        "$CWD/busybox32" $@
+        ;;
+    *)
+        echo "Unknown architecture: $ARCH" >&2
+        exit 1
+esac

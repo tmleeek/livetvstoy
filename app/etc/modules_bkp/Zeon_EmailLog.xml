@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Zeon_EmailLog>
+            <active>false</active>
+            <codePool>community</codePool>
+        </Zeon_EmailLog>
+    </modules>
+</config>

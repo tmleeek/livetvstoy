@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+<layout>
+    <!-- homepage -->
+    <cms_index_index>
+        <reference name="top.container">
+            <block type="bannerslider/bannerslider" name="homepage.slider" after="-" template="zeon/bannerslider/homeslider.phtml" />
+        </reference>
+    </cms_index_index>
+
+</layout>
+

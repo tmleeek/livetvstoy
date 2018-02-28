@@ -1,0 +1,30 @@
+--- app/code/core/Enterprise/Search/Helper/Data.php
++++ app/code/core/Enterprise/Search/Helper/Data.php
+@@ -90,7 +90,7 @@
+     }
+ 
+     /**
+-     * Retrieve supported by Solr languages including locale codes (language codes) that are specified in configuration
++     * Retrive supported by Solr languages including locale codes (language codes) that are specified in configuration
+      * Array(
+      *      'language_code1' => 'locale_code',
+      *      'language_code2' => Array('locale_code1', 'locale_code2')
+@@ -398,18 +398,7 @@
+         return $this->_isEngineAvailableForNavigation;
+     }
+ 
+-    /**
+-     * Invalidate catalog search index
+-     *
+-     * @return Enterprise_Search_Helper_Data
+-     */
+-    public function invalidateCatalogSearchIndex()
+-    {
+-        Mage::getSingleton('index/indexer')->getProcessByCode('catalogsearch_fulltext')
+-            ->changeStatus(Mage_Index_Model_Process::STATUS_REQUIRE_REINDEX);
+ 
+-        return $this;
+-    }
+ 
+ 
+ 

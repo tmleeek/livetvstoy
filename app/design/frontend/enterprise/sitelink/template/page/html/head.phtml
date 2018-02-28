@@ -1,0 +1,739 @@
+<?php
+/**
+ * Magento Enterprise Edition
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magento Enterprise Edition License
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.magentocommerce.com/license/enterprise-edition
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2013 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://www.magentocommerce.com/license/enterprise-edition
+ */
+?>
+<meta http-equiv="Content-Type" content="<?php echo $this->getContentType() ?>" />
+<title><?php echo $this->getTitle() ?></title>
+<meta name="viewport" content="minimum-scale=1.0, width=device-width, maximum-scale=0.6667, user-scalable=no" />
+<meta name="description" content="<?php echo htmlspecialchars($this->getDescription()) ?>" />
+<?php $product = Mage::registry('current_product');
+if ($product): ?>
+    <!-- Twitter Share Thumbnail -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@cps_nilesh" />
+    <meta name="twitter:creator" content="@cps_nilesh" />
+    <meta name="twitter:image:src" content="<?php echo $this->helper('catalog/image')->init($product, 'image')->resize(280, 150); ?>">
+    <!-- End of Twitter Share Thumbnail -->
+    <!-- Facebook Share Thumbnail -->
+    <meta property="og:title" content="<?php echo $product->getName(); ?>" />
+    <meta property="og:type" content="product" />
+    <meta property="og:url" content="<?php echo $this->helper('catalog/product')->getProductUrl($product); ?>" />
+    <meta property="og:image" content="<?php echo $this->helper('catalog/image')->init($product, 'image')->resize(130, 110); ?>" />
+    <meta property="og:description" content="<?php echo strip_tags($product->getShortDescription()); ?>" />
+    <meta property="og:site_name" content="<?php echo Mage::getStoreConfig('general/store_information/name') ?>" />
+    <!-- End of Facebook Share Thumbnail -->
+<?php endif; ?>
+<link rel="icon" href="<?php echo $this->getFaviconFile(); ?>" type="image/x-icon" />
+<link rel="shortcut icon" href="<?php echo $this->getFaviconFile(); ?>" type="image/x-icon" />
+
+<?php if (Mage::app()->getStore()->isCurrentlySecure()): ?>
+    <link href='https://fonts.googleapis.com/css?family=Lato:400,700,900' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Arbutus+Slab' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Raleway:400,500,600,700' rel='stylesheet' type='text/css'>
+<?php else : ?>
+    <link href='http://fonts.googleapis.com/css?family=Lato:400,700,900' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Arbutus+Slab' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Raleway:400,500,600,700' rel='stylesheet' type='text/css'>
+<?php endif; ?>
+
+<!--[if lt IE 7]>
+<script type="text/javascript">
+//<![CDATA[
+    var BLANK_URL = '<?php echo $this->helper('core/js')->getJsUrl('blank.html') ?>';
+    var BLANK_IMG = '<?php echo $this->helper('core/js')->getJsUrl('spacer.gif') ?>';
+//]]>
+</script>
+<![endif]-->
+
+<!-- including jquery library -->
+<?php
+/*
+header('Content-type: text/xml; charset=windows-1252');
+$c = curl_init("http://www.walmart.com/catalog/header.do?wide=true&inline=false");
+curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
+echo $result = curl_Exec($c);*/
+?>
+<script src="<?php echo $this->getSkinUrl('js/jquery.min.js'); ?>"></script>
+
+<script src="<?php echo $this->getSkinUrl('js/jquery-noconflict.js'); ?>"></script>
+
+<?php //echo $this->getCssJsHtml() ?>
+<link rel="stylesheet" type="text/css" href="http://walmart.personalizedplace.com/js/calendar/calendar-win2k-1.css" />
+<link rel="stylesheet" type="text/css" href="http://walmart.personalizedplace.com/js/prototype/windows/themes/default.css" />
+<link rel="stylesheet" type="text/css" href="http://walmart.personalizedplace.com/skin/frontend/enterprise/sitelink/css/styles.css" media="all" />
+<link rel="stylesheet" type="text/css" href="http://walmart.personalizedplace.com/skin/frontend/enterprise/default/css/amasty/amfpc/styles.css" media="all" />
+<link rel="stylesheet" type="text/css" href="http://walmart.personalizedplace.com/skin/frontend/enterprise/default/magalter_crossup/styles.css" media="all" />
+<link rel="stylesheet" type="text/css" href="http://walmart.personalizedplace.com/skin/frontend/enterprise/sitelink/css/limoges.css" media="all" />
+<link rel="stylesheet" type="text/css" href="http://walmart.personalizedplace.com/skin/frontend/enterprise/sitelink/css/bootstrap.css" media="all" />
+<link rel="stylesheet" type="text/css" href="http://walmart.personalizedplace.com/skin/frontend/enterprise/sitelink/pektsekye/optionconfigurable/main.css" media="all" />
+<link rel="stylesheet" type="text/css" href="http://walmart.personalizedplace.com/skin/frontend/enterprise/sitelink/pektsekye/optionconfigurable/colorbox.css" media="all" />
+<link rel="stylesheet" type="text/css" href="http://walmart.personalizedplace.com/skin/frontend/enterprise/sitelink/pektsekye/optionconfigurable/tooltipster.css" media="all" />
+<link rel="stylesheet" type="text/css" href="http://walmart.personalizedplace.com/skin/frontend/enterprise/sitelink/pektsekye/optionconfigurable/tooltipster-shadow.css" media="all" />
+<link rel="stylesheet" type="text/css" href="http://walmart.personalizedplace.com/skin/frontend/enterprise/default/css/print.css" media="print" />
+<!-- script type="text/javascript" src="http://walmart.personalizedplace.com/js/prototype/prototype.js"></script -->
+<script type="text/javascript" src="http://walmart.personalizedplace.com/js/prototype/prototype1.js"></script>
+<script type="text/javascript" src="http://walmart.personalizedplace.com/js/lib/ccard.js"></script>
+<script type="text/javascript" src="http://walmart.personalizedplace.com/js/prototype/validation.js"></script>
+<script type="text/javascript" src="http://walmart.personalizedplace.com/js/scriptaculous/builder.js"></script>
+<script type="text/javascript" src="http://walmart.personalizedplace.com/js/scriptaculous/effects.js"></script>
+<script type="text/javascript" src="http://walmart.personalizedplace.com/js/scriptaculous/dragdrop.js"></script>
+<script type="text/javascript" src="http://walmart.personalizedplace.com/js/scriptaculous/controls.js"></script>
+<script type="text/javascript" src="http://walmart.personalizedplace.com/js/scriptaculous/slider.js"></script>
+<script type="text/javascript" src="http://walmart.personalizedplace.com/js/varien/js.js"></script>
+<script type="text/javascript" src="http://walmart.personalizedplace.com/js/varien/form.js"></script>
+<script type="text/javascript" src="http://walmart.personalizedplace.com/js/mage/translate.js"></script>
+<script type="text/javascript" src="http://walmart.personalizedplace.com/js/mage/cookies.js"></script>
+<script type="text/javascript" src="http://walmart.personalizedplace.com/js/magalter_core/align.js"></script>
+<script type="text/javascript" src="http://walmart.personalizedplace.com/js/magalter_core/effects.js"></script>
+<script type="text/javascript" src="http://walmart.personalizedplace.com/js/magalter_core/events.js"></script>
+<script type="text/javascript" src="http://walmart.personalizedplace.com/js/varien/product.js"></script>
+<script type="text/javascript" src="http://walmart.personalizedplace.com/js/varien/configurable.js"></script>
+<script type="text/javascript" src="http://walmart.personalizedplace.com/js/calendar/calendar.js"></script>
+<script type="text/javascript" src="http://walmart.personalizedplace.com/js/calendar/calendar-setup.js"></script>
+<script type="text/javascript" src="http://walmart.personalizedplace.com/js/pektsekye/optionconfigurable/images.js"></script>
+<script type="text/javascript" src="http://walmart.personalizedplace.com/js/pektsekye/optionconfigurable/main.js"></script>
+<script type="text/javascript" src="http://walmart.personalizedplace.com/js/prototype/window.js"></script>
+<script type="text/javascript" src="http://walmart.personalizedplace.com/skin/frontend/enterprise/default/js/scripts.js"></script>
+<script type="text/javascript" src="http://walmart.personalizedplace.com/skin/frontend/enterprise/default/js/enterprise/catalogevent.js"></script>
+<script type="text/javascript" src="http://walmart.personalizedplace.com/skin/frontend/enterprise/tystoybox/js/enterprise/wishlist.js"></script>
+<script type="text/javascript" src="http://walmart.personalizedplace.com/skin/frontend/base/default/qs/js/validationform.js"></script>
+<script type="text/javascript" src="http://walmart.personalizedplace.com/skin/frontend/enterprise/sitelink/js/zeon/ajaxcart.js"></script>
+<script type="text/javascript" src="http://walmart.personalizedplace.com/skin/frontend/enterprise/tystoybox/js/fancybox/jquery.fancybox.js"></script>
+<script type="text/javascript" src="http://walmart.personalizedplace.com/skin/frontend/enterprise/tystoybox/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="http://walmart.personalizedplace.com/skin/frontend/enterprise/tystoybox/js/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://walmart.personalizedplace.com/skin/frontend/enterprise/tystoybox/js/icheck/icheck.min.js"></script>
+<script type="text/javascript" src="http://walmart.personalizedplace.com/skin/frontend/enterprise/sitelink/js/common.js"></script>
+<script type="text/javascript" src="http://walmart.personalizedplace.com/skin/frontend/enterprise/tystoybox/js/dropkick/jquery.dropkick-min.js"></script>
+<script type="text/javascript" src="http://walmart.personalizedplace.com/skin/frontend/enterprise/tystoybox/js/product/review.stars.js"></script>
+<script type="text/javascript" src="http://walmart.personalizedplace.com/skin/frontend/enterprise/tystoybox/js/bxslider/jquery.bxslider.min.js"></script>
+<script type="text/javascript" src="http://walmart.personalizedplace.com/skin/frontend/enterprise/tystoybox/js/product-zoom/jquery.elevatezoom.min.js"></script>
+<script type="text/javascript" src="http://walmart.personalizedplace.com/skin/frontend/enterprise/tystoybox/js/product-zoom/prism.js"></script>
+<script type="text/javascript" src="http://walmart.personalizedplace.com/skin/frontend/enterprise/sitelink/pektsekye/optionconfigurable/jquery.colorbox-min.js"></script>
+<script type="text/javascript" src="http://walmart.personalizedplace.com/skin/frontend/enterprise/sitelink/pektsekye/optionconfigurable/jquery.tooltipster.min.js"></script>
+<script type="text/javascript" src="http://walmart.personalizedplace.com/skin/frontend/enterprise/sitelink/js/html5lightbox/html5lightbox.js"></script>
+<link rel="canonical" href="http://walmart.personalizedplace.com/10843468" />
+<!--[if lt IE 8]>
+<link rel="stylesheet" type="text/css" href="http://walmart.personalizedplace.com/skin/frontend/enterprise/default/css/styles-ie.css" media="all" />
+<![endif]-->
+<!--[if IE 8]>
+<link rel="stylesheet" type="text/css" href="http://walmart.personalizedplace.com/skin/frontend/enterprise/tystoybox/css/styles-ie8.css" media="all" />
+<![endif]-->
+<!--[if lt IE 7]>
+<script type="text/javascript" src="http://walmart.personalizedplace.com/js/lib/ds-sleight.js"></script>
+<script type="text/javascript" src="http://walmart.personalizedplace.com/skin/frontend/enterprise/default/js/iehover-fix.js"></script>
+<![endif]-->
+
+
+
+
+<script>
+	jQuery(function(){
+		jQuery("#cart-button-div-id > button").attr("disabled", false);
+	});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<?php echo $this->getChildHtml() ?>
+<?php echo $this->helper('core/js')->getTranslatorScript() ?>
+<?php echo $this->getIncludes() ?>
+<!--[if lt IE 9]>
+      <script src="<?php echo $this->getSkinUrl('js/bootstrap/html5shiv.js'); ?>"></script>
+      <script src="<?php echo $this->getSkinUrl('js/bootstrap/respond.min.js'); ?>"></script>
+<![endif]-->
+<style>
+	.page-wrapper {
+		height: auto !important
+	}
+	.wrapper .footer p {
+		color: #222;
+	}
+	.searchbar{
+		display: block;
+	}
+	.nav-main-item:hover, .nav-main-item:focus {
+		color: #3da1e0;
+		outline: 0;
+	}
+	.container-responsive{
+		width: auto !important;
+		max-width: 1366px;
+		padding-left: 32px;
+		padding-right: 32px;
+	}
+        .container{
+		max-width: 1366px;
+	}
+	.footer {
+		padding: 20px 0 0 0;
+		margin: 20px 0 0 0;
+	}
+	.footer-social-media a:hover, .footer-social-media a:focus{
+		color: #007dc6;
+	}
+	.nav-main-item ,footer.foot a, footer.foot  .btn-fake-link {
+		color: #007dc6;
+		text-decoration: none;
+	}
+	.footer-social-media a{
+		color: #79b9e7;
+	}
+	.nav-main-item:hover, .nav-main-item:focus, footer.foot  a:hover, footer.foot  .btn-fake-link:hover, footer.foot  a:focus, footer.foot .btn-fake-link:focus {
+		color: #3da1e0;
+		text-decoration: none;
+	}
+	.global-footer-module .footer-links-column {
+		font-size: 16px;
+	}
+	.global-footer-module .footer-links-column h3 {
+		font-size: 16px;
+		margin-top: 15px;
+		font-weight: 600;
+	}
+	.global-footer-module .footer-links-column .block-list{
+		float: none;
+	}
+	.global-footer-module .footer-links-column .block-list .collapse {
+		display:inline-block;
+	}
+	.header.fixed .header-nav-toggle{
+		padding: 0;
+		font-size: 20px;
+	}
+	.header.fixed .header-nav-toggle:hover{
+		-webkit-box-shadow: none;
+		-moz-box-shadow: none;
+		box-shadow: none;
+	}
+	.global-email-signup-form .form-control {
+		width: 270px;
+		font-size: 16px;
+		border-color: #c2cfd6;
+		border-radius: 4px;
+		background-color: #fff;
+		border-width: 1px;
+		height: 40px;
+	}
+	.tt-dropdown-menu{
+		text-align: left;
+	}
+	html, button, input, select, textarea {
+		font-family: myriad-pro,"Helvetica Neue",Helvetica,Arial,sans-serif !important;
+	}
+	html{
+		font-size: 90%;
+	}
+	body {
+		font-family: myriad-pro,"Helvetica Neue",Helvetica,Arial,sans-serif !important;
+	}
+	
+	
+	
+	
+	
+	/* ##### Added on 08-09-2015 ##### */
+	.product-essential.row{
+		margin: 30px 0;
+	}
+	.product-view {
+		font-family: myriad-pro,"Helvetica Neue",Helvetica,Arial,sans-serif;
+		color: #444;
+	}
+	.product-view .product-name h1 {
+		font-family: myriad-pro,"Helvetica Neue",Helvetica,Arial,sans-serif;
+		font-size: 25px;
+		font-weight: 400;
+		line-height: 28px;
+	}
+	span.review-approval{
+		color:#F42121;
+		padding: 0 0 10px 0 !important;
+		margin: 0;
+	}
+	.wrapper{
+		font-size: 14px;
+	}
+	.wrapper .container{
+		width: auto;
+	}
+	.zoom-links{
+		padding: 10px 30px;
+	}
+	.pro-thumnails ul{
+		margin: 0;
+		padding: 0;
+		text-align: center;
+	}
+	fieldset.product-options {
+		border: none;
+		padding: 0;
+	}
+	.add-to-cart label, .personalized-title, span.review-approval{
+		background: none;
+		padding: 0;
+	}
+	.product-main-info input{
+		border; 1px solid #C2CFD6;
+		-webkit-border-radius: 4px;
+		-moz-border-radius: 4px;
+		border-radius: 4px;
+	}
+	span.limit-text{
+		display: none;
+	}
+	.mobile.description-section{
+		display: none;
+	}
+	.product-view, .prod-detail-right2, .prod-detail-center, .prod-detail-left{
+		padding: 0;
+	}
+	.prod-detail-center{
+		border: none;
+		margin-bottom: 20px
+	}
+	.add-to-cart .qty-box{
+		float: left;
+		margin: 20px 20px 0 0;
+	}
+	.add-to-cart .qty-box label, .add-to-cart .qty-box input{
+		float: left;
+		margin: -10px 5px 0 0;
+	}
+	.add-to-cart .qty-box label{
+		/*margin: -10px 5px 0 0;*/
+		margin: -6px 10px 0 0;
+	}
+	.add-to-cart .qty-box input{
+		width: 48px !important;
+		height: 34px;
+		-webkit-border-radius: 15px;
+		-moz-border-radius: 15px;
+		border-radius: 15px;
+		text-align: center;
+		margin:-13px 0 0 0;
+	}
+	.add-to-cart .note{
+		margin: 0px 0 0 32px;
+		padding: 0;
+		color: #222;
+	}
+	.add-to-cart .cart-btn-set{
+		margin: 20px 0;
+	}
+	.add-to-cart .cart-btn-set .cart-button{
+		float: left;
+		margin: 3px 0 0 0;
+	}
+	.cart-button button{
+		margin: 0;
+	}
+	.catalog-product-view .icheckbox_square-blue{
+		margin:0;
+	}
+	.product-main-info{
+		line-height: 23px;
+	}
+	.product-options dd.oc-above-checkbox{
+		max-width: 100%;
+	}
+	.header-nav-toggle-wrapper button.btn.btn-link.header-nav-toggle.js-nav-dropdown-toggle.js-offcanvas-nav-toggle {
+		font-size: 20px;
+		padding: 0;
+	}
+	.header-nav-toggle-wrapper button.btn{
+		font-size: 20px;
+		padding: 0;
+	}
+	.product-options dl dd{
+		padding-bottom: 20px;
+	}
+	.header-flyout-form {
+		display: block;
+	}
+	.product-img-container{
+		padding: 24px 0 0;
+	}
+	.product-options dd input.input-text {
+		padding: 5px;
+		margin-bottom: 10px;
+		padding-left: 15px;
+		border-color: #C2CFD6;
+		font-style: normal;
+		height: 40px;
+		line-height: 38px;
+	}
+	.add-to-cart{
+		margin: 10px 0;
+	}
+	.std p {
+		margin: 0;
+	}
+    .personalized-title {
+		display:none;
+	}
+    .add-to-cart .note {
+		/*line-height: 24px;*/
+	}
+	.zoomContainer{
+		opacity: 0;
+	}
+	.zoom-links {
+		display: none;
+	}
+	@media only screen and (min-width: 452px){
+		.add-to-cart .note{
+			margin: 6px 0 0 32px;
+		}
+	}
+	@media only screen and (min-width: 768px){
+		.product-options dd input.input-text {
+			/*margin-bottom: 0;
+			padding-left: 5px;
+			height: auto;
+			line-height: 30px;*/
+		}
+		span.review-approval{
+			padding: 10px 0 10px 0 !important;
+		}
+		.add-to-cart .qty-box label{
+			/*margin: -7px 5px 0 0;*/
+		}
+		.product-img-container{
+			/*padding: 6px;*/
+		}
+		.add-to-cart .note{
+			/*margin: 5px 0 0 32px;*/
+		}
+		.add-to-cart .qty-box{
+			/*margin: 20px 15px 15px 0;*/
+		}
+		.prod-detail-left{
+			padding: 0 20px;
+		}
+	}
+	@media only screen and (min-width:1024px){
+		.required-box{
+			width: 50%;
+			float: left;
+		}
+		.add-to-cart{
+			/*margin: 30px 0;*/
+		}
+		.add-to-cart .cart-btn-set{
+			float: right;
+			margin: 31px 0;
+		}
+		.add-to-cart .note{
+			margin: -3px 0 0 32px;
+		}
+	}
+	@media only screen and (min-width:1283px){
+		.add-to-cart .note{
+			margin: 6px 0 0 32px;
+		}
+	}
+	@media only screen and (min-width:1350px){
+		.container{
+			width: 1280px !important;
+		}
+	}
+	@media only screen and (min-width:1400px){
+		.container{
+			width: 1366px !important;
+		}
+	}
+	.container{
+		width: 100% !important;
+	}
+	.icheckbox_square-blue {
+		background: #fff;
+		border: 1px solid #c2cfd6;
+		color: #fff;
+		border-radius: 3px;
+	}
+	.icheckbox_square-blue, 
+	.icheckbox_square-blue.hover, 
+	.icheckbox_square-blue:hover{
+		width:24px;
+		height:24px;
+	}
+	.icheckbox_square-blue.hover, 
+	.icheckbox_square-blue:hover{
+		background: #fff;
+		border: 1px solid #c2cfd6;
+	}
+	.icheckbox_square-blue.checked{
+		background: #76c143;
+		background-image: url(http://walmart.personalizedplace.com/skin/frontend/enterprise/sitelink/images/check_box_active.png);
+		background-position: center;
+		background-repeat: no-repeat;
+		border: 1px solid #76c143;
+	}
+	
+	input.input-text, select, textarea {
+		border: 1px solid #C2CFD6;
+	}
+	.main-proimage{
+		width:auto;
+	}
+	.product-img-container{
+		width:100%;
+	}
+</style>
+<style>
+img, object, video{  max-height: none!important;}
+.atlasHeader #globalNav_wide .allDep #searchMain{height: 45px;}
+.atlasHeader #globalNav_wide #searchBox{width: 516px;}
+.atlasHeader #globalNav_wide .allDep #searchMain{height: 45px;}
+.atlasHeader #globalNav_wide .findButton{height: 45px;}
+
+.atlasHeader #globalNav_wide .findButton input{background-position: 31px 12px;}
+.atlasHeader #globalNav_wide .allDep #searchMain, .atlasHeader #globalNav_wide .allDep select{ padding: 12px 7px 10px 15px;}
+.atlasHeader #globalNav_wide #searchText{height: 45px;}
+</style>
+<style>
+
+@-webkit-keyframes spin-clockwise {
+    from {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg)
+    }
+
+    to {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg)
+    }
+}
+
+@keyframes spin-clockwise {
+    from {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg)
+    }
+
+    to {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg)
+    }
+}
+
+html,button,input,select,textarea {
+    color: #444;
+    font-family: myriad-pro,"Helvetica Neue",Helvetica,Arial,sans-serif
+}
+
+button, html input[type=button], input[type=reset], input[type=submit] {
+    -webkit-appearance: button;
+    cursor: pointer;
+}
+
+.price-add-to-cart {
+    display: inline-block;
+    margin: 3px 10px 15px 12px;
+    text-transform: none;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+@media (min-width: 48em) {
+    button.add-to-cart {
+        font-size:16px;
+        font-weight: 700
+    }
+}
+
+.btn {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    display: inline-block;
+    padding: 11px 34px;
+    border: 0;
+    border-radius: 4px;
+    background-color: #007dc6;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1;
+    text-align: center;
+    vertical-align: middle
+}
+
+.btn,.btn:hover,.btn:focus,.btn:visited {
+    color: #fff;
+    outline: 0
+}
+
+.btn:hover,.btn:focus {
+    background-color: #3da1e0
+}
+
+.btn:active {
+    background-color: #0070b2
+}
+
+.btn-inverse {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: 1px solid #d9d9d9;
+    font-weight: 600
+}
+
+.btn-inverse,.btn-inverse:hover,.btn-inverse:focus,.btn-inverse:visited,.btn-inverse:active {
+    background-color: #fff;
+    color: #007dc6
+}
+
+.btn-inverse:hover,.btn-inverse:focus {
+    border-color: #79b9e7
+}
+
+.btn-inverse:active {
+    border-color: #d9d9d9
+}
+
+.btn-inverse:active {
+    background-color: #fff
+}
+
+.btn-inverse.disabled,.btn-inverse:disabled {
+    border-color: #d9d9d9;
+    background-color: #fff
+}
+
+.btn-inverse.btn-mini {
+    padding-top: 7px;
+    padding-bottom: 8px
+}
+
+.btn-primary {
+    background-color: #f47421
+}
+
+.btn-primary,.btn-primary:hover,.btn-primary:focus,.btn-primary:visited {
+    color: #fff
+}
+
+.btn-primary:hover,.btn-primary:focus {
+    background-color: #f58238
+}
+
+.btn-primary:active {
+    background-color: #db681e
+}
+
+.btn-primary.disabled,.btn-primary:disabled {
+    background-color: #f58238
+}
+.btn-progress {
+    position: relative;
+    overflow: hidden
+}
+
+.btn-progress:disabled,.btn-progress.disabled {
+    filter: alpha(Opacity=100);
+    opacity: 1
+}
+
+.btn-progress .btn-progress-spinner {
+    display: block;
+    -webkit-animation: zoom-inverse .25s ease-out forwards;
+    animation: zoom-inverse .25s ease-out forwards
+
+}
+
+.visuallyhidden .btn-progress .btn-progress-spinner {
+    -webkit-animation: none;
+    animation: none
+}
+
+.btn-progress-spinner {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: none
+}
+
+.btn-progress-spinner:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #007dc6
+}
+
+.btn-inverse .btn-progress-spinner:before {
+    background-color: #fff
+}
+
+.btn-primary .btn-progress-spinner:before {
+    background-color: #f47421
+}
+
+.btn-progress-spinner:before {
+    border-radius: 4px
+}
+
+.btn-progress-spinner-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 1em;
+    height: 1em;
+    margin: auto;
+    -webkit-animation: spin-clockwise 1.5s .25s linear infinite;
+    animation: spin-clockwise 1.5s .25s linear infinite;
+    background-repeat: no-repeat;
+    background-position: center;
+    font-size: 28px
+}
+
+.visuallyhidden .btn-progress-spinner-icon {
+    -webkit-animation: none;
+    animation: none
+}
+.btn-progress-spinner-icon { 
+  background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2228%22%20height%3D%2228%22%20viewBox%3D%220%200%2028%2028%22%3E%3Cpath%20opacity%3D%22.35%22%20fill%3D%22%23fff%22%20stroke%3D%22%23fff%22%20stroke-width%3D%223%22%20stroke-miterlimit%3D%2210%22%20d%3D%22M26.308%2011.83c-.127-.725-.314-1.43-.56-2.105-.252-.688-.564-1.346-.927-1.97-.36-.632-.78-1.23-1.25-1.784-.46-.55-.98-1.07-1.54-1.54-.55-.46-1.15-.88-1.78-1.25-.62-.36-1.28-.67-1.97-.92-.67-.24-1.38-.43-2.1-.56-.7-.12-1.43-.19-2.17-.19s-1.46.07-2.17.2c-.72.13-1.43.32-2.1.56-.68.25-1.34.57-1.97.93-.63.37-1.23.79-1.78%201.25-.55.47-1.07.99-1.54%201.54-.46.56-.88%201.16-1.25%201.79-.36.63-.67%201.29-.92%201.97-.25.68-.43%201.38-.56%202.11-.12.71-.19%201.43-.19%202.17s.07%201.47.19%202.17c.13.73.32%201.43.56%202.11.25.69.57%201.35.93%201.97.37.64.788%201.23%201.25%201.79.47.56.988%201.08%201.54%201.54.56.47%201.15.89%201.788%201.25.626.37%201.284.68%201.97.93.677.25%201.38.44%202.107.57.7.12%201.425.19%202.165.19s1.47-.07%202.17-.19c.73-.13%201.43-.317%202.11-.564.686-.25%201.344-.56%201.97-.924.63-.363%201.227-.78%201.78-1.25.557-.465%201.07-.98%201.54-1.54.467-.553.885-1.15%201.25-1.78.36-.626.675-1.284.926-1.972.25-.672.436-1.38.56-2.1.128-.704.196-1.43.196-2.17s-.07-1.464-.19-2.17zM23.61%2017.5c-.204.56-.46%201.1-.756%201.61-.3.518-.642%201.006-1.023%201.46-.38.456-.8.878-1.26%201.26-.45.382-.94.724-1.45%201.024-.51.297-1.05.553-1.61.76-.55.2-1.13.352-1.72.457-.57.11-1.17.16-1.77.16s-1.19-.05-1.77-.15c-.59-.1-1.17-.25-1.72-.46-.56-.2-1.1-.46-1.61-.76s-1-.64-1.46-1.02c-.45-.38-.87-.8-1.26-1.26-.38-.45-.72-.94-1.02-1.46-.29-.51-.55-1.05-.76-1.61-.2-.55-.35-1.13-.46-1.72-.1-.57-.15-1.17-.15-1.77%200-.6.06-1.2.16-1.77.105-.59.257-1.17.46-1.72.2-.56.46-1.1.757-1.61.3-.51.64-1%201.02-1.46.38-.46.8-.88%201.256-1.26.455-.38.943-.72%201.46-1.02.51-.294%201.05-.55%201.61-.76.55-.2%201.13-.35%201.72-.46.577-.1%201.17-.153%201.775-.153s1.2.054%201.773.155c.59.107%201.17.26%201.72.46.56.206%201.1.46%201.61.76.52.3%201.008.64%201.46%201.02.46.384.88.806%201.26%201.26.38.455.727.94%201.026%201.46.294.51.55%201.05.755%201.61.2.558.36%201.13.46%201.728.1.576.16%201.17.16%201.774s-.053%201.2-.154%201.778c-.103.593-.256%201.17-.46%201.723z%22%2F%3E%3Cpath%20d%3D%22M14%202.977c.653%200%201.292.06%201.914.17l.12-.67c-.662-.118-1.34-.182-2.034-.182v.682z%22%20fill%3D%22none%22%2F%3E%3Cpath%20fill%3D%22%23fff%22%20stroke%3D%22%23fff%22%20stroke-miterlimit%3D%2210%22%20d%3D%22M21.082%205.562l.438-.523c-.52-.44-1.08-.83-1.67-1.17l-.34.58c.556.32%201.082.69%201.572%201.1zm2.46%202.93l.59-.34C23.79%207.56%2023.4%207%2022.962%206.48l-.522.44c.41.488.78%201.015%201.102%201.572zM22.44%206.92l.52-.44c-.437-.52-.92-1.003-1.44-1.44l-.438.523c.49.41.945.865%201.358%201.356zm-4.67-3.278l.234-.64c-.633-.232-1.293-.406-1.97-.526l-.12.67c.64.113%201.26.278%201.857.496zm1.74.816l.34-.59c-.587-.34-1.203-.632-1.847-.867l-.233.65c.607.22%201.187.5%201.74.82zm4.85%205.772l.64-.233c-.235-.644-.528-1.26-.868-1.846l-.59.35c.32.55.595%201.13.817%201.74z%22%2F%3E%3C%2Fsvg%3E'); background-repeat: no-repeat; 
+}
+
+</style>

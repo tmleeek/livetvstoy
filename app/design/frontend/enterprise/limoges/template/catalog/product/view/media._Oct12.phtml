@@ -1,0 +1,187 @@
+<?php
+/**
+ * Magento Enterprise Edition
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magento Enterprise Edition License
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.magentocommerce.com/license/enterprise-edition
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2013 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://www.magentocommerce.com/license/enterprise-edition
+ */
+
+/**
+ * Product media data template
+ *
+ * @see Mage_Catalog_Block_Product_View_Media
+ */
+?>
+<?php
+
+    $_product = $this->getProduct();
+    $_helper = $this->helper('catalog/output');
+    $filePath = Mage::getBaseDir('media') . DS . 'catalog'. DS . 'product' . DS .$_product->getImage();
+?>
+<?php
+if ($_product->getImage() == '' || !file_exists($filePath)) { ?>
+    <p class="product-image">
+        <?php
+            $_img = '<img src="'.$this->helper('catalog/image')->init($_product, 'image')->resize(265).'" alt="'.$this->escapeHtml($this->getImageLabel()).'" title="'.$this->escapeHtml($this->getImageLabel()).'" />';
+            echo $_helper->productAttribute($_product, $_img, 'image');
+        ?>
+    </p>
+    <div id="gallery_01" class="pro-thumnails">
+        <ul>
+            <li>
+                <?php  if ($_product->getVideoUrl()) : ?>
+                    <!-- Get video url and display it below base image -->
+                    <a data-zoom-image="<?php echo $_product->getVideoUrl(); ?>" data-width="480" data-height="320" data-image="<?php echo $_product->getVideoUrl(); ?>" class="html5lightbox" href="<?php echo $_product->getVideoUrl(); ?>" >
+                        <img src="<?php echo $this->getSkinUrl('images/video-thumb.jpg'); ?>">
+                    </a>
+                <?php endif; ?>
+            </li>
+        </ul>
+    </div>
+<?php
+} else { ?>
+
+    <div class="zoom-left">
+        <div class="product-img-container">
+			<?php
+            $mediaUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA) . 'catalog/product'; ?>
+            <img data-zoom-image="<?php echo $mediaUrl  . $_product->getImage(); ?>" src="<?php echo $mediaUrl  . $_product->getImage(); ?>" id="zoom_03" class="main-proimage" itemprop="image">
+           <div class="scroll_cover" style="position:absolute; left:0; right:0; top:0; bottom:0; z-index: 100"></div>
+
+	</div>
+        <div class="zoom-links">
+        <a class="zoom-icon" href="#" title="larger image" id="larger-image"><strong>larger image</strong></a>
+        <span class="desktop-msg">Roll over image to zoom</span>
+        <span class="mobile-msg" style="display: none;">Drag over image to zoom</span>
+        </div>
+        <?php if (count($this->getGalleryImages()) > 0) { ?>
+            <div id="gallery_01" class="pro-thumnails">
+               	<ul>
+                <?php $index = 0; ?>
+                <?php foreach ($this->getGalleryImages() as $key => $_image): ?>
+                    <li>
+                        <?php if ($index == 0) $activeClass = 'active'; else $activeClass = '';
+                        $imgUrl = $mediaUrl . '/' . $_image->getFile();
+                        $imgUrl = str_replace("//", "/", $imgUrl);
+                        $imgUrl = str_replace("http:/", "http://", $imgUrl);
+                        $imgUrl = str_replace("http:///", "http://", $imgUrl);
+                        ?>
+                        <a data-zoom-image="<?php echo $imgUrl; ?>" data-image="<?php echo $imgUrl; ?>" data-update=""
+                           class="elevatezoom-gallery <?php echo $activeClass; ?>" href="<?php echo $imgUrl; ?>">
+                            <img
+                                src="<?php echo $this->helper('catalog/image')->init($this->getProduct(), 'thumbnail', $_image->getFile())->resize(54); ?>">
+                        </a>
+                        <?php $index++; ?>
+                    </li>
+                <?php endforeach; ?>
+                    <li>
+                        <?php  if ($_product->getVideoUrl()) : ?>
+                            <!-- Get video url and display it below base image -->
+                            <a data-zoom-image="<?php echo $_product->getVideoUrl(); ?>" data-width="480" data-height="320" data-image="<?php echo $_product->getVideoUrl(); ?>" class="html5lightbox" href="<?php echo $_product->getVideoUrl(); ?>" >
+                                <img src="<?php echo $this->getSkinUrl('images/video-thumb.jpg'); ?>">
+                            </a>
+                        <?php endif; ?>
+                    </li>
+                </ul>
+            </div>
+        <?php } else { ?>
+            <div id="gallery_01" class="pro-thumnails">
+                <ul>
+                    <li>
+                    <?php $imgUrl = $mediaUrl .'/' . $_product->getImage();
+                    $imgUrl = str_replace("//", "/", $imgUrl);
+                    $imgUrl = str_replace("http:/", "http://", $imgUrl);
+                    $imgUrl = str_replace("http:///", "http://", $imgUrl);
+                    ?>
+                    <a data-zoom-image="<?php echo $imgUrl; ?>" data-image="<?php echo $imgUrl; ?>" data-update="" class="elevatezoom-gallery active" href="#"></a>
+                    </li>
+                    <li>
+                        <?php  if ($_product->getVideoUrl()) : ?>
+                            <!-- Get video url and display it below base image -->
+                            <a data-zoom-image="<?php echo $_product->getVideoUrl(); ?>" data-width="480" data-height="320" data-image="<?php echo $_product->getVideoUrl(); ?>" class="html5lightbox" href="<?php echo $_product->getVideoUrl(); ?>" >
+                                <img src="<?php echo $this->getSkinUrl('images/video-thumb.jpg'); ?>">
+                            </a>
+                        <?php endif; ?>
+                    </li>
+                </ul>
+            </div>
+        <?php } ?>
+
+    </div>
+
+    <script>
+    jQuery(document).ready(function () {
+        if (jQuery(window).width() <= 1024){
+            jQuery('.mobile-msg').show();
+            jQuery('.desktop-msg').hide();
+        }
+
+        //initiate the plugin and pass the id of the div containing gallery images
+        jQuery("#zoom_03").elevateZoom({
+            //constrainType:"height",
+            //constrainSize:274,
+            zoomType: "inner",
+            //containLensZoom: true,
+            gallery:'gallery_01',
+            cursor: "crosshair",
+            galleryActiveClass: "active"
+        });
+
+        //pass the images to Fancybox
+        jQuery("#zoom_03").bind("click", function(e) {
+            var deviceName = isIPad() ? "ipad" : "desktop";
+            if (deviceName == "ipad") {
+                jQuery('.zoomContainer').show();
+            }
+            var ez =   jQuery('#zoom_03').data('elevateZoom');
+            ez.closeAll(); //NEW: This function force hides the lens, tint and window
+            jQuery.fancybox(ez.getGalleryList());
+          return false;
+        });
+
+		jQuery("#larger-image").click(function() {
+			var ez = jQuery('#zoom_03').data('elevateZoom');
+			ez.closeAll();
+			jQuery.fancybox(ez.getGalleryList());
+			return false;
+		});
+
+        jQuery(window).resize(function() {
+            jQuery('div.zoomWindow').hide();
+            var deviceName = isIPhone() ? "iphone" : "desktop";
+            if (deviceName == 'iphone') {
+                jQuery('.zoomContainer').hide();
+                setTimeout(resizedw, 100);
+            }
+        });
+        function resizedw(){
+            jQuery('.zoomContainer').show();
+        }
+        var isIPhone = function() {
+            return (/iPhone/i).test(navigator.userAgent);
+        };
+    });
+    </script>
+<?php
+} ?>
+<script>
+    var SKIN_URL =  '<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN); ?>';
+</script>

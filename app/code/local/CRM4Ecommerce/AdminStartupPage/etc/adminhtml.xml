@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    @category   CRM4Ecommerce
+    @package    CRM4Ecommerce_AdminStartupPage
+    @author     Philip Nguyen <philip@crm4ecommerce.com>
+    @link       http://crm4ecommerce.com
+-->
+<config>
+    <menu>
+        <sales>
+            <children>
+                <order>
+                    <children>
+                        <create>
+                            <title>Create New Order</title>
+                            <sort_order>0</sort_order>
+                            <action>adminhtml/sales_order_create/index</action>
+                        </create>
+                    </children>
+                </order>
+            </children>
+        </sales>
+        <crm4ecommerce module="adminstartuppage" translate="title">
+            <title>CRM4Ecommerce Extensions</title>
+            <sort_order>10</sort_order>
+            <children>
+                <adminstartuppage module="adminstartuppage" translate="title">
+                    <title>Admin Startup Page</title>
+                    <sort_order>0</sort_order>
+                    <children>
+                        <dashboard module="adminstartuppage" translate="title">
+                            <title>Dashboard</title>
+                            <sort_order>0</sort_order>
+                            <action>adminhtml/adminstartuppage_dashboard</action>
+                        </dashboard>
+                        <settings module="adminstartuppage" translate="title">
+                            <title>Module Settings</title>
+                            <sort_order>1</sort_order>
+                            <action>adminhtml/system_config/edit/section/crm4ecommerce_adminstartuppage</action>
+                        </settings>
+                    </children>
+                </adminstartuppage>
+            </children>
+        </crm4ecommerce>
+    </menu>
+    <acl>
+        <resources>
+            <all>
+                <title>Allow Everything</title>
+            </all>
+            <admin>
+                <children>
+					<sales>
+						<children>
+							<order>
+								<children>
+									<create>
+										<title>Create New Order</title>
+										<sort_order>0</sort_order>
+										<action>adminhtml/sales_order_create/index</action>
+									</create>
+								</children>
+							</order>
+						</children>
+					</sales>
+                    <crm4ecommerce module="adminstartuppage" translate="title">
+                        <title>CRM4Ecommerce Extensions</title>
+                        <sort_order>10</sort_order>
+                        <children>
+                            <adminstartuppage module="adminstartuppage" translate="title">
+                                <title>Admin Startup Page</title>
+                                <sort_order>0</sort_order>
+                                <children>
+                                    <dashboard module="adminstartuppage" translate="title">
+                                        <title>Dashboard</title>
+                                        <sort_order>0</sort_order>
+                                    </dashboard>
+                                    <settings module="adminstartuppage" translate="title">
+                                        <title>Module Settings</title>
+                                        <sort_order>1</sort_order>
+                                    </settings>
+                                    <clear_register module="adminstartuppage" translate="title">
+                                        <title>Clear All Register Information</title>
+                                        <sort_order>2</sort_order>
+                                    </clear_register>
+                                </children>
+                            </adminstartuppage>
+                        </children>
+                    </crm4ecommerce>
+                    <system>
+                        <children>
+                            <myaccount>
+                                <children>
+                                    <change_startup_page module="adminstartuppage" translate="title">
+                                        <title>Change Startup Page</title>
+                                        <sort_order>0</sort_order>
+                                    </change_startup_page>
+                                </children>
+                            </myaccount>
+                            <config>
+                                <children>
+                                    <crm4ecommerce_adminstartuppage module="adminstartuppage" translate="title">
+                                        <title>CRM4Ecommerce Admin Startup Page Settings</title>
+                                        <sort_order>0</sort_order>
+                                    </crm4ecommerce_adminstartuppage>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>

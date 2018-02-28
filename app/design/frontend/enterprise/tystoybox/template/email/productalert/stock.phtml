@@ -1,0 +1,50 @@
+<?php
+/**
+ * Magento Enterprise Edition
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magento Enterprise Edition License
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.magentocommerce.com/license/enterprise-edition
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://www.magentocommerce.com/license/enterprise-edition
+ */
+?>
+<?php if ($_products = $this->getProducts()): ?>
+<table width="588" border="0" cellspacing="0" cellpadding="0">
+<?php foreach ($_products as $_product): ?>
+    <tr>
+        <td width="125" align="left" height="150" valign="middle"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>"><img src="<?php echo $this->helper('catalog/image')->init($_product, 'thumbnail')->resize(100, 100) ?>" border="0" align="left" height="100" width="100" alt="<?php echo $this->htmlEscape($_product->getName()) ?>" /></a></td>
+        <td width="303" align="left" valign="top">
+            <br><span style="font-family:Arial, Helvetica, sans-serif; font-size:13px; line-height:15px; color:#1087c1; font-weight:bold;"><a href="<?php echo $_product->getProductUrl() ?>" style="color:#1087c1; text-decoration:none; font-weight:bold;"><?php echo $this->htmlEscape($_product->getName()) ?></a></p>
+            <?php if ($shortDescription = $this->htmlEscape($_product->getShortDescription())): ?>
+            <span style="font-family:Arial, Helvetica, sans-serif; font-size:12px; line-height:13px; color:#444444;"><?php echo $shortDescription ?></span>
+            <?php endif; ?>
+        </td>
+        <td width="160" valign="top" align="right"><table width="160" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td height="40" align="right" valign="top"><br><span style="font-family:Arial, Helvetica, sans-serif; font-size:12px; line-height:15px; color:#363636; font-weight:bold;">
+                <?php echo $this->__('Price:') ?></strong> <?php echo Mage::helper('core')->currency($_product->getPrice()) ?> &nbsp;&nbsp;&nbsp;&nbsp; </span></td>
+          </tr>
+          <tr>
+            <td height="35" align="right"><a href="<?php echo $_product->getProductUrl() ?>"><img src="<?php echo $this->getSkinUrl('images/emails/TysToyBox_NotifyMe_01_ViewProduct.gif') ?>" border="0" align="left" height="32" width="146" alt="View Product" /></a></td>
+          </tr>
+        </table></td>
+    </tr>
+<?php endforeach; ?>
+</table>
+<?php endif; ?>

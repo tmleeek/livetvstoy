@@ -1,0 +1,229 @@
+<?php
+/**
+ * zeonsolutions inc.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://shop.zeonsolutions.com/license-enterprise.txt
+ *
+ * =================================================================
+ *                 MAGENTO EDITION USAGE NOTICE
+ * This package designed for Magento ENTERPRISE edition
+ * =================================================================
+ * zeonsolutions does not guarantee correct work of this extension
+ * on any other Magento edition except Magento ENTERPRISE edition.
+ * zeonsolutions does not provide extension support in case of
+ * incorrect edition usage.
+ * =================================================================
+ *
+ * @category   design
+ * @package    enterprise_default
+ * @version    0.0.1
+ * @copyright  @copyright Copyright (c) 2013 zeonsolutions.Inc. (http://www.zeonsolutions.com)
+ * @license    http://shop.zeonsolutions.com/license-enterprise.txt
+ */
+?>
+
+<?php if ($this->helper('wishlist')->isAllow()) : ?>
+    <div class="my-wishlist">
+        <div class="green-title-sec">
+            <span class="green-title"><?php echo $this->__('My Wishlist'); ?></span>
+        </div>
+        <?php echo $this->getChildHtml('top'); ?>
+        <?php $wishlistId = $this->getRequest()->getParam('wishlist_id'); ?>
+        <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+            <div class="wislist-update-date">
+            <form id="wishlist-view-form" action="<?php echo $this->getUrl('wishlist/index/update/wishlist_id/'.$wishlistId) ?>" method="post">
+                <fieldset>
+                    <?php echo $this->getBlockHtml('formkey') ?>
+                    <?php if ($this->hasWishlistItems()): ?>
+                        <?php $productModel = Mage::getSingleton('catalog/product');
+                        $attributeModel = Mage::getSingleton('catalog/resource_eav_attribute');
+                     ?>
+                    <table class="data-table" id="wishlist-table">
+                        <col width="1" />
+                        <col width="150" />
+                        <col width="1" />
+                        <col width="1" />
+                        <col width="1" />
+                        <thead>
+                            <tr>
+                                <th><?php echo $this->__('Product Details') ?></th>
+                                <th>&nbsp;</th>
+                                <th><?php echo $this->__('Price') ?></th>
+                                <th><?php echo $this->__('Qty') ?></th>
+                                <th>&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($this->getWishlistItems() as $item): ?>
+                                <?php
+                                $product = $item->getProduct();
+                                $isVisibleProduct = $product->isVisibleInSiteVisibility();
+                                ?>
+
+                                <tr id="<?php echo 'setItem'.$item->getId(); ?>">
+                                    <td class="first">
+
+                                        <a class="product-image" href="<?php echo $this->getProductUrl($item) ?>" title="<?php echo $this->escapeHtml($product->getName()) ?>"><img src="<?php echo $this->helper('catalog/image')->init($product, 'small_image')->resize(113, 113); ?>" alt="<?php echo $this->escapeHtml($product->getName()) ?>" /></a>
+                                        <?php echo $this->getDetailsHtml($item) ?>
+                                    </td>
+                                    <td class="prod-info">
+                                        <h2 class="product-name"><a href="<?php echo $this->getProductUrl($item) ?>"><?php echo $this->escapeHtml($product->getName()) ?></a></h2>
+                                        <?php /*?><span><?php echo $this->htmlEscape($product->getShortDescription()); ?></span><br /><?php */?>
+                                        <div class="sku"><?php echo $this->__('<strong>Item #</strong> %s', $productModel->load($product->getId())->getSku()); ?></div>
+                                        <?php
+                                        // show attribute selected
+                                        $attributes = $item->getOptionByCode('info_buyRequest')->getValue();
+                                        $attributes = unserialize($attributes);
+                                        if(isset($attributes['super_attribute'])) {
+                                            foreach ($attributes['super_attribute'] as $attId => $attData) {
+                                                $attribute = $attributeModel->load($attId);
+                                                $attDataSource = $productModel->getResource()->getAttribute($attribute->getAttributeCode());
+                                                ?>
+                                                <?php
+                                                if ($attDataSource->getSource()->getOptionText($attData)) { ?>
+                                                <div class="size"><?php echo $this->__('<strong>%s :</strong> %s', $attribute->getFrontendLabel() , $attDataSource->getSource()->getOptionText($attData)); ?></div>
+                                                <?php
+                                                } ?>
+                                                <?php
+                                            }
+                                        }
+                                        ?>
+                                    </td>
+                                    <td>
+                                    <label class="label-show"><?php echo $this->__('Price') ?></label>
+                                    <?php
+                                    $simpleProduct = '';
+                                    $simpleProductId = '0';
+                                    if(isset($attributes['child_product']) && $attributes['child_product'] != "" &&
+                                        $product->getTypeId() == 'configurable') {
+                                        $simpleProduct = Mage::getModel('catalog/product')->load($attributes['child_product']);
+                                        $simpleProductId = $simpleProduct->getId();
+                                        echo $this->getPriceHtml($simpleProduct);
+                                    } else {
+                                        echo $this->getPriceHtml($product);
+                                    }
+                                    ?>
+                                    </td>
+                                    <td>
+                                        <label class="label-show"><?php echo $this->__('Qty.') ?></label>
+                                        <div class="qty-update">
+                                            <?php if ($item->canHaveQty() && $isVisibleProduct): ?>
+                                                <p><input type="text" class="input-text qty" name="qty[<?php echo $item->getId() ?>]" value="<?php echo $this->getAddToCartQty($item) * 1 ?>" /></p>
+                                            <?php endif; ?>
+
+                                            <button type="button" title="<?php echo $this->__('Update') ?>" onclick="ajaxCart.updateWishList('<?php echo $this->getUrl('wishlist/index/update') ?>', <?php echo Mage::getStoreConfigFlag('zeon_ajaxcart/frontend/whishlist_enabled') ? 'true' : 'false'; ?>, <?php echo $item->getId(); ?>, <?php echo $item->getWishlistId(); ?>);" class="button btn-update white-button"><span><span><?php echo $this->__('Update') ?></span></span></button>
+                                        </div>
+                                        <div class="edit-remove">
+                                        <a href="javascript:void(0);" title="<?php echo $this->__('Remove Item') ?>" onclick="ajaxCart.removeWishListItem('<?php echo $this->getItemRemoveUrl($item) ?>', <?php echo Mage::getStoreConfigFlag('zeon_ajaxcart/frontend/whishlist_enabled') ? 'true' : 'false'; ?>, <?php echo $item->getWishlistId(); ?>);"><?php echo $this->__('remove item') ?></a>
+                                            <?php if ($isVisibleProduct && !$product->getPersonalize()): ?>
+                                                <?php echo $this->__(' | ') ?>
+                                                <a href="<?php echo $this->getItemConfigureUrl($item) ?>"><?php echo $this->__('edit') ?></a>
+                                            <?php endif ?>
+                                        </div>
+
+
+                                    </td>
+                                    <td>
+                                        <?php if ($product->isSaleable()): ?>
+                                            <?php if ($isVisibleProduct): ?>
+                                                <button type="button" title="<?php echo $this->__('Add to Cart') ?>" onclick="addWItemToCart(<?php echo $item->getId(); ?>, <?php echo $item->getWishlistId(); ?>, <?php echo $simpleProductId; ?>)" class="button btn-cart right"><span><span><?php echo $this->__('Add to Cart') ?></span></span></button>
+                                            <?php endif ?>
+                                        <?php else: ?>
+                                            <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+                                        <?php endif; ?>
+
+                                    </td>
+                                </tr>
+                                <tr id="<?php echo 'moveCopy'.$item->getId(); ?>">
+                                <td colspan="5" class="addremove-wish">
+                                <div class="wish-list-links">
+                                            <!-- Add move / copy links -->
+
+                                            <?php $this->getChild('copy_move_manager')->setData('item', $item); ?>
+                                            <?php echo $this->getChildHtml('copy_move_manager', false); ?>
+
+                                        </div>
+                                </td>
+                                </tr>
+                            <?php endforeach ?>
+                        </tbody>
+                    </table>
+                    <?php else: ?>
+                        <p class="empty-history"><?php echo $this->__('You have no items in your wishlist.') ?></p>
+                    <?php endif ?>
+                    <div class="buttons-set buttons-set2">
+                        <?php echo $this->getChildHtml('delete_button');?>
+                        <?php if ($this->hasWishlistItems()): ?>
+                        <button type="button" name="save_and_share" id="save_and_share" onClick="setLocation('<?php echo $this->getUrl('wishlist/index/share/wishlist_id/'.$wishlistId); ?>')" title="<?php echo $this->__('Share Wishlist') ?>" class="button btn-share red-button right"><span><span><?php echo $this->__('Share Wishlist') ?></span></span></button>
+                        <?php endif ?>
+                    </div>
+                </fieldset>
+                <input type="hidden" id="child_product" name="child_product" value="0" />
+            </form>
+            </div>
+
+        <script type="text/javascript">
+            //<![CDATA[
+            decorateTable('wishlist-table')
+            function confirmRemoveWishlistItem() {
+                return confirm('<?php echo $this->__('Are you sure you want to remove this product from your wishlist?') ?>');
+            }
+
+            function focusComment(obj) {
+                if( obj.value == '<?php echo $this->helper('wishlist')->defaultCommentString() ?>' ) {
+                    obj.value = '';
+                } else if( obj.value == '' ) {
+                    obj.value = '<?php echo $this->helper('wishlist')->defaultCommentString() ?>';
+                }
+            }
+
+            function addWItemToCart(itemId, wishlistId, chileId) {
+                var url = '<?php echo $this->getItemAddToCartUrl('%item%') ?>';
+                url = url.gsub('%item%', itemId);
+                var form = $('wishlist-view-form');
+                if (form) {
+                    var input = form['qty[' + itemId + ']'];
+                    if (input) {
+                        var separator = (url.indexOf('?') >= 0) ? '&' : '?';
+                        url += separator + input.name + '=' + encodeURIComponent(input.value);
+                    }
+                    if (chileId) {
+                        jQuery('#child_product').val(chileId);
+                    }
+                }
+    <?php if (Mage::getStoreConfigFlag('zeon_ajaxcart/frontend/cart_enabled')): ?>
+                        url = url.gsub('wishlist/index/cart', 'ajaxcart/wishlist/cart');
+                        ajaxCart.addWishListItemsToCart(url, wishlistId);
+    <?php else : ?>
+                        setLocation(url);
+    <?php endif ?>
+                }
+
+                function addAllWItemsToCart() {
+    <?php if (Mage::getStoreConfigFlag('zeon_ajaxcart/frontend/cart_enabled')): ?>
+                        var url = '<?php echo $this->getUrl('ajaxcart/wishlist/allcart') ?>';
+    <?php else : ?>
+                        var url = '<?php echo $this->getUrl('*/*/allcart') ?>';
+    <?php endif ?>
+                    var separator = (url.indexOf('?') >= 0) ? '&' : '?';
+                    $$('#wishlist-view-form .qty').each(
+                    function (input, index) {
+                        url += separator + input.name + '=' + encodeURIComponent(input.value);
+                        separator = '&';
+                    }
+                );
+    <?php if (Mage::getStoreConfigFlag('zeon_ajaxcart/frontend/cart_enabled')): ?>
+                        ajaxCart.addWishListItemsToCart(url);
+    <?php else : ?>
+                        setLocation(url);
+    <?php endif ?>
+                }
+                //]]>
+        </script>
+    </div>
+<?php endif ?>

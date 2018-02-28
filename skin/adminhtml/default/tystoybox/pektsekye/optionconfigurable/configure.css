@@ -1,0 +1,123 @@
+
+.product-options {line-height:100%;}
+.product-options .input-box::after {content: none}
+
+
+/* OptionExtended Picker Image*/
+.oc-picker-unselected {border:1px solid white; margin-right:3px; display:inline;}
+.oc-picker-selected {border:1px solid black; margin-right:3px; display:inline;}
+
+.oc-image-cell {float:left; text-align:center;}
+.oc-image-cell span {font-size:10px;}
+
+
+/* OptionExtended Above */
+.product-options dd.oc-above {max-width:590px; padding:0; margin:8px 0 20px 0; border:none;}
+.product-options dd.oc-above img.oc-image {display:block; float:left; width:100px; height:100px; margin:0 8px 8px 0;}
+.product-options dd.oc-above select {width: 100%; margin:0 0 10px 0;}
+.product-options dd.oc-above ul.options-list {margin:0 0 10px 0;}
+.product-options dd.oc-above .description {display:block; width: auto; font-size:10px; margin:0 0 8px 0; font-weight:normal; font-style:normal; }
+.product-options dd.oc-above .spacer{height:1px; clear:both;}
+
+
+/* OptionExtended Above Checkbox */
+.product-options dd.oc-above-checkbox {max-width:590px; padding:0; margin:8px 0 20px 0; border:none;}
+.product-options dd.oc-above-checkbox img.oc-image {display:inline; width:100px; height:100px; margin:0 8px 8px 0;}
+.product-options dd.oc-above-checkbox ul.options-list {margin:0 0 10px 0;}
+.product-options dd.oc-above-checkbox .oc-tooltip-icon {display:inline-block; line-height: inherit; vertical-align:middle; margin-left:5px;}
+
+
+/* OptionExtended Before Select*/
+.product-options dd.oc-before-select {max-width:590px; padding:0; margin:8px 0 20px 0; border:none;}
+.product-options dd.oc-before-select .oc-table {display:table; width:100%;}
+.product-options dd.oc-before-select .oc-table-cell-img {display:table-cell; width:100px; vertical-align:top;}
+.product-options dd.oc-before-select .oc-table-cell {display:table-cell; vertical-align:top;}
+.product-options dd.oc-before-select img.oc-image {width:100px; height:100px; vertical-align:middle; margin:0 10px 10px 0;}
+.product-options dd.oc-before-select select {width: 100%; margin-top:45px;}
+.product-options dd.oc-before-select .oc-tooltip-icon {display:block; margin:8px 100px 0 0;}
+.product-options dd.oc-before-select .spacer{height:1px; clear:both;}
+
+/* OptionExtended Before Radio*/
+.product-options dd.oc-before-radio {max-width:590px; padding:0; margin:8px 0 20px 0; border:none;}
+.product-options dd.oc-before-radio .oc-table {display:table; width:100%;}
+.product-options dd.oc-before-radio .oc-table-cell-img {display:table-cell; width:100px; vertical-align:top;}
+.product-options dd.oc-before-radio .oc-table-cell {display:table-cell; vertical-align:top;}
+.product-options dd.oc-before-radio img.oc-image {width:100px; height:100px; vertical-align:middle; margin:0 10px 10px 0;}
+.product-options dd.oc-before-radio ul.options-list {max-width:100%; max-width:450px; list-style-type:none; margin:0 0 10px 0;}
+.product-options dd.oc-before-radio ul.options-list label {width:100%; max-width:60%;}
+.product-options dd.oc-before-radio .oc-tooltip-icon {display:inline-block; line-height: inherit; vertical-align:middle; margin-left:5px;}
+
+
+/* OptionExtended Below */
+.product-options dd.oc-below {max-width:590px; padding:0; margin:8px 0 20px 0; border:none;}
+.product-options dd.oc-below img.oc-image {display:block; float:left; width:100px; height:100px; margin:0 10px 4px 0;}
+.product-options dd.oc-below div select {width: 100%; margin:4px 0 10px 0;}
+.product-options dd.oc-below ul.options-list {margin:0 0 10px 0;}
+.product-options dd.oc-below .description {display:block; width: auto; font-size:10px; margin:0 0 5px 0; font-weight:normal; font-style:normal; }
+.product-options dd.oc-below .spacer{height:1px; clear:both;}
+
+/* OptionExtended Below Checkbox */
+.product-options dd.oc-below-checkbox {max-width:590px; padding:0; margin:8px 0 20px 0; border:none;}
+.product-options dd.oc-below-checkbox img.oc-image {display:inline; width:100px; height:100px; margin:0 8px 8px 0;}
+.product-options dd.oc-below-checkbox ul.options-list {margin:0 0 10px 0;}
+.product-options dd.oc-below-checkbox select {margin:0 0 10px 0;}
+.product-options dd.oc-below-checkbox .oc-tooltip-icon {display:inline-block; line-height: inherit; vertical-align:middle; margin-left:5px;}
+
+/* OptionExtended Swap Select*/
+.product-options dd.oc-swap-select {max-width:590px; padding:0; margin:8px 0 20px 0; border:none;}
+.product-options dd.oc-swap-select select {width: 100%; margin:8px 0 10px 0;}
+.product-options dd.oc-swap-select .description {font-size:10px; margin:0 0 8px 0; font-weight:normal; font-style:normal; }
+
+/* OptionExtended Swap Radio */
+.product-options dd.oc-swap-radio {max-width:590px; padding:0; margin:8px 0 20px 0; border:none;}
+.product-options dd.oc-swap-radio ul.options-list {margin:0;}
+.product-options dd.oc-swap-radio .oc-tooltip-icon {display:inline-block; line-height: inherit; vertical-align:middle; margin-left:5px;}
+
+
+/* OptionExtended Picker */
+.product-options dd.oc-picker {max-width:590px; padding:0; margin:8px 0 20px 0; border:none;}
+.product-options dd.oc-picker select {display: block; width: 100%; margin:5px 0 10px 0;}
+.product-options dd.oc-picker .description {font-size:10px; margin:0 0 8px 0; font-weight:normal; font-style:normal; }
+.product-options dd.oc-picker .spacer{height:1px; clear:both;}
+
+
+/* OptionExtended Note */
+.product-options dd.oc-note {font-size:12px;}
+
+
+/* OptionExtended Grid */
+.product-options dd.oc-grid {max-width:590px; padding:0; margin:8px 0 20px 0; border:none;}
+.product-options dd.oc-grid ul.options-list {list-style-type:none; padding:0; margin:0;}
+.product-options dd.oc-grid ul.options-list li {width:129px; height:145px; float:left; margin-right:10px; line-height:normal; padding:0}
+.product-options dd.oc-grid ul.options-list input.radio { float:none; margin:45px 0 0 7px;}
+.product-options dd.oc-grid ul.options-list input.checkbox { float:none; margin:45px 0 0 7px;}
+.product-options dd.oc-grid ul.options-list .label {display:block; width: 100px; text-align:center; margin:0;}
+.product-options dd.oc-grid ul.options-list label {min-width: 0; padding:0; background: none; font-weight:normal; }
+.product-options dd.oc-grid ul.options-list label:hover {background: none;}
+.product-options dd.oc-grid .oc-image {display:block; float:left; width:100px; height:100px; margin:0 0 5px 0;}
+.product-options dd.oc-grid ul.validation-failed { padding:10px 0 0 0; }
+.product-options dd.oc-grid .spacer{height:1px; clear:both;}
+.product-options dd.oc-grid .oc-tooltip-icon {display:inline-block; line-height: inherit; vertical-align:middle; margin:10px 0 0 5px;}
+
+
+/* OptionExtended List */
+.product-options dd.oc-list {max-width:590px; padding:0; margin:8px 0 20px 0; border:none;}
+.product-options dd.oc-list ul.options-list {list-style-type:none; padding:0; margin:0; }
+.product-options dd.oc-list ul.options-list li {margin-bottom:10px; border:1px solid #e4e4e4; line-height:normal; padding:10px 10px 10px 10px; }
+.product-options dd.oc-list img {display:block; float:left; width:100px; height:100px; margin:0 10px 0 0;}
+.product-options dd.oc-list li.none img {display:block; width:100px; height:15px; margin:0 10px 0 0;}
+.product-options dd.oc-list ul.options-list input.radio {position:static; float:right; margin:0;}
+.product-options dd.oc-list ul.options-list input.checkbox {position:static; float:right; margin:0;}
+.product-options dd.oc-list ul.validation-failed { padding:0; }
+.product-options dd.oc-list span.content {display:block; width:auto; padding: 0 0 0 0;}
+.product-options dd.oc-list span.content label {display:block; width:auto; background: none; padding:0; margin:0;}
+.product-options dd.oc-list span.content label:hover {background: none;}
+.product-options dd.oc-list .price-notice {padding:0;}
+.product-options dd.oc-list .description {min-height:60px; font-size:10px; margin:5px 0 5px 0;}
+.product-options dd.oc-list .spacer{height: 1px; clear: both;}
+
+
+
+
+.entry-edit h4 {display:none;}
+.entry-edit .product-options {border-bottom:none; padding:0;}

@@ -1,0 +1,49 @@
+<?php
+/**
+ * 
+ * @category   CRM4Ecommerce
+ * @package    CRM4Ecommerce_AdminStartupPage
+ * @author     Philip Nguyen <philip@crm4ecommerce.com>
+ * @link       http://crm4ecommerce.com
+ * @see        CRM4Ecommerce_AdminStartupPage_Block_Adminhtml_Dashboard
+ */
+?>
+<div class="content-header">
+    <table cellspacing="0">
+        <tr>
+            <td><h3 class="icon-head head-adminhtml-mapping"><?php echo $this->getHeaderTitle() ?></h3></td>
+        </tr>
+    </table>
+</div>
+<div class="dashboard-container" style="border: 0px; overflow: hidden; padding: 0px 15px;">
+    <table border="0" cellspacing="0" cellpadding="0" width="100%">
+        <tr>
+            <td><div style="float: right; width: 100%;">
+                    <div class="entry-edit" style="border:1px solid #ccc;">
+                        <ul id="diagram_tab" class="tabs-horiz">
+                            <li>
+                                <a id="diagram_tab_status" class="tab-item-link" title="<?php echo $this->__('Module Information');?>" href="#">
+                                    <span>
+                                        <span class="changed" title="<?php echo $this->__('The information in this tab has been changed.');?>"></span>
+                                        <span class="error" title="<?php echo $this->__('This tab contains invalid data. Please solve the problem before saving.');?>"></span>
+                                        <?php echo $this->__('Module Information');?>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div id="diagram_tab_content">
+                            <div id="diagram_tab_status_content" style="display: none;">
+                                <div style="margin:20px;">
+                                    <?php echo $this->getLayout()->createBlock('adminstartuppage/adminhtml_dashboard_status')->toHtml();?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+<script type="text/javascript">
+    diagram_tabJsTabs = new varienTabs('diagram_tab', 'diagram_tab_content', 'diagram_tab_status', []);
+</script> 

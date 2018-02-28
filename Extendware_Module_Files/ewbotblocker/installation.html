@@ -1,0 +1,206 @@
+<html>
+<head>
+	<title>Extension Installation</title>
+	<script src="http://ajax.googleapis.com/ajax/libs/prototype/1.7.1.0/prototype.js"></script>
+	<style type="text/css">
+		body {margin: 10px 20px 10px 10px; font: 16px sans-serif,Arial,Helvetica;}
+		h1 {font-size: 32px;}
+		h2 {font-size: 24px;}
+		h3 {font-size: 20px;}
+		h4 {font-size: 16px;}
+		h5 {font-size: 14px;}
+		div.header-container {margin-left: 20px; margin-bottom: 30px;}
+		ul {line-height: 25px;}
+		p {line-height: 25px;}
+		#toc {background-color: #F9F9F9; border: 1px solid #AAAAAA; padding: 5px;}
+		#toc ol { list-style-image: none; list-style-type: none; margin-left: 0; padding: 0; }
+		#toc ol {margin-left: 30px}
+		#toc span.toggle {cursor: pointer; color: #0645AD}
+		#toc_list li span.item { cursor: pointer; color: #0645AD; }
+		#toc ol span.item span.number { padding-right: 13px; color: black; }
+	</style>
+	
+	<script type="text/javascript">
+		function toggleToc(elem) {
+			elem = $(elem);
+			var toc = $('toc_list');
+			toc.toggle();
+			var text = 'show';
+			if (toc.visible()) text = 'hide';
+			elem.update(text);
+		}
+		
+		var sections = [];
+		function buildToc() {
+			$('toc').show();
+			
+			var c = 0;
+			var i = 0;
+			var html = '<ol id="toc_list">';
+			$$('h2').each(function(e) {
+				i++;
+				sections[c] = e;
+				html += '<li><span class="item" onclick="gotoSection('+c+')"><span class="number">' + (i) + '</span><span class="text">' + e.innerHTML.stripTags() + '</span></span>';
+				
+				var subs = e.next('div').select('h3')
+				if (subs.size() > 0) {
+					html += '<ol>';
+					var k = 0;
+					e.next('div').select('h3').each(function(e) {
+						c++; k++;
+						sections[c] = e;
+						html += '<li><span class="item" onclick="gotoSection('+c+')"><span class="number">' + (i) + '.' + (k) + '</span><span class="text">' + e.innerHTML.stripTags() + '</span></span>';
+						
+						if (e.next('div')) {
+							var subssubs = e.next('div').select('h4')
+							if (subssubs.size() > 0) {
+								var j = 0;
+								html += '<ol>';
+								e.next('div').select('h4').each(function(e) {
+									c++; j++;
+									sections[c] = e;
+									html += '<li><span class="item" onclick="gotoSection('+c+')"><span class="number">' + (i) + '.' + (k) + '.' + (j) + '</span><span class="text">' + e.innerHTML.stripTags() + '</span></span></li>';
+								});
+								html += '</ol>';
+							}
+						}
+						
+						html += '</li>';
+					});
+					html += '</ol>';
+				}
+				html += '</li>';
+				c++;
+	        });
+			html += '</ol>';
+			
+			$('toc_placeholder').replace(html);
+		}
+		
+		function gotoSection(i) {
+			var section = sections[i];
+			section.scrollTo();
+			if (typeof(window.scrollTo) == 'function') {
+				var p = section.cumulativeScrollOffset();
+				window.scrollTo(0, p[1]);
+			}
+		}
+		
+		function showConditionalContent(elem) {
+			if ('%%IS_COMBINED%%' == 1) {
+				$$('.separated_packages_only').invoke('hide');
+			}
+		}
+		
+		document.observe("dom:loaded", function() { buildToc(); showConditionalContent(); });
+	</script>
+</head>
+<body style="background: white">
+
+<h1>Extendware Installation Guide</h1>
+	<div id="toc" style="display:none">
+		<b>Table of Contents</b> [<span class="toggle" onclick="toggleToc(this)">hide</span>]
+		<div id="toc_placeholder"></div>
+	</div>
+	<p style="background-color: yellow;" class="separated_packages_only"><b>Note: </b> Ensure you have already installed <b>Extendware Core</b> (downloadble from your account center).</p>
+	
+	<h2>Improving Your Installation Experience</h2>
+	<div class="header-container">
+		<p>Read every document in full before installing. <u>If something goes wrong, read the troubleshooting section of this document.</u> Almost every issue
+		is the result of a permission error, not fully uploading files, or not setting up cron. Make sure all files are uploaded and make sure all permissions are correct.
+		If you follow this document, then installing your installation will be a very nice and easy experience.</p>
+		
+		<p>Take advantage of our <a href="http://www.extendware.com/services/magento-extension-installation.html"><b>extension installation service</b></a> if you do not want to deal with installation yourself or you want to ensure it is done correctly.</p>
+	</div>
+	
+	<h2>Extension Installation</h2>
+	<div class="header-container">
+		<h3>Before you install</h3>
+		<ul>
+			<li><u>Read and understand this whole document and every document that came with this installation prior to installation.</u></li>
+			<li>Install and test this extension in your test environment to ensure everything works as expected.</li>
+			<li class="separated_packages_only">Ensure that <i>Extendware Core</i> is installed or your extension will not work. You may download this from your account center.</li>
+			<li>Backup your Web site and database.</li>
+		</ul>
+		
+		<h3>Preparing Magento for a new extension</h3>
+		<ul>
+			<li>Disable system compilation in <i>System -> Tools -> Compilation</i>.</li>
+			<li>Disable caching in <i>System -> Cache Management</i>. Select all cache types and disable them.</li>
+		</ul>
+		
+		<h3>Installing the extension <i>the right way</i></h3>
+		<ul>
+			<li>Upload <i>maintenance.flag</i> to the Magento base directory. This will ensure the database is updated correctly and your users do not receive errors during the upload process.</li>
+			<li><u>Upload Step 1</u>
+				<ul>
+					<li>Copy the contents of the <i>step1</i> directory into your Magento base directory having your FTP software merge the contents.</li>
+					<li>Ensure that <i>[Magento base]/var/</i> and all subdirectories are read / writable, especially <i>[Magento base]/var/extendware/</i>. Usually this means setting the permissions to <i>0777</i> or <i>0755</i></li>
+				</ul>
+			</li>
+			<li><u>Upload Step 2</u>
+				<ul>
+					<li>Copy the contents of the <i>step2</i> directory into your Magento base directory having your FTP software merge the contents.</li>
+					<li>Ensure that all files and directories <i>[Magento base]/app/etc/</i> are read / writeable. Usually this means setting the permissions to <i>0777</i> or <i>0755</i></li>
+				</ul>
+			</li>
+			<li>Delete the <i>maintenance.flag</i> file so that your store is accessible again.</li>
+		</ul>
+		
+		<h3>After installing the extensions</h3>
+		<ul>
+			<li>Logout of the Magento administrative center and log back in. If you fail to do this, then you cannot configure the extension</li>
+			<li>You may re-enable the cache. However, please <i>refresh the cache</i> prior to enabling it by selecting all cache types and hitting refresh.</li>
+			<li>You may now re-enable system compilation if you want (ensure to re-run it before enabling it).</li>
+			<li>Ensure you read the user guide.</li>
+		</ul>
+		<p style="background-color: yellow" class="separated_packages_only"><b>Note: </b> Ensure you read the user guide! There is additional troubleshooting and other necessary information in the user guides.</p>
+	</div>
+	
+	<h2>Using the Extension</h2>
+	<div class="header-container">
+		<p>Not all extensions come with a user guide. If your extension came with a user guide, then please refer to the user guide. If your
+		extension did not come with a user guide, then please explore <i>Extendware -> Manage Extensions -> [Name of the Extension]</i> to configure
+		and use the extension</p>
+	</div>
+	
+	<h2>Our Bug Policy</h2>
+	<div class="header-container">
+		<p>At Extendware we hate bugs in our software. None of our software has known bugs. If you find a bug, please report it to support and it will be fixed.
+		If the bug is critical (affects functionality, security, etc), then it will be fixed and released very rapidly. If the bug is minor (misspelling, PHP notice, etc), then it will be
+		fixed and released during the next scheduled release.</p>
+	</div>
+	
+	<h2>Troubleshooting / FAQ</h2>
+	<div class="header-container">
+		<h3>How may I disable the extension?</h3>
+		
+		<p>You may disable the extension in <i>Extendware -> Manage Extensions -> Overview</i>. Click on the name of the extensions, then select disable, and save.
+		If this is not an option, then you may rename the extensions XML file in <i>[Magento base]/app/etc/modules/Extendware_[Extension Name].xml</i> to
+		something like <i>[Magento base]/app/etc/modules/Extendware_[Extension Name].xml.disabled</i></p>
+		
+		<h3>I get an error to check the store logs</h3>
+		
+		<p>This means that the files located at <i>/var/extendware/</i> in the <i>installation package</i> were not uploaded or are not
+		read / writeable. If you have uploaded these files and set the proper permissions, please look in <i>[Magento base]/var/log</i> to read
+		what the store log says.</p>
+		
+		<h3>I get an "Access Denied" message or a blank page when configuring the extensions</h3>
+		
+		<p>You must login and re-logout of your store in order to configure the extension. After you do this, then you will have permission
+		to configure the extension.</p>
+		
+		<h3>The extension is installed, but is behaving weirdly</h3>
+		
+		<p>99% of the time this is the result of an extension conflict. Please go to <i>System -> Tools -> Compilation</i> and disable compilation
+		if enabled. Then go to <i>Extendware -> Manage Extensions -> Overview</i> and click on the <i>3rd Party Extensions</i> tab. 
+		Please selectively disable each of these extensions until you determine which one is causing the conflict. Once to determined, 
+		you may re-enable the non-conflicting extensions while keeping the conflicting extension disabled.</p>
+	</div>
+	
+	<h2>Uninstalling</h2>
+	<div class="header-container">
+		Please remove all files from your server that came with the installation package you installed.
+	</div>
+</body>
+</html>

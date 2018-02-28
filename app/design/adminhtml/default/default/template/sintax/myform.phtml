@@ -1,0 +1,74 @@
+<div class="content-header">
+    <table cellspacing="0" class="grid-header">
+        <tr>
+            <td><h3><?=$this->__('Change Rule Shipping Rate')?></h3></td>
+            <td class="a-right">
+                <button onclick="editForm.submit()" class="scalable save" type="button"><span>Submit</span></button>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="entry-edit">
+    <form id="edit_form" name="edit_form" method="post" action="<?=$this->getUrl('*/*/post')?>">
+        <input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" />
+       
+        <fieldset id="my-fieldset">
+            <table cellspacing="0" class="form-list">
+                <tr>
+                    <td class="label"><?=$this->__('Rule Id')?> <span class="required">*</span></td>
+                    <td class="input-ele"><input class="input-text required-entry" name="roleId" /></td>
+                </tr>
+                
+                  <tr>
+                    <td class="label"><?=$this->__('Store')?> <span class="required">*</span></td>
+                    <td class="input-ele"><select name="store_id">
+<option selected="selected" value=""></option>
+<option value="5">Limoges</option>
+<option value="1">Ty's Toy Box</option>
+<option value="2">PBS Kids Shop</option>
+<option value="4">Personalized Planet</option></optgroup></select></td>
+                </tr>
+                   <tr>
+                    <td class="label"><?=$this->__('Country')?> <span class="required">*</span></td>
+                    <td class="input-ele"><select id="country" title="Country" name="country_id" onchange="toggle_delivery(this)" style="width: 130px;">
+
+<option  value="CA">Canada</option>
+<option value="US" selected="selected">United States</option>
+</select></td>
+                </tr>
+                   <tr>
+                    <td colspan="2">
+                        <div id="delivery_type">
+                            <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                                <tr>
+                    <td class="label"><?=$this->__('Delivery Type')?> <span class="required">*</span></td>
+                    <td class="input-ele"><select id="dtype" title="Delivery Type" name="dtype" style="width: 150px;">
+<option value="Standard Shipping" selected="selected">Standard Shipping</option>
+<option  value="Overnight Delivery">Overnight Delivery</option>
+<option value="Express Delivery">Express Delivery</option>
+</select></td>
+                </tr>
+                          
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+                   <tr>
+                    <td class="label"><?=$this->__('Ship Rate')?> <span class="required">*</span></td>
+                    <td class="input-ele"><input class="input-text required-entry" name="rate" /></td>
+                </tr>       
+            </table>
+        </fieldset>
+    </form>
+</div>
+<script type="text/javascript">
+    var editForm = new varienForm('edit_form');
+    
+    function toggle_delivery(me) {
+        if (me.value == "CA" ) {
+            document.getElementById("delivery_type").style.display = "none";
+        }else{
+            document.getElementById("delivery_type").style.display = "block";
+        }
+    }
+</script>

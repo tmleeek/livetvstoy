@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<config>
+    <global>
+        <blocks>
+          <core>
+            <rewrite>
+              <messages>Zeon_Core_Block_Messages</messages>
+              <template>Zeon_Core_Block_Template</template>
+            </rewrite>
+          </core>
+        </blocks>
+    </global>
+</config>

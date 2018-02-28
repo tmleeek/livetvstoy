@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout version="0.1.0">
+    <default>
+        <reference name="root">
+            <reference name="head">
+                <action method="addCss">
+                    <stylesheet>css/bootstrap.css</stylesheet>
+                </action>
+				<action method="addCss">
+                    <stylesheet>css/pp.css</stylesheet>
+                </action>
+				<action method="removeItem">
+                    <type>skin_css</type>
+                    <name>css/addressvalidation.css</name>
+                </action>
+                <action method="removeItem">
+                    <type>skin_css</type>
+                    <name>inchoo_socialconnect/google/css/button.css</name>
+                </action>
+                <action method="removeItem">
+                    <type>skin_css</type>
+                    <name>inchoo_socialconnect/facebook/css/button.css</name>
+                </action>
+                <action method="removeItem">
+                    <type>skin_css</type>
+                    <name>inchoo_socialconnect/twitter/css/button.css</name>
+                </action>
+                <action method="addItem">
+                    <type>skin_js</type>
+                    <name>js/fancybox/jquery.fancybox.js</name>
+                </action>
+                <action method="addItem">
+                    <type>skin_js</type>
+                    <script>js/jquery.cookie.js</script>
+                </action>
+                <action method="addItem">
+                    <type>skin_js</type>
+                    <name>js/bootstrap/bootstrap.min.js</name>
+                </action>
+                <!-- css and js for custom checkbox dropdown start -->
+                <action method="addItem">
+                    <type>skin_js</type>
+                    <name>js/icheck/icheck.min.js</name>
+                </action>
+                <!-- css and js for custom checkbox dropdown end -->
+                <action method="addItem">
+                    <type>skin_js</type>
+                    <name>js/common.js</name>
+                </action>
+                <action method="addItem">
+                    <type>skin_js</type>
+                    <name>js/dropkick/jquery.dropkick-min.js</name>
+                </action>
+                
+            </reference>
+            <action method="setTemplate">
+                <template>page/2columns-left.phtml</template>
+            </action>
+        </reference>
+        <reference name="header">
+            <reference name="account.links">
+                <action method="removeLinkByUrl">
+                    <url helper="customer/getRegisterUrl" />
+                </action>
+                <remove name="checkout.links"/>
+            </reference>
+        </reference>
+        <reference name="footer">
+            <block type="cms/block" name="socialLinks" as="socialLinks" after="footer.newsletter">
+                <action method="setBlockId">
+                    <block_id>social-links</block_id>
+                </action>
+            </block>
+        </reference>
+		<reference name="top.links">
+			<remove name="slider.menu" />
+		</reference>
+
+        <reference name="top.links">
+            <action method="addLink" translate="label title" module="customer">
+                <label>Customer Service</label>
+                <url>customer-service</url>
+                <title>My Account</title>
+                <prepare>1</prepare>
+                <urlParams/>
+                <position/>
+            </action>
+        </reference>
+        <reference name="left">
+            <action method="unsetChild">
+                <alias>newsletterleft</alias>
+            </action>
+        </reference>
+    </default>
+	    <!-- Customer account links -->
+    <customer_account>
+        <reference name="breadcrumbs.container">
+            <block type="core/template" name="customer.account.title" template="customer/account/title.phtml">
+                <action method="setText"><text>Hello, World!</text></action>
+            </block>
+        </reference>
+        <reference name="left">
+            <action method="unsetChild">
+                <alias>newsletterleft</alias>
+            </action>
+            <action method="unsetChild">
+                <alias>catalog.compare.sidebar</alias>
+            </action>
+            <action method="unsetChild">
+                <alias>reorder</alias>
+            </action>
+            <action method="unsetChild">
+                <name>left_column_static_block_group</name>
+            </action>
+        </reference>
+        <reference name="customer_account_navigation">
+            <action method="unsetChild">
+                <name>customer_account_navigation</name>
+            </action>
+            <block type="customer/account_navigation" name="customer_account_navigation"
+                before="-" template="customer/account/navigation.phtml">
+				<block type="customer/account_dashboard_hello" name="customer_account_dashboard_hello" as="hello" template="customer/account/dashboard/hello.phtml"/>
+                <action method="addLink" translate="label" module="customer">
+                    <name>account</name>
+                    <path>customer/account/</path>
+                    <label>Overview</label>
+                </action>
+                <action method="addLink" translate="label" module="customer">
+                    <name>account_edit</name>
+                    <path>customer/account/edit/</path>
+                    <label>My Profile</label>
+                </action>
+                <action method="addLink" translate="label" module="customer">
+                    <name>address_book</name>
+                    <path>customer/address/</path>
+                    <label>Address Book</label>
+                </action>
+                <action method="addLink" translate="label" module="sales">
+                    <name>orders</name>
+                    <path>sales/order/history/</path>
+                    <label>Order History</label>
+                </action>
+                <action method="addLink" translate="label" module="review">
+                    <name>reviews</name>
+                    <path>review/customer</path>
+                    <label>My Reviews</label>
+                </action>
+                <action method="addLink" translate="label" module="wishlist" ifconfig="wishlist/general/active">
+                    <name>wishlist</name>
+                    <path>wishlist/</path>
+                    <label>My Wishlist</label>
+                </action>
+                <action method="addLink" translate="label" module="wishlist">
+                    <name>preferences</name>
+                    <path>newsletter/manage/</path>
+                    <label>Preferences</label>
+                </action>
+                <action method="addLink" translate="label" module="inchoo_socialconnect"
+                        ifconfig="customer/inchoo_socialconnect_google/enabled">
+                    <name>inchoo_socialconnect_google</name>
+                    <path>socialconnect/account/google</path>
+                    <label>Google Connect</label>
+                </action>
+                <action method="addLink" translate="label" module="inchoo_socialconnect"
+                    ifconfig="customer/inchoo_socialconnect_facebook/enabled">
+                    <name>inchoo_socialconnect_facebook</name>
+                    <path>socialconnect/account/facebook</path>
+                    <label>Facebook Connect</label>
+                </action>
+            </block>
+        </reference>
+    </customer_account>
+
+    <!-- copied from manadev -->
+    <catalog_category_layered> <!-- find all category pages with layered navigation -->
+        <update handle="mana_ajax" />
+        <reference name="head">
+            <action method="addJs"><script>jquery/history.adapter.jquery.js</script></action>
+            <action method="addJs"><script>jquery/history.js</script></action>
+            <action method="addItem"><type>skin_js</type><name>js/manapro_filterajax.js</name><params/></action>
+        </reference>
+        <reference name="top.menu">
+            <action method="setMClientSideBlock"><params><type>Mana/Core/Block</type></params></action>
+        </reference>
+        <reference name="content">
+            <action method="setMClientSideBlock"><params><type>Mana/Core/Block</type></params></action>
+        </reference>
+        <reference name="left">
+            <action method="setMClientSideBlock"><params><type>Mana/Core/Block</type></params></action>
+        </reference>
+        <reference name="right">
+            <action method="setMClientSideBlock"><params><type>Mana/Core/Block</type></params></action>
+        </reference>
+        <reference name="breadcrumbs">
+            <action method="setMClientSideBlock"><params><type>Mana/Core/Block</type></params></action>
+        </reference>
+        <reference name="category.title">
+            <action method="setMClientSideBlock"><params><type>Mana/Core/Block</type></params></action>
+        </reference>
+        <reference name="category.products">
+            <action method="setMClientSideBlock"><params><type>Mana/Core/Block</type></params></action>
+        </reference>
+        <reference name="mana.catalog.leftnav">
+            <action method="setMClientSideBlock"><params><type>Mana/Core/Block</type></params></action>
+        </reference>
+        <reference name="m_ajax_update">
+            <action method="setRenderedButNotSentBlocks"><blocks>m_ajax_update,head</blocks></action>
+            <action method="setUpdatedBlocksIfPageChanged"><updated_blocks>content,left,right,breadcrumbs,top.menu,category.title</updated_blocks></action>
+            <action method="setUpdatedBlocksIfParameterChanged"><updated_blocks>category.products,mana.catalog.leftnav,mana.catalog.rightnav</updated_blocks></action>
+            <action method="setInterceptedLinkContainers"><css_selector>.mb-mana-catalog-leftnav,.mb-mana-catalog-rightnav,.block-layered-nav.m-topmenu,.block-layered-nav.m-top,.category-products .toolbar</css_selector></action>
+            <action method="setExceptions"><regular_expr>options=|checkout/cart/add|catalog/product_compare/add|wishlist/index/add</regular_expr></action>
+        </reference>
+    </catalog_category_layered>
+</layout>

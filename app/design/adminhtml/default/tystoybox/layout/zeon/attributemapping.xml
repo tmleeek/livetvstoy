@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <adminhtml_index_index>
+        <reference name="content">
+            <block type="zeon_attributemapping/adminhtml_attributeswitcher" name="attribute_select" />
+        </reference>
+    </adminhtml_index_index>
+    
+     <adminhtml_index_list>
+     	<reference name="head">
+     		<action method="addItem">
+                <type>skin_js</type><name>js/popup.js</name>
+            </action>
+            <action method="addItem">
+                <type>js_css</type>
+                <name>prototype/windows/themes/default.css</name>
+            </action>
+            <action method="addCss">
+                <name>lib/prototype/windows/themes/magento.css</name>
+            </action>
+        </reference>
+        <reference name="content">
+            <block type="zeon_attributemapping/adminhtml_attributemapping" name="attribute_option_select" >
+                <block type="adminhtml/store_switcher" name="store_switcher" as="store_switcher">
+                    <action method="setUseConfirm"><params>0</params></action>
+                    <action method="hasDefaultOption"><params>0</params></action>
+                </block>
+                <block type="zeon_attributemapping/adminhtml_switcher" name="attribute_switcher" as="attribute_switcher" />
+                <block type="zeon_attributemapping/adminhtml_attributemapping_grid" name="attribue_value.grid"  />
+            </block>
+        </reference>
+    </adminhtml_index_list>
+    
+    <adminhtml_index_edit>
+        <update handle="editor"/>
+        <reference name="content">
+            <block type="zeon_attributemapping/adminhtml_attributemapping_edit" name="option_data_edit" />
+        </reference>
+    </adminhtml_index_edit>
+    
+    <adminhtml_index_addoptions>
+    	<remove name="header" />
+        <remove name="footer" />
+        <remove name="menu" />
+        <remove name="notification_toolbar" />
+    	<reference name="content">
+            <block type="zeon_attributemapping/adminhtml_addoptions" name="attribute_select" />
+        </reference>
+    </adminhtml_index_addoptions>
+    
+</layout>

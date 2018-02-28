@@ -1,0 +1,8 @@
+<config>
+  <modules>
+    <CPS_PhotoPicker>
+      <active>true</active>
+      <codePool>local</codePool>
+    </CPS_PhotoPicker>
+  </modules>
+</config>

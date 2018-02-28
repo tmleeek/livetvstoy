@@ -1,0 +1,119 @@
+<?xml version="1.0"?>
+<config>
+ <sections>
+  <cat_csv_sec  translate="label" module="categorycsv">
+    <label>C&amp;B Category script</label>
+    <tab>personalize1</tab>
+    <frontend_type>text</frontend_type>
+    <sort_order>9</sort_order>
+    <show_in_default>1</show_in_default>
+    <show_in_website>1</show_in_website>
+    <show_in_store>1</show_in_store>
+    <groups>
+      <cat_csv_grp translate="label">
+       <label>C&amp;B Category Script</label>
+       <frontend_type>text</frontend_type>
+       <sort_order>0</sort_order>
+       <show_in_default>1</show_in_default>
+       <show_in_website>1</show_in_website>
+       <show_in_store>1</show_in_store>
+       <fields>
+        <cat_csv_fld translate="label">
+          <label>category Ids</label>
+          <frontend_type>textarea</frontend_type>
+          <sort_order>0</sort_order>
+          <show_in_default>1</show_in_default>
+          <show_in_website>1</show_in_website>
+          <show_in_store>1</show_in_store>
+          <comment>add comma separated ids</comment>
+        </cat_csv_fld>
+        <cat_id translate="label">
+          <label>add category Id to load products from:</label>
+          <frontend_type>text</frontend_type>
+          <sort_order>2</sort_order>
+          <show_in_default>1</show_in_default>
+          <show_in_website>1</show_in_website>
+          <show_in_store>1</show_in_store>
+        </cat_id>
+
+        <free_charms translate="label">
+          <label>Free Charms Sku's :</label>
+          <frontend_type>text</frontend_type>
+          <sort_order>3</sort_order>
+          <show_in_default>1</show_in_default>
+          <show_in_website>1</show_in_website>
+          <show_in_store>1</show_in_store>
+          <comment>Add Comma seperated Sku's</comment>
+        </free_charms>
+
+
+      </fields>
+    </cat_csv_grp>
+    <bracelet_img_grp translate="label">
+      <label>Upload Bracelet Images</label>
+      <frontend_type>text</frontend_type>
+      <sort_order>2</sort_order>
+      <show_in_default>1</show_in_default>
+      <show_in_website>1</show_in_website>
+      <show_in_store>1</show_in_store>
+      <fields>
+       <campains444 translate="label">
+        <label>Add png formated images</label>
+        <frontend_model>Kwanso_CategoryCsv_Block_Config_Campaign</frontend_model>
+        <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+        <sort_order>10</sort_order>
+        <show_in_default>1</show_in_default>
+        <show_in_website>1</show_in_website>
+        <show_in_store>0</show_in_store>
+        <comment>Note! image name should be the product sku with png format, for example 48455.png</comment>
+      </campains444>
+    </fields>
+  </bracelet_img_grp>
+
+    <charm_grp translate="label">
+      <label>Upload Charm Images</label>
+      <frontend_type>text</frontend_type>
+      <sort_order>3</sort_order>
+      <show_in_default>1</show_in_default>
+      <show_in_website>1</show_in_website>
+      <show_in_store>1</show_in_store>
+      <fields>
+       <campains445 translate="label">
+        <label>Add png formated images</label>
+        <frontend_model>Kwanso_CategoryCsv_Block_Config_Charms</frontend_model>
+        <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+        <sort_order>10</sort_order>
+        <show_in_default>1</show_in_default>
+        <show_in_website>1</show_in_website>
+        <show_in_store>0</show_in_store>
+        <comment>Note! image name should be the product sku with png format, for example: 48455.png</comment>
+      </campains445>
+    </fields>
+  </charm_grp>
+
+    <flyout_grp translate="label">
+      <label>Upload flyout-icon Images</label>
+      <frontend_type>text</frontend_type>
+      <sort_order>4</sort_order>
+      <show_in_default>1</show_in_default>
+      <show_in_website>1</show_in_website>
+      <show_in_store>1</show_in_store>
+      <fields>
+       <campains446 translate="label">
+        <label>Add svg formated images</label>
+        <frontend_model>Kwanso_CategoryCsv_Block_Config_Flyout</frontend_model>
+        <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+        <sort_order>10</sort_order>
+        <show_in_default>1</show_in_default>
+        <show_in_website>1</show_in_website>
+        <show_in_store>0</show_in_store>
+        <comment>Note! image name should be the product sku with svg format, for example: 48455.svg</comment>
+      </campains446>
+    </fields>
+  </flyout_grp>
+
+</groups>
+</cat_csv_sec>
+</sections>
+</config>
+

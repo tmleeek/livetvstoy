@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+    <Kwanso_CacheRefresh>
+      <version>1.0.0</version>
+    </Kwanso_CacheRefresh>
+  </modules>
+  <global>
+
+    <helpers>
+      <cacherefresh>
+        <class>Kwanso_CacheRefresh_Helper</class>
+      </cacherefresh>
+    </helpers>
+
+	<models>
+	  <cacherefresh>
+		<class>Kwanso_CacheRefresh_Model</class>
+		<resourceModel>cacherefresh_mysql4</resourceModel>
+	  </cacherefresh>
+	</models>
+
+	<resources>
+      <cacherefresh_setup>
+        <setup>
+          <module>Kwanso_CacheRefresh</module>
+        </setup>
+        <connection>
+          <use>core_setup</use>
+        </connection>
+      </cacherefresh_setup>
+      <cacherefresh_write>
+          <connection>
+            <use>core_write</use>
+          </connection>
+      </cacherefresh_write>
+      <cacherefresh_read>
+          <connection>
+            <use>core_read</use>
+          </connection>
+      </cacherefresh_read>
+    </resources>
+
+  </global>
+  <admin>
+	<routers>
+	  <cacherefresh>
+	    <use>admin</use> 
+		<args>
+		  <module>Kwanso_CacheRefresh</module>
+		  <frontName>admin_cacherefresh</frontName>
+		</args>
+	  </cacherefresh>
+	</routers>
+  </admin>
+
+	<adminhtml>
+		<acl>
+		  	<resources>
+				<all>
+				  	<title>Allow Everything</title>
+				</all>
+				<admin>
+					<children>
+						<cacherefresh translate="title" module="cacherefresh">
+						  	<title>Cache Refresh</title>
+						  	<sort_order>1000</sort_order>
+						  	<children>
+							  	<cacherefreshbackend translate="title">
+									<title>Cache Refresh</title>
+							  	</cacherefreshbackend>
+						  	</children>
+						</cacherefresh>
+					</children>
+				</admin>
+		  	</resources>
+		</acl>
+	</adminhtml>
+
+  	<crontab>
+        <jobs>
+			<cacherefresh_cacherefresh>
+                <schedule>
+                	<cron_expr>*/5 * * * *</cron_expr>
+                </schedule>
+                <run>
+                	<model>cacherefresh/cron::cacheRefresh</model>
+                </run>
+            </cacherefresh_cacherefresh>
+        </jobs>
+    </crontab>
+</config> 

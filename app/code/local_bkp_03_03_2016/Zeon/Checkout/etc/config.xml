@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<config>
+    <global>
+        <blocks>
+            <checkout>
+                <rewrite>
+                    <cart_item_renderer>Zeon_Checkout_Block_Cart_Item_Renderer</cart_item_renderer>
+                </rewrite>
+            </checkout>
+        </blocks>
+    </global>
+    <frontend>
+        <routers>
+            <checkout>
+                <args>
+                    <modules>
+                        <zeon_checkout before="Mage_Checkout">Zeon_Checkout</zeon_checkout>
+                    </modules>
+                </args>
+            </checkout>
+        </routers>
+    </frontend>
+</config>

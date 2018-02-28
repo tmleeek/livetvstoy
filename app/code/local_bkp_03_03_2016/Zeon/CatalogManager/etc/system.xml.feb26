@@ -1,0 +1,1017 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Zeon Solutions, Inc.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Zeon Solutions License
+ * that is bundled with this package in the file LICENSE_ZE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.zeonsolutions.com/license/
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@zeonsolutions.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * versions in the future. If you wish to customize this extension for your
+ * needs please refer to http://www.zeonsolutions.com for more information.
+ *
+ * @category    Zeon
+ * @package     Zeon_CatalogManager
+ * @copyright   Copyright (c) 2014 Zeon Solutions, Inc. All Rights Reserved.(http://www.zeonsolutions.com)
+ * @license     http://www.zeonsolutions.com/license/
+ */
+-->
+<config>
+    <sections>
+        <zeon_catalogmanager translate="label" module="zeon_catalogmanager">
+            <class>separator-top</class>
+            <label>Catalog Manager</label>
+            <tab>zextension</tab>
+            <sort_order>10</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <featured_products translate="label">
+                    <label>Featured Product Settings</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <active translate="label comment">
+                            <label>Enable</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Enable/Disable the featured products functionality.</comment>
+                        </active>
+
+                        <number_of_items translate="label comment">
+                            <label>Number Of Items On Homepage</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>How many featured products will be showed on homepage?</comment>
+                        </number_of_items>
+
+                        <number_of_items_per_row translate="label comment">
+                            <label>Number Of Items Per Row On Homepage</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>How many featured products will be showed per row?</comment>
+                        </number_of_items_per_row>
+
+                        <price_visible>
+                            <label>Show price</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Show product price and addToCart button.</comment>
+                        </price_visible>
+
+                        <char_limit translate="label">
+                            <label>Maximum Character Limit</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Number of characters of title to be displayed, after that (...) will be displayed.</comment>
+                        </char_limit>
+
+                        <heading translate="label comment">
+                            <label>Heading</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Featured product page heading.</comment>
+                        </heading>
+
+                        <layout translate="label comment">
+                            <label>Layout</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>page/source_layout</source_model>
+                            <sort_order>6</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Layout for featured products page.</comment>
+                        </layout>
+
+                        <meta_title translate="label comment">
+                            <label>Meta Title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>7</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Meta title for featured product page.</comment>
+                        </meta_title>
+
+                        <meta_description translate="label comment">
+                            <label>Meta Description</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>8</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Meta description for featured product page.</comment>
+                        </meta_description>
+
+                        <meta_keywords translate="label comment">
+                            <label>Meta Keywords</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>9</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Meta keywords for featured product page.</comment>
+                        </meta_keywords>
+                    </fields>
+                </featured_products>
+
+                <best_products translate="label">
+                    <label>Best Seller Product Settings</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>2</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <active translate="label comment">
+                            <label>Enable</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Enable/Disable the best seller products functionality.</comment>
+                        </active>
+
+                        <number_of_items translate="label comment">
+                            <label>Number Of Items On Homepage</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>How many best seller products will be showed on homepage?</comment>
+                        </number_of_items>
+                        <number_of_items_per_row translate="label comment">
+                            <label>Number Of Items Per Row On Homepage</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>How many best seller products will be showed per row?</comment>
+                        </number_of_items_per_row>
+
+                        <price_visible>
+                            <label>Show price</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Show product price and addToCart button.</comment>
+                        </price_visible>
+
+                        <char_limit translate="label">
+                            <label>Maximum Character Limit</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Number of characters of title to be displayed, after that (...) will be displayed.</comment>
+                        </char_limit>
+                        <heading translate="label comment">
+                            <label>Heading</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Best seller product page heading.</comment>
+                        </heading>
+                        <heading_logo translate="label comment">
+                            <label>Heading Logo</label>
+                            <comment>Allowed file types: jpeg, gif, png.</comment>
+                            <frontend_type>image</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_image</backend_model>
+                            <upload_dir config="system/filesystem/media" scope_info="1">best_seller</upload_dir>
+                            <base_url type="media" scope_info="1">best_seller</base_url>
+                            <sort_order>6</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </heading_logo>
+                        <layout translate="label comment">
+                            <label>Layout</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>page/source_layout</source_model>
+                            <sort_order>7</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Layout for best seller products page.</comment>
+                        </layout>
+
+                        <meta_title translate="label comment">
+                            <label>Meta Title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>8</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Meta title for best seller product page.</comment>
+                        </meta_title>
+
+                        <meta_description translate="label comment">
+                            <label>Meta Description</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>9</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Meta description for best seller product page.</comment>
+                        </meta_description>
+
+                        <meta_keywords translate="label comment">
+                            <label>Meta Keywords</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Meta keywords for best seller product page.</comment>
+                        </meta_keywords>
+                    </fields>
+                </best_products>
+
+                <homepage_products_option1 translate="label">
+                    <label>Homepage - Custom Option 1</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>3</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <active translate="label comment">
+                            <label>Enable</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Enable/Disable the homepage - custom option 1 functionality.</comment>
+                        </active>
+
+                        <number_of_items translate="label comment">
+                            <label>Number Of Items On Homepage</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>How many homepage - custom option 1 will be showed on homepage?</comment>
+                        </number_of_items>
+
+                        <number_of_items_per_row translate="label comment">
+                            <label>Number Of Items Per Row On Homepage</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>How many homepage - custom option 1 will be showed per row?</comment>
+                        </number_of_items_per_row>
+
+                        <price_visible>
+                            <label>Show price</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Show product price and addToCart button.</comment>
+                        </price_visible>
+
+                        <char_limit translate="label">
+                            <label>Maximum Character Limit</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Number of characters of title to be displayed, after that (...) will be displayed.</comment>
+                        </char_limit>
+
+                        <heading translate="label comment">
+                            <label>Heading</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Homepage - Custom Option 1 Page heading.</comment>
+                        </heading>
+
+                        <heading_logo translate="label comment">
+                            <label>Heading Logo</label>
+                            <comment>Allowed file types: jpeg, gif, png.</comment>
+                            <frontend_type>image</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_image</backend_model>
+                            <upload_dir config="system/filesystem/media" scope_info="1">homepage_products_option1</upload_dir>
+                            <base_url type="media" scope_info="1">custom_option_1</base_url>
+                            <sort_order>6</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </heading_logo>
+
+                        <layout translate="label comment">
+                            <label>Layout</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>page/source_layout</source_model>
+                            <sort_order>6</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Layout for homepage - custom option 1 page.</comment>
+                        </layout>
+
+                        <meta_title translate="label comment">
+                            <label>Meta Title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>7</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Meta title for homepage - custom option 1 page.</comment>
+                        </meta_title>
+
+                        <meta_description translate="label comment">
+                            <label>Meta Description</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>8</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Meta description for homepage - custom option 1 page.</comment>
+                        </meta_description>
+
+                        <meta_keywords translate="label comment">
+                            <label>Meta Keywords</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>9</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Meta keywords for homepage - custom option 1 page.</comment>
+                        </meta_keywords>
+                    </fields>
+                </homepage_products_option1>
+
+                <homepage_products_option2 translate="label">
+                    <label>Homepage - Custom Option 2 Settings</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>4</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <active translate="label comment">
+                            <label>Enable</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Enable/Disable the homepage - custom option 2 functionality.</comment>
+                        </active>
+
+                        <number_of_items translate="label comment">
+                            <label>Number Of Items On Homepage</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>How many homepage - custom option 2 will be showed on homepage?</comment>
+                        </number_of_items>
+
+                        <number_of_items_per_row translate="label comment">
+                            <label>Number Of Items Per Row On Homepage</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>How many homepage - custom option 2 will be showed per row?</comment>
+                        </number_of_items_per_row>
+
+                        <price_visible>
+                            <label>Show price</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Show product price and addToCart button.</comment>
+                        </price_visible>
+
+                        <char_limit translate="label">
+                            <label>Maximum Character Limit</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Number of characters of title to be displayed, after that (...) will be displayed.</comment>
+                        </char_limit>
+
+                        <heading translate="label comment">
+                            <label>Heading</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Homepage - Custom Option 2 Page heading.</comment>
+                        </heading>
+
+                        <heading_logo translate="label comment">
+                            <label>Heading Logo</label>
+                            <comment>Allowed file types: jpeg, gif, png.</comment>
+                            <frontend_type>image</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_image</backend_model>
+                            <upload_dir config="system/filesystem/media" scope_info="1">homepage_products_option2</upload_dir>
+                            <base_url type="media" scope_info="1">homepage_products_option2</base_url>
+                            <sort_order>6</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </heading_logo>
+
+                        <layout translate="label comment">
+                            <label>Layout</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>page/source_layout</source_model>
+                            <sort_order>6</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Layout for homepage - custom option 2 page.</comment>
+                        </layout>
+
+                        <meta_title translate="label comment">
+                            <label>Meta Title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>7</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Meta title for homepage - custom option 2 page.</comment>
+                        </meta_title>
+
+                        <meta_description translate="label comment">
+                            <label>Meta Description</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>8</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Meta description for homepage - custom option 2 page.</comment>
+                        </meta_description>
+
+                        <meta_keywords translate="label comment">
+                            <label>Meta Keywords</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>9</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Meta keywords for homepage - custom option 2 page.</comment>
+                        </meta_keywords>
+                    </fields>
+                </homepage_products_option2>
+
+                <homepage_products_option3 translate="label">
+                    <label>Homepage - Custom Option 3 Settings</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>5</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <active translate="label comment">
+                            <label>Enable</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Enable/Disable the homepage - custom option 3 functionality.</comment>
+                        </active>
+
+                        <number_of_items translate="label comment">
+                            <label>Number Of Items On Homepage</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>How many homepage - custom option 3 will be showed on homepage?</comment>
+                        </number_of_items>
+
+                        <number_of_items_per_row translate="label comment">
+                            <label>Number Of Items Per Row On Homepage</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>How many homepage - custom option 3 will be showed per row?</comment>
+                        </number_of_items_per_row>
+
+                        <price_visible>
+                            <label>Show price</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Show product price and addToCart button.</comment>
+                        </price_visible>
+
+                        <char_limit translate="label">
+                            <label>Maximum Character Limit</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Number of characters of title to be displayed, after that (...) will be displayed.</comment>
+                        </char_limit>
+
+                        <heading translate="label comment">
+                            <label>Heading</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Homepage - Custom Option 3 Page heading.</comment>
+                        </heading>
+
+                        <heading_logo translate="label comment">
+                            <label>Heading Logo</label>
+                            <comment>Allowed file types: jpeg, gif, png.</comment>
+                            <frontend_type>image</frontend_type>
+                            <backend_model>adminhtml/system_config_backend_image</backend_model>
+                            <upload_dir config="system/filesystem/media" scope_info="1">homepage_products_option3</upload_dir>
+                            <base_url type="media" scope_info="1">homepage_products_option3</base_url>
+                            <sort_order>6</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </heading_logo>
+
+                        <layout translate="label comment">
+                            <label>Layout</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>page/source_layout</source_model>
+                            <sort_order>6</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Layout for homepage - custom option 3 page.</comment>
+                        </layout>
+
+                        <meta_title translate="label comment">
+                            <label>Meta Title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>7</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Meta title for homepage - custom option 3 page.</comment>
+                        </meta_title>
+
+                        <meta_description translate="label comment">
+                            <label>Meta Description</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>8</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Meta description for homepage - custom option 3 page.</comment>
+                        </meta_description>
+
+                        <meta_keywords translate="label comment">
+                            <label>Meta Keywords</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>9</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Meta keywords for homepage - custom option 3 page.</comment>
+                        </meta_keywords>
+                    </fields>
+                </homepage_products_option3>
+
+
+                <content_block_top_right translate="label">
+                    <label>Slider Products For Top Right Content Block</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>8</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <active translate="label comment">
+                            <label>Enable</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Enable/Disable the homepage - Products For Top Right Content Block functionality.</comment>
+                        </active>
+                        <number_of_items translate="label comment">
+                            <label>Number Of Items On Homepage</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>How many homepage - Top Right Content Block products will be showed on homepage?</comment>
+                        </number_of_items>
+                        <number_of_items_per_row translate="label comment">
+                            <label>Number Of Items in slider to display</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>How many products to display in slider</comment>
+                        </number_of_items_per_row>
+                        <block_title translate="label comment">
+                            <label>Title for this block</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Title for slider in block</comment>
+                        </block_title>
+                        <price_visible>
+                            <label>Show price</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Show product price and addToCart button.</comment>
+                        </price_visible>
+                        <char_limit translate="label">
+                            <label>Maximum Character Limit</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Number of characters of title to be displayed, after that (...) will be displayed.</comment>
+                        </char_limit>
+                    </fields>
+                </content_block_top_right>
+
+
+
+                <popular_products translate="label">
+                    <label>Most Popular Product Settings</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>6</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <active translate="label comment">
+                            <label>Enable</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Enable/Disable the most popular products functionality.</comment>
+                        </active>
+
+                        <!--<number_of_items translate="label comment">
+                            <label>Number Of Items On Homepage</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>How many most popular products will be showed on homepage?</comment>
+                        </number_of_items>-->
+
+                        <number_of_items_per_row translate="label comment">
+                            <label>Number Of Items Per Row</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>How many most popular products will be showed per row?</comment>
+                        </number_of_items_per_row>
+
+                        <price_visible>
+                            <label>Show price</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Show product price and addToCart button.</comment>
+                        </price_visible>
+
+                        <char_limit translate="label">
+                            <label>Maximum Character Limit</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Number of characters of title to be displayed, after that (...) will be displayed.</comment>
+                        </char_limit>
+
+                        <heading translate="label comment">
+                            <label>Heading</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Most popular product page heading.</comment>
+                        </heading>
+
+                        <layout translate="label comment">
+                            <label>Layout</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>page/source_layout</source_model>
+                            <sort_order>6</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Layout for most popular products page.</comment>
+                        </layout>
+
+                        <meta_title translate="label comment">
+                            <label>Meta Title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>7</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Meta title for most popular product page.</comment>
+                        </meta_title>
+
+                        <meta_description translate="label comment">
+                            <label>Meta Description</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>8</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Meta description for most popular product page.</comment>
+                        </meta_description>
+
+                        <meta_keywords translate="label comment">
+                            <label>Meta Keywords</label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>9</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Meta keywords for most popular product page.</comment>
+                        </meta_keywords>
+                    </fields>
+                </popular_products>
+
+                <perfect_gifts translate="label">
+                    <label>Perfect Gift Settings on Homepage</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>8</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <active translate="label comment">
+                            <label>Enable</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Enable/Disable the homepage - Perfect Gift on Homepage functionality.</comment>
+                        </active>
+                        <block_title translate="label comment">
+                            <label>Block Title to Display</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Display this text as block title.</comment>
+                        </block_title>
+                        <number_of_items translate="label comment">
+                            <label>Number of Category On Homepage</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>How many perfect gift categories to display on Homepage</comment>
+                        </number_of_items>
+                        <number_of_subcat translate="label comment">
+                            <label>Number of Sub-categories to display</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Display number of sub-categories for each category.</comment>
+                        </number_of_subcat>
+                        <char_limit translate="label">
+                            <label>Maximum Character Limit</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Number of characters of title to be displayed, after that (...) will be displayed.</comment>
+                        </char_limit>
+                    </fields>
+                </perfect_gifts>
+
+                <most_recent_products translate="label">
+                    <label>Most Recently Viewed Product Slider</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>7</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <items_on_listing translate="label comment">
+                            <label>Number Of Items Per Slider On Listing page</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>How many items will be displayed in slider on category listing And product listing page</comment>
+                        </items_on_listing>
+                        <items_on_detail translate="label comment">
+                            <label>Number Of Items Per Slider On Product Detail Page</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order></sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>How many items will be displayed in slider on product detail page</comment>
+                        </items_on_detail>
+                    </fields>
+                </most_recent_products>
+                <!-- top seller settings -->
+                <bestseller translate="label">
+                    <label>Best Seller Script</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>100</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <enable_bestseller>
+                            <label>Enable Script</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>
+                                <![CDATA[Enable script for updating best selling for products.]]>
+                            </comment>
+                        </enable_bestseller>
+                       <select_week translate="label">
+                           <label>Select Week(s)</label>
+                           <frontend_type>select</frontend_type>
+                           <source_model>zeon_catalogmanager/system_config_source_weekselect</source_model>
+                           <sort_order>20</sort_order>
+                           <show_in_default>1</show_in_default>
+                           <show_in_website>1</show_in_website>
+                           <show_in_store>1</show_in_store>
+                           <comment>
+                                <![CDATA[Script will update bestseller data of product from specified "past week(s) to current 
+                                    date".]]>
+                            </comment>
+                       </select_week>
+                    </fields>
+                </bestseller>
+
+                <!-- New Arrival settings -->
+                <new_arrival translate="label">
+                    <label>New Arrivals Setting</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>110</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <excluded_category>
+                            <label>Excluded Category Id</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>
+                                <![CDATA[enter category id for excluding the products of it from new arrivals page.]]>
+                            </comment>
+                        </excluded_category>
+                    </fields>
+                </new_arrival>
+                <cron_zero_price_disable translate="label">
+                    <label>Zero Price Product Alert</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>111</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <comment>
+                        <![CDATA[Cron Alerts for disabled products with zero price]]>
+                    </comment>
+                    <fields>
+                        <to_name>
+                            <label>Send To Name</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                        </to_name>
+                        <to_email>
+                            <label>Send To Email</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <comment>
+                                <![CDATA[Cron Alerts for disabled products with zero price]]>
+                            </comment>
+                        </to_email>
+                        <templ_email translate="label">
+                            <label>Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_template</source_model>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                        </templ_email>
+                    </fields>
+                </cron_zero_price_disable>
+            </groups>
+        </zeon_catalogmanager>
+    </sections>
+</config>

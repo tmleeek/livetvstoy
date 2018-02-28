@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<fonts>
+	  <font name="Alison" id="AL" minus_size="-2" minus_y="4" file_name="ALISON_.ttf" assoc_cat="2-6" avail="true"></font>
+	  <font name="Apple Chancery" id="AC" minus_size="-6" minus_y="-10" file_name="applc.ttf" assoc_cat="2-6" avail="true"></font>
+	  <font name="Arial" id="AR" minus_size="0" minus_y="0" file_name="arial.ttf" assoc_cat="1-5-6" avail="true"></font>
+	  <font name="Arial Black" id="AB" minus_size="0" minus_y="0" file_name="ariblk.ttf" assoc_cat="1-5-6" avail="true"></font>
+	  <font name="Brush Script Std" id="BS" minus_size="-4" minus_y="4" file_name="brushscriptstd.otf" assoc_cat="2" avail="true"></font>
+	  <font name="Monotype Corsiva" id="MC" minus_size="-14" minus_y="-8" file_name="mtcorsva.ttf" assoc_cat="2-6" avail="true"></font>
+	  <font name="Myriad Web" id="MW" minus_size="0" minus_y="0" file_name="myriadwebbold.ttf" assoc_cat="1-5-6" avail="true"></font>
+	  <font name="Script 33" id="S3" minus_size="-2" minus_y="8" file_name="script33.TTF" assoc_cat="2" avail="true"></font>
+	  <font name="Serifa BT" id="SBT" minus_size="0" minus_y="0" file_name="serifa.ttf" assoc_cat="0-5" avail="true"></font>
+	  <font name="Times New Roman" id="TR" minus_size="0" minus_y="0" file_name="times.ttf" assoc_cat="2-6" avail="true"></font>
+	  <font name="Verdana" id="VE" minus_size="0" minus_y="0" file_name="verdana.ttf" assoc_cat="1-5" avail="true"></font>
+</fonts>

@@ -1,0 +1,132 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magento Enterprise Edition
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magento Enterprise Edition License
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.magentocommerce.com/license/enterprise-edition
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    Mage
+ * @package     Mage_Sales
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://www.magentocommerce.com/license/enterprise-edition
+ */
+-->
+<config>
+  <api>
+	<resources>
+		<orders translate="title" module="connectorplus">
+			<model>connectorplus/orders_api</model>
+			<title>Connectorplus Resource</title>
+			<acl>orders</acl>
+			<methods>
+				<create translate="title" module="connectorplus">
+					<title>Create orders</title>
+					<acl>orders/create</acl>
+				</create>
+				<update translate="title" module="connectorplus">
+					<title>Update orders data</title>
+					<acl>orders/update</acl>
+				</update>
+				<delete>
+					<title>Delete orders</title>
+					<acl>orders/delete</acl>
+				</delete>
+			</methods>
+			<faults module="connectorplus">
+				<data_invalid>
+					<code>100</code>
+					<message>Invalid Order data. Details in error message.</message>
+				</data_invalid>
+				<filters_invalid>
+					<code>101</code>
+					<message>Invalid filters specified. Details in error message.</message>
+				</filters_invalid>
+				<not_exists>
+					<code>102</code>
+					<message>Order doesn't exist.</message>
+				</not_exists>
+				<not_deleted>
+					<code>103</code>
+					<message>Order was not deleted. Details in error message.</message>
+				</not_deleted>
+			</faults>	  
+		</orders>
+		<sales_order_creditmemo translate="title" module="connectorplus">
+			<model>connectorplus/creditmemo_api</model>
+			<title>creditmemo Resource</title>
+			<acl>creditmemo</acl>
+			<methods>
+				<update translate="title" module="connectorplus">
+					<title>Update creditmemo data</title>
+					<acl>creditmemo/update</acl>
+				</update>
+				<list translate="title" module="connectorplus">
+					<title>Retrive creditmemo</title>
+					<method>items</method>
+					<acl>creditmemo/list</acl>
+				</list>
+				<info translate="title" module="connectorplus">
+					<title>Retrieve creditmemo data</title>
+					<acl>creditmemo/info</acl>
+				</info>
+			</methods>
+			<faults module="connectorplus">
+				<data_invalid>
+					<code>100</code>
+					<message>Invalid creditmemo data. Details in error message.</message>
+				</data_invalid>
+				<filters_invalid>
+					<code>101</code>
+					<message>Invalid filters specified. Details in error message.</message>
+				</filters_invalid>
+				<not_exists>
+					<code>102</code>
+					<message>Creditmemo doesn't exist.</message>
+				</not_exists>
+			</faults>	  
+		</sales_order_creditmemo>
+	</resources>	  
+	<acl>
+		<resources>
+			<orders translate="title" module="connectorplus">
+				 <title>Orders</title>
+				 <create translate="title" module="connectorplus">
+					<title>Create</title>
+				 </create>                         
+				 <update translate="title" module="connectorplus">
+					<title>Update</title>
+				 </update> 
+				 <delete translate="title" module="connectorplus">
+					<title>Delete</title>
+				 </delete>                       
+			</orders>
+			<sales_order_creditmemo translate="title" module="connectorplus">
+				 <title>Creditmemo</title>
+				 <update translate="title" module="connectorplus">
+					<title>Update</title>
+				 </update> 
+				 <list translate="title" module="connectorplus">
+					<title>View All</title>
+				 </list>
+				 <info translate="title" module="connectorplus">
+					<title>Get Info</title>
+				 </info>
+			</sales_order_creditmemo>
+		</resources>
+	</acl>
+  </api>
+</config>

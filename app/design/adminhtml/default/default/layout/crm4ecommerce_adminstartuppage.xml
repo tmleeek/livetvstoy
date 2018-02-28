@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!--
+    @category   CRM4Ecommerce
+    @package    CRM4Ecommerce_AdminStartupPage
+    @author     Philip Nguyen <philip@crm4ecommerce.com>
+    @link       http://crm4ecommerce.com
+-->
+<layout version="0.1.0">
+    <adminhtml_adminstartuppage_dashboard_index>
+        <reference name="content">
+            <block type="adminstartuppage/adminhtml_dashboard" name="adminstartuppage.dashboard" />
+        </reference>
+    </adminhtml_adminstartuppage_dashboard_index>
+</layout>

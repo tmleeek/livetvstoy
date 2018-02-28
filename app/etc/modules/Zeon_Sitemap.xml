@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Zeon Solutions Inc.
+ * Bestsellers module
+ *
+ * @category   Zeon
+ * @package    Zeon_Sitemap
+ * @copyright  Copyright (c) 2008 Zeon Solutions Inc.
+ * @license    http://www.opensource.org/licenses/gpl-3.0.html GNU General Public License version 3
+ */
+-->
+<config>
+    <modules>
+        <Zeon_Sitemap>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Zeon_Sitemap>
+    </modules>
+</config>
+

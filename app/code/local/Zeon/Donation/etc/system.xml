@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <sections>
+        <donation_setting translate="label" module="donation">
+            <label>Donation Setting</label>
+            <tab>zextension</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>30</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+             <groups>
+                <donation_enable translate="label">
+                     <label>Donation Module Setting</label>
+                     <frontend_type>text</frontend_type>
+                     <sort_order>2</sort_order>
+                     <show_in_default>1</show_in_default>
+                     <show_in_website>1</show_in_website>
+                     <show_in_store>1</show_in_store>
+                     <fields>
+                         <is_enable>
+                            <label>Enable Donation Module</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>1</sort_order>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                         </is_enable>
+                         <donation_product_sku>
+                            <label>Donation Product SKU</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Enter the SKU of the product which is going to use as donation.</comment>
+                         </donation_product_sku>
+                    </fields>
+                 </donation_enable>
+            </groups>
+        </donation_setting>
+    </sections>
+</config>

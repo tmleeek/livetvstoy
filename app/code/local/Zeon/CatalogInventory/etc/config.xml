@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <global>
+        <models>
+            <cataloginventory>
+                <rewrite>
+                    <stock_item>Zeon_CatalogInventory_Model_Stock_Item</stock_item>
+                </rewrite>
+            </cataloginventory>
+        </models>
+    </global>
+</config>

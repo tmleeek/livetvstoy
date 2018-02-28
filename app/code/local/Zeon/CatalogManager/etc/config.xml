@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <modules>
+        <Zeon_CatalogManager>
+            <version>1.6.0</version>
+        </Zeon_CatalogManager>
+    </modules>
+
+    <global>
+        <blocks>
+             <zeon_catalogmanager>
+                <class>Zeon_CatalogManager_Block</class>
+             </zeon_catalogmanager>
+        </blocks>
+        <helpers>
+             <zeon_catalogmanager>
+                <class>Zeon_CatalogManager_Helper</class>
+             </zeon_catalogmanager>
+        </helpers>
+        <models>
+            <zeon_catalogmanager>
+                <class>Zeon_CatalogManager_Model</class>
+            </zeon_catalogmanager>
+        </models>
+        <resources>
+            <zeon_catalogmanager_setup>
+                <setup>
+                    <module>Zeon_CatalogManager</module>
+                    <class>Mage_Eav_Model_Entity_Setup</class>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </zeon_catalogmanager_setup>
+            <zeon_catalogmanager_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </zeon_catalogmanager_write>
+            <zeon_catalogmanager_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </zeon_catalogmanager_read>
+        </resources>
+        <template>
+            <email>
+                <zeon_catalogmanager_cron_zero_price_disable_templ_email translate="label">
+                    <label>Zero Price Product Disable</label>
+                    <file>zero_price_product_disable.html</file>
+                    <type>html</type>
+                </zeon_catalogmanager_cron_zero_price_disable_templ_email>
+            </email>
+        </template>
+    </global>
+    <frontend>
+        <routers>
+            <zeon_catalogmanager>
+                <use>standard</use>
+                <args>
+                    <module>Zeon_CatalogManager</module>
+                    <frontName>catalog-manager</frontName>
+                </args>
+            </zeon_catalogmanager>
+        </routers>
+        <layout>
+            <updates>
+                <zeon_catalogmanager>
+                    <file>zeon/catalogmanager.xml</file>
+                </zeon_catalogmanager>
+            </updates>
+        </layout>
+    </frontend>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <zeon_catalogmanager before="Mage_Adminhtml">Zeon_CatalogManager_Adminhtml</zeon_catalogmanager>
+                           <!--adminexample after="Mage_Adminhtml">Inchoo_AdminExample_Adminhtml</adminexample-->
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+    <default>
+        <zeon_catalogmanager>
+            <featured_products>
+                <active>1</active>
+                <number_of_items>8</number_of_items>
+                <number_of_items_per_row>4</number_of_items_per_row>
+                <heading>Featured Products</heading>
+                <price_visible>1</price_visible>
+                <char_limit>30</char_limit>
+                <layout>two_columns_left</layout>
+                <meta_title>Featured Products</meta_title>
+                <meta_description>Featured Products</meta_description>
+                <meta_keywords>Featured Products</meta_keywords>
+            </featured_products>
+            <best_products>
+                <active>1</active>
+                <number_of_items>8</number_of_items>
+                <number_of_items_per_row>4</number_of_items_per_row>
+                <heading>Best Seller Products</heading>
+                <heading_logo>default/best_seller_head.png</heading_logo>
+                <price_visible>1</price_visible>
+                <char_limit>30</char_limit>
+                <layout>two_columns_left</layout>
+                <meta_title>Best Seller Products</meta_title>
+                <meta_description>Best Seller Products</meta_description>
+                <meta_keywords>Best Seller Products</meta_keywords>
+            </best_products>
+            <gift_products_for_him>
+                <active>1</active>
+                <number_of_items>8</number_of_items>
+                <number_of_items_per_row>4</number_of_items_per_row>
+                <heading>Gifts For Him</heading>
+                <price_visible>1</price_visible>
+                <char_limit>30</char_limit>
+                <layout>two_columns_left</layout>
+                <meta_title>Gifts For Him</meta_title>
+                <meta_description>Gifts For Him</meta_description>
+                <meta_keywords>Gifts For Him</meta_keywords>
+            </gift_products_for_him>
+            <gift_products_for_her>
+                <active>1</active>
+                <number_of_items>8</number_of_items>
+                <number_of_items_per_row>4</number_of_items_per_row>
+                <heading>Gifts For Her</heading>
+                <price_visible>1</price_visible>
+                <char_limit>30</char_limit>
+                <layout>two_columns_left</layout>
+                <meta_title>Gifts For Her</meta_title>
+                <meta_description>Gifts For Her</meta_description>
+                <meta_keywords>Gifts For Her</meta_keywords>
+            </gift_products_for_her>
+            <gift_products_for_baby>
+                <active>1</active>
+                <number_of_items>8</number_of_items>
+                <number_of_items_per_row>4</number_of_items_per_row>
+                <heading>Gifts For Baby</heading>
+                <price_visible>1</price_visible>
+                <char_limit>30</char_limit>
+                <layout>two_columns_left</layout>
+                <meta_title>Gifts For Baby</meta_title>
+                <meta_description>Gifts For Baby</meta_description>
+                <meta_keywords>Gifts For Baby</meta_keywords>
+            </gift_products_for_baby>
+            <content_block_top_right>
+                <active>1</active>
+                <number_of_items>8</number_of_items>
+                <number_of_items_per_row>2</number_of_items_per_row>
+                <block_title>New Arrivals</block_title>
+                <heading>Slider Products For Top Right Content Block</heading>
+                <price_visible>1</price_visible>
+                <char_limit>30</char_limit>
+            </content_block_top_right>
+            <popular_products>
+                <active>1</active>
+                <number_of_items>8</number_of_items>
+                <number_of_items_per_row>4</number_of_items_per_row>
+                <heading>Most Popular Products</heading>
+                <price_visible>1</price_visible>
+                <char_limit>30</char_limit>
+                <layout>two_columns_left</layout>
+                <meta_title>Most Popular Products</meta_title>
+                <meta_description>Most Popular Products</meta_description>
+                <meta_keywords>Most Popular Products</meta_keywords>
+            </popular_products>
+            <perfect_gifts>
+                <active>1</active>
+                <number_of_items>4</number_of_items>
+                <char_limit>30</char_limit>
+                <block_title>Find the Perfect Gift</block_title>
+                <number_of_subcat>5</number_of_subcat>
+            </perfect_gifts>
+            <most_recent_products>
+                <items_on_listing>4</items_on_listing>
+                <items_on_detail>5</items_on_detail>
+            </most_recent_products>
+            <bestseller>
+                <select_week>4</select_week>
+                <enable_bestseller>1</enable_bestseller>
+                <update_limit>5000</update_limit>
+                <bestseller_code>bestselling_products</bestseller_code>
+            </bestseller>
+        </zeon_catalogmanager>
+    </default>
+    <crontab>
+        <jobs>
+            <cps_best_selling_update>
+                <schedule>
+                    <cron_expr>45 1 * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>zeon_catalogmanager/bestseller::setBestsellers</model>
+                </run>
+            </cps_best_selling_update>
+            <cps_price_zero_disable>
+                <schedule>
+                    <cron_expr>58 0 * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>zeon_catalogmanager/product::setZeroPriceDisable</model>
+                </run>
+            </cps_price_zero_disable>
+        </jobs>
+    </crontab>
+</config>

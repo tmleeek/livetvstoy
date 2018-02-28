@@ -1,0 +1,82 @@
+<?php
+$bannerData = $this->getAllBanners();
+//print_r($bannerData);
+?>
+<?php
+if (!empty($bannerData)) { ?>
+    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+      
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner">
+            <?php
+            $baseUrl = Mage::getBaseUrl('media') . 'bannerslider/';
+            foreach($bannerData as $index => $banner) {
+                $bannerUrl = Mage::helper('bannerslider')->getBannerImage($banner['image']);
+                if ($index == 0) { $class = 'active'; } else { $class = ''; } ?>
+                <div class="item <?php echo $class; ?>">
+                    <?php
+                    if (!empty ($banner['click_url'])) {
+                        $bannerClickUrl = $banner['click_url'];
+                    } else {
+                        $bannerClickUrl = Mage::getBaseUrl();
+                    } ?>
+                    <a href="<?php echo $bannerClickUrl; ?>">
+                        <img src="<?php echo $bannerUrl; ?>" alt="<?php echo $banner['image_alt']; ?>" width="1000" height="320"/>
+                    </a>
+                    <div class="carousel-caption">
+                        <?php //echo $banner['image']; ?>
+                    </div>
+                </div>
+            <?php
+            } ?>
+        </div>
+		  <!-- Indicators -->
+        <ol class="carousel-indicators">
+            <?php
+            foreach($bannerData as $index => $banner) {
+                if ($index == 0) { $class = 'active'; } else { $class = ''; } ?>
+                <li data-target="#carousel-example-generic" data-slide-to="<?php echo $index; ?>" class="<?php echo $class; ?>"></li>
+            <?php
+            } ?>
+            <!--<li class="play pause" id="pauseButton"></li>-->
+        </ol>
+
+        <!-- Controls -->
+      </div>
+    <?php
+    // Set the page limit.
+    $configIntervalSettings = Mage::helper('bannerslider')
+        ->getConfigDetails('general/interval'); ?>
+    <script>
+        jQuery( document ).ready(function() {
+            jQuery('.carousel').carousel({
+                interval: <?php echo $configIntervalSettings; ?>
+            });
+
+            jQuery(document).on('click', 'li#playButton', function() {
+                jQuery('.carousel').carousel('cycle');
+                jQuery(this).addClass('pause');
+                jQuery(this).attr('id', 'pauseButton');
+            });
+            jQuery(document).on('click', 'li#pauseButton', function() {
+                jQuery('.carousel').carousel('pause');
+                jQuery(this).removeClass('pause');
+                jQuery(this).attr('id', 'playButton');
+            });
+        });
+
+    </script>
+    <script type="text/javascript" src="//static.criteo.net/js/ld/ld.js" async="true"></script>
+<script type="text/javascript">
+var deviceType =
+/Mobile|iP(hone|od)|Android|BlackBerry|IEMobile|Silk/.test(navigator.userAgent)
+? "m" : /iPad/.test(navigator.userAgent) ? "t" : "d";
+window.criteo_q = window.criteo_q || [];
+window.criteo_q.push(
+{ event: "setAccount", account: 11065},
+{ event: "setSiteType", type: deviceType},
+{ event: "setEmail", email: ""},
+{ event: "viewHome"});
+</script>
+<?php
+} ?>

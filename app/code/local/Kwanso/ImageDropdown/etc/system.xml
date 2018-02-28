@@ -1,0 +1,305 @@
+<?xml version="1.0"?>
+<config>
+	<sections>
+		<dropdown  translate="label" module="imagedropdown">
+			<label>Modular Image Dropdown</label>
+			<tab>personalize1</tab>
+			<frontend_type>text</frontend_type>
+			<sort_order>0</sort_order>
+			<show_in_default>1</show_in_default>
+			<show_in_website>1</show_in_website>
+			<show_in_store>1</show_in_store>
+			<groups>
+				<dropdown_group translate="label">
+					<label> Birthstone Dropdown Switch</label>
+					<frontend_type>text</frontend_type>
+					<sort_order>0</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>1</show_in_store>
+					<fields>
+						<dropdown_switch translate="label">
+							<label>Enable Birthstone Image Dropdown</label>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>0</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</dropdown_switch>
+					</fields>
+				</dropdown_group>
+				<exclude translate="label">
+					<label>Disable Image Dropdown for specific sku's </label>
+					<frontend_type>text</frontend_type>
+					<sort_order>0</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>1</show_in_store>
+					<fields>
+						<skus translate="label">
+							<label>Exclude Sku's for Birthstone Image Dropdown</label>
+							<comment>Add sku's with comma separated</comment>
+							<frontend_type>textarea</frontend_type>
+							<sort_order>0</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</skus>
+					</fields>
+				</exclude>
+				<dropdown_option translate="label">
+					<label> Manage Dropdown Birthstone Images and Description</label>
+					<frontend_type>text</frontend_type>
+					<sort_order>1</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>1</show_in_store>
+					<fields>
+						<jan translate="label comment">
+							<label>January Birthstone Image</label>
+							<comment>Allowed file types: jpeg, gif, png.</comment>
+							<frontend_type>image</frontend_type>
+							<backend_model>adminhtml/system_config_backend_image</backend_model>
+							<upload_dir config="system/filesystem/media" scope_info="1">theme</upload_dir>
+							<base_url type="media" scope_info="1">theme</base_url>
+							<sort_order>0</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</jan>
+				        <d_desc1>
+				            <label>January Birthstone Description</label>
+				            <frontend_type>text</frontend_type>
+				            <sort_order>1</sort_order>
+				            <show_in_default>1</show_in_default>
+				            <show_in_website>1</show_in_website>
+				            <show_in_store>1</show_in_store>
+				        </d_desc1>
+						<feb translate="label comment">
+							<label>February Birthstone Image</label>
+							<comment>Allowed file types: jpeg, gif, png.</comment>
+							<frontend_type>image</frontend_type>
+							<backend_model>adminhtml/system_config_backend_image</backend_model>
+							<upload_dir config="system/filesystem/media" scope_info="1">theme</upload_dir>
+							<base_url type="media" scope_info="1">theme</base_url>
+							<sort_order>2</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</feb>
+				        <d_desc2>
+				            <label>February Birthstone Description</label>
+				            <frontend_type>text</frontend_type>
+				            <sort_order>3</sort_order>
+				            <show_in_default>1</show_in_default>
+				            <show_in_website>1</show_in_website>
+				            <show_in_store>1</show_in_store>
+				        </d_desc2>
+						<mar translate="label comment">
+							<label>March Birthstone Image</label>
+							<comment>Allowed file types: jpeg, gif, png.</comment>
+							<frontend_type>image</frontend_type>
+							<backend_model>adminhtml/system_config_backend_image</backend_model>
+							<upload_dir config="system/filesystem/media" scope_info="1">theme</upload_dir>
+							<base_url type="media" scope_info="1">theme</base_url>
+							<sort_order>4</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</mar>
+				        <d_desc3>
+				            <label>March Birthstone Description</label>
+				            <frontend_type>text</frontend_type>
+				            <sort_order>5</sort_order>
+				            <show_in_default>1</show_in_default>
+				            <show_in_website>1</show_in_website>
+				            <show_in_store>1</show_in_store>
+				        </d_desc3>
+						<apr translate="label comment">
+							<label>April Birthstone Image</label>
+							<comment>Allowed file types: jpeg, gif, png.</comment>
+							<frontend_type>image</frontend_type>
+							<backend_model>adminhtml/system_config_backend_image</backend_model>
+							<upload_dir config="system/filesystem/media" scope_info="1">theme</upload_dir>
+							<base_url type="media" scope_info="1">theme</base_url>
+							<sort_order>6</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</apr>
+				        <d_desc4>
+				            <label>April Birthstone Description</label>
+				            <frontend_type>text</frontend_type>
+				            <sort_order>7</sort_order>
+				            <show_in_default>1</show_in_default>
+				            <show_in_website>1</show_in_website>
+				            <show_in_store>1</show_in_store>
+				        </d_desc4>
+						<may translate="label comment">
+							<label>May Birthstone Image</label>
+							<comment>Allowed file types: jpeg, gif, png.</comment>
+							<frontend_type>image</frontend_type>
+							<backend_model>adminhtml/system_config_backend_image</backend_model>
+							<upload_dir config="system/filesystem/media" scope_info="1">theme</upload_dir>
+							<base_url type="media" scope_info="1">theme</base_url>
+							<sort_order>8</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</may>
+				        <d_desc5>
+				            <label>May Birthstone Description</label>
+				            <frontend_type>text</frontend_type>
+				            <sort_order>9</sort_order>
+				            <show_in_default>1</show_in_default>
+				            <show_in_website>1</show_in_website>
+				            <show_in_store>1</show_in_store>
+				        </d_desc5>
+						<jun translate="label comment">
+							<label>June Birthstone Image</label>
+							<comment>Allowed file types: jpeg, gif, png.</comment>
+							<frontend_type>image</frontend_type>
+							<backend_model>adminhtml/system_config_backend_image</backend_model>
+							<upload_dir config="system/filesystem/media" scope_info="1">theme</upload_dir>
+							<base_url type="media" scope_info="1">theme</base_url>
+							<sort_order>10</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</jun>
+				        <d_desc6>
+				            <label>June Birthstone Description</label>
+				            <frontend_type>text</frontend_type>
+				            <sort_order>11</sort_order>
+				            <show_in_default>1</show_in_default>
+				            <show_in_website>1</show_in_website>
+				            <show_in_store>1</show_in_store>
+				        </d_desc6>
+						<jul translate="label comment">
+							<label>July Birthstone Image</label>
+							<comment>Allowed file types: jpeg, gif, png.</comment>
+							<frontend_type>image</frontend_type>
+							<backend_model>adminhtml/system_config_backend_image</backend_model>
+							<upload_dir config="system/filesystem/media" scope_info="1">theme</upload_dir>
+							<base_url type="media" scope_info="1">theme</base_url>
+							<sort_order>12</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</jul>
+				        <d_desc7>
+				            <label>July Birthstone Description</label>
+				            <frontend_type>text</frontend_type>
+				            <sort_order>13</sort_order>
+				            <show_in_default>1</show_in_default>
+				            <show_in_website>1</show_in_website>
+				            <show_in_store>1</show_in_store>
+				        </d_desc7>
+						<aug translate="label comment">
+							<label>August Birthstone Image</label>
+							<comment>Allowed file types: jpeg, gif, png.</comment>
+							<frontend_type>image</frontend_type>
+							<backend_model>adminhtml/system_config_backend_image</backend_model>
+							<upload_dir config="system/filesystem/media" scope_info="1">theme</upload_dir>
+							<base_url type="media" scope_info="1">theme</base_url>
+							<sort_order>14</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</aug>
+				        <d_desc8>
+				            <label>August Birthstone Description</label>
+				            <frontend_type>text</frontend_type>
+				            <sort_order>15</sort_order>
+				            <show_in_default>1</show_in_default>
+				            <show_in_website>1</show_in_website>
+				            <show_in_store>1</show_in_store>
+				        </d_desc8>
+						<sep translate="label comment">
+							<label>September Birthstone Image</label>
+							<comment>Allowed file types: jpeg, gif, png.</comment>
+							<frontend_type>image</frontend_type>
+							<backend_model>adminhtml/system_config_backend_image</backend_model>
+							<upload_dir config="system/filesystem/media" scope_info="1">theme</upload_dir>
+							<base_url type="media" scope_info="1">theme</base_url>
+							<sort_order>16</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</sep>
+				        <d_desc9>
+				            <label>September Birthstone Description</label>
+				            <frontend_type>text</frontend_type>
+				            <sort_order>17</sort_order>
+				            <show_in_default>1</show_in_default>
+				            <show_in_website>1</show_in_website>
+				            <show_in_store>1</show_in_store>
+				        </d_desc9>
+						<oct translate="label comment">
+							<label>October Birthstone Image</label>
+							<comment>Allowed file types: jpeg, gif, png.</comment>
+							<frontend_type>image</frontend_type>
+							<backend_model>adminhtml/system_config_backend_image</backend_model>
+							<upload_dir config="system/filesystem/media" scope_info="1">theme</upload_dir>
+							<base_url type="media" scope_info="1">theme</base_url>
+							<sort_order>18</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</oct>
+				        <d_desc10>
+				            <label>October Birthstone Description</label>
+				            <frontend_type>text</frontend_type>
+				            <sort_order>19</sort_order>
+				            <show_in_default>1</show_in_default>
+				            <show_in_website>1</show_in_website>
+				            <show_in_store>1</show_in_store>
+				        </d_desc10>
+						<nov translate="label comment">
+							<label>November Birthstone Image</label>
+							<comment>Allowed file types: jpeg, gif, png.</comment>
+							<frontend_type>image</frontend_type>
+							<backend_model>adminhtml/system_config_backend_image</backend_model>
+							<upload_dir config="system/filesystem/media" scope_info="1">theme</upload_dir>
+							<base_url type="media" scope_info="1">theme</base_url>
+							<sort_order>20</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</nov>
+				        <d_desc11>
+				            <label>November Birthstone Description</label>
+				            <frontend_type>text</frontend_type>
+				            <sort_order>21</sort_order>
+				            <show_in_default>1</show_in_default>
+				            <show_in_website>1</show_in_website>
+				            <show_in_store>1</show_in_store>
+				        </d_desc11>
+						<dec translate="label comment">
+							<label>December Birthstone Image</label>
+							<comment>Allowed file types: jpeg, gif, png.</comment>
+							<frontend_type>image</frontend_type>
+							<backend_model>adminhtml/system_config_backend_image</backend_model>
+							<upload_dir config="system/filesystem/media" scope_info="1">theme</upload_dir>
+							<base_url type="media" scope_info="1">theme</base_url>
+							<sort_order>22</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</dec>
+				        <d_desc12>
+				            <label>December Birthstone Description</label>
+				            <frontend_type>text</frontend_type>
+				            <sort_order>23</sort_order>
+				            <show_in_default>1</show_in_default>
+				            <show_in_website>1</show_in_website>
+				            <show_in_store>1</show_in_store>
+				        </d_desc12>
+
+					</fields>
+				</dropdown_option>
+			</groups>
+		</dropdown>
+	</sections>
+</config>

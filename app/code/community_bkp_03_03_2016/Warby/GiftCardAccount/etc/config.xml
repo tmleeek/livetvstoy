@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+      <Warby_GiftCardAccount>
+          <version>0.1.2</version>
+      </Warby_GiftCardAccount>
+  </modules>
+
+  <global>
+      <blocks>
+          <warby_giftcardaccount>
+              <class>Warby_GiftCardAccount_Block</class>
+          </warby_giftcardaccount>
+          <enterprise_giftcardaccount>
+              <rewrite>
+                  <adminhtml_giftcardaccount>Warby_GiftCardAccount_Block_Adminhtml_Giftcardaccount</adminhtml_giftcardaccount>
+              </rewrite>
+          </enterprise_giftcardaccount>
+      </blocks>
+  </global>
+  <admin>
+      <routers>
+          <adminhtml>
+              <args>
+                  <modules>
+                      <warby_giftcardaccount before="Enterprise_GiftCardAccount_Adminhtml">Warby_GiftCardAccount_Adminhtml</warby_giftcardaccount>
+                  </modules>
+              </args>
+          </adminhtml>
+      </routers>
+  </admin>
+
+  <default>
+      <giftcard>
+          <giftcardaccount_general>
+              <bulk_limit>100</bulk_limit>
+          </giftcardaccount_general>
+      </giftcard>
+  </default>
+</config>

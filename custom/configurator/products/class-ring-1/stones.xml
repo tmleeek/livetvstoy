@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<stones>
+	  <stones name="January" color="red"></stones>
+	  <stones name="February" color="violet"></stones>
+	  <stones name="March" color="#73cff7"></stones>
+	  <stones name="April" color="none"></stones>
+	  <stones name="May" color="#a7ffd8"></stones>
+	  <stones name="June" color="purple"></stones>
+	  <stones name="July" color="orange red"></stones>
+	  <stones name="August" color="yellow green"></stones>
+	  <stones name="September" color="rgb(94,105,255)"></stones>
+	  <stones name="October" color="magenta"></stones>
+	  <stones name="November" color="#fbc324"></stones>
+	  <stones name="December" color="light blue"></stones>
+</stones>

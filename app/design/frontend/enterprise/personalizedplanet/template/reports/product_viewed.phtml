@@ -1,0 +1,65 @@
+<?php
+$numberOfProducts = 0;
+if (Mage::registry('current_product')) {
+    $numberOfProducts = Mage::getStoreConfig('zeon_catalogmanager/most_recent_products/items_on_detail');
+} else {
+    $numberOfProducts = Mage::getStoreConfig('zeon_catalogmanager/most_recent_products/items_on_listing');
+}
+
+if (0 == $numberOfProducts):
+    $numberOfProducts = 4;
+endif;
+
+$_products = $this->getRecentlyViewedProducts();
+$class = (count($_products) >= $numberOfProducts) ? '' : 'limited-product';
+?>
+<?php if ($_products): ?>
+    <div class="category-products recently-viewed">
+        <div class="green-title-sec">
+            <span class="green-title"><?php echo $this->__('Recently Viewed'); ?><span class="gery-title-left"></span><span class="gery-title-right"></span></span>
+        </div>
+
+        <div class="recently_viewed_slider products-grid">
+            <?php
+            foreach ($_products as $_product):
+                $_helper = $this->helper('catalog/output');
+            ?>
+                <div class="slide item <?php echo $class; ?>">
+                    <a href="<?php echo $this->getProductUrl($_product) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize(150); ?>"></a>
+                    <h2 class="product-name">
+                        <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($_product->getName(), null, true); ?>">
+                            <?php $_productName = $_helper->productAttribute($_product, $_product->getName(), 'name'); ?>
+                            <?php echo $_productName; ?>
+                        </a>
+                    </h2>
+                    <?php //if ($_product->getRatingSummary()): ?>
+                        <?php echo $this->getReviewsSummaryHtml($_product, 'short') ?>
+                    <?php //endif; ?>
+
+                    <?php echo $this->getPriceHtml($_product, true) ?>
+
+                </div>
+            <?php
+            endforeach; ?>
+        </div>
+
+		<?php if (count($_products) >= $numberOfProducts): ?>
+        <script>
+            jQuery(document).ready(function() {
+                jQuery('.recently_viewed_slider').bxSlider({
+                    pager: false,
+                    slideWidth: 150,
+                    minSlides: <?php echo $numberOfProducts; ?>,
+                    maxSlides: <?php echo $numberOfProducts; ?>,
+                    moveSlides: 1,
+                    slideMargin: 20,
+                    useCSS: false
+                });
+                //jQuery('.bx-default-pager').hide();
+            });
+        </script>
+        <?php endif; ?>
+    </div>
+<?php endif; ?>
+
+

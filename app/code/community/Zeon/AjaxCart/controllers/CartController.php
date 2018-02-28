@@ -1,0 +1,1139 @@
+<?php
+
+/**
+ * zeonsolutions inc.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://shop.zeonsolutions.com/license-enterprise.txt
+ *
+ * =================================================================
+ *                 MAGENTO EDITION USAGE NOTICE
+ * This package designed for Magento ENTERPRISE edition
+ * =================================================================
+ * zeonsolutions does not guarantee correct work of this extension
+ * on any other Magento edition except Magento ENTERPRISE edition.
+ * zeonsolutions does not provide extension support in case of
+ * incorrect edition usage.
+ * =================================================================
+ *
+ * @category   Zeon
+ * @package    Zeon_AjaxCart
+ * @version    0.0.1
+ * @copyright  @copyright Copyright (c) 2013 zeonsolutions.Inc. (http://www.zeonsolutions.com)
+ * @license    http://shop.zeonsolutions.com/license-enterprise.txt
+ */
+class Zeon_AjaxCart_CartController extends Mage_Core_Controller_Front_Action
+{
+
+    const XML_PATH_ENABLED = 'zeon_ajaxcart/general/is_enabled';
+
+    public function preDispatch()
+    {
+        parent::preDispatch();
+
+        $response = array();
+
+        if (!Mage::getStoreConfigFlag(self::XML_PATH_ENABLED)) {
+            $this->setFlag('', self::FLAG_NO_DISPATCH, true);
+            $response["message"] = $this->__(
+                'Cannot add/delete product from shopping cart.
+                Please Enable the AjaxCart extension.'
+            );
+            return;
+        }
+        $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($response));
+    }
+
+    /**
+     * Retrieve shopping cart model object
+     *
+     * @return Mage_Checkout_Model_Cart
+     */
+    protected function _getCart()
+    {
+        return Mage::getSingleton('checkout/cart');
+    }
+
+    /**
+     * Get checkout session model instance
+     *
+     * @return Mage_Checkout_Model_Session
+     */
+    protected function _getSession()
+    {
+        return Mage::getSingleton('checkout/session');
+    }
+
+    /**
+     * Initialize product instance from request data
+     *
+     * @return Mage_Catalog_Model_Product || false
+     */
+    protected function _initProduct()
+    {
+        $productId = (int) $this->getRequest()->getParam('product');
+        if ($productId) {
+            $product = Mage::getModel('catalog/product')
+                    ->setStoreId(Mage::app()->getStore()->getId())
+                    ->load($productId);
+            if ($product->getId()) {
+                return $product;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Add product to shopping cart action
+     */
+    public function addAction()
+    {
+        $response = array();
+         $storeId = Mage::app()->getStore()->getStoreId();
+        $cart = $this->_getCart();
+        $params = $this->getRequest()->getParams();
+        if($storeId!=4)
+        {
+            if (!$this->_validateFormKey()) {
+                $response["message"] = $this->__('Cannot add the item to shopping cart..');
+                $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($response));
+                return;
+            }
+        }
+        try {
+            $filter = new Zend_Filter_LocalizedToNormalized(
+                array('locale' => Mage::app()->getLocale()->getLocaleCode())
+            );
+            if (isset($params['qty'])) {
+                $params['qty'] = $filter->filter($params['qty']);
+            }
+            //added this code to remove optional text in personalized field.
+            if (isset($params['options'])) {
+                $newOptionArray = array();
+                foreach ($params['options'] as $optionKey => $optionsValue) {
+                    if (strtolower($optionsValue) == 'optional') {
+                        $newOptionArray[$optionKey] = '';
+                    } else {
+                        //performing filter for preventing xss vulnerability
+                        if($storeId!=4 && $storeId!=5 )
+                        $newOptionArray[$optionKey] = $filter->filter($optionsValue);
+                        else
+                        $newOptionArray[$optionKey] = $optionsValue;
+                    }
+                }
+                $params['options'] = $newOptionArray;
+            }
+
+            $product = $this->_initProduct();
+            $related = $this->getRequest()->getParam('related_product');
+
+            /**
+             * Check product availability
+             */
+            if (!$product) {
+                $message = $this->__('Cannot add the item to shopping cart.');
+                $response["message"] = $message;
+            }
+
+            $cart->addProduct($product, $params);
+            if (!empty($related)) {
+                $cart->addProductsByIds(explode(',', $related));
+            }
+
+            $cart->save();
+
+            $this->_getSession()->setCartWasUpdated(true);
+
+            /**
+             * @todo remove wishlist observer processAddToCart
+             */
+            Mage::dispatchEvent(
+                'checkout_cart_add_product_complete',
+                array('product' => $product, 'request' => $this->getRequest(), 'response' => $this->getResponse())
+            );
+
+
+            if (!$cart->getQuote()->getHasError()) {
+                $message = $this->__(
+                    '%s was added to your shopping cart.',
+                    Mage::helper('core')->htmlEscape($product->getName())
+                );
+                $response["message"] = $message;
+
+                //Get Layout update content
+                $layout = $this->getLayout();
+                if (Mage::getSingleton('customer/session')->isLoggedIn()) {
+                    $layout->getUpdate()
+                            ->addHandle('default')
+                            ->addHandle('customer_logged_in')
+                            ->load();
+                } else {
+                    $layout->getUpdate()
+                            ->addHandle('default')
+                            ->addHandle('customer_logged_out')
+                            ->load();
+                }
+                $layout->generateXml()->generateBlocks();
+                $header = $layout->getBlock('header')->toHtml();
+
+                $response["header"] = preg_replace(
+                    "#<div class=\"nav-container\">(.*?)</div>#is", "", trim($header)
+                );
+                if ($blockType = Mage::helper('zeon_ajaxcart')->getRuleProductBlockType()) {
+                    $response["additional"] = Mage::helper('zeon_ajaxcart')->getAdditionalProductBlock($blockType);
+                }
+            }
+        } catch (Mage_Core_Exception $e) {
+            $message = $e->getMessage();
+            $response["message"] = $message;
+        } catch (Exception $e) {
+            $message = $this->__('Cannot add the item to shopping cart.');
+            $response["message"] = $message;
+            // log exception to exceptions log
+            $error = sprintf('Exception message: %s%sTrace: %s', $e->getMessage(), "\n", $e->getTraceAsString());
+            $file = Mage::getStoreConfig(self::XML_PATH_LOG_EXCEPTION_FILE);
+            Mage::log($error, Zend_Log::DEBUG, $file);
+        }
+        $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($response));
+    }
+public function add1Action()
+    {
+        $response = array();
+         $storeId = Mage::app()->getStore()->getStoreId();
+        $cart = $this->_getCart();
+        $params = $this->getRequest()->getParams();
+        
+        /*if($storeId!=4)
+        {
+            if (!$this->_validateFormKey()) {
+                $response["message"] = $this->__('Cannot add the item to shopping cart..');
+                $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($response));
+                return;
+            }
+        }*/
+        try {
+            $filter = new Zend_Filter_LocalizedToNormalized(
+                array('locale' => Mage::app()->getLocale()->getLocaleCode())
+            );
+            /*if (isset($params['qty'])) {
+                $params['qty'] = $filter->filter($params['qty']);
+            }*/
+            //added this code to remove optional text in personalized field.
+            //print_r($params);exit;
+            if (isset($params['options'])) {
+                $newOptionArray = array();
+                foreach ($params['options'] as $optionKey => $optionsValue) {
+                    if (strtolower($optionsValue) == 'optional') {
+                        $newOptionArray[$optionKey] = '';
+                    } else {
+                        //performing filter for preventing xss vulnerability
+                        //if($storeId!=4)
+                        //$newOptionArray[$optionKey] = $filter->filter($optionsValue);
+                        //else
+                        $newOptionArray[$optionKey] = $optionsValue;
+                    }
+                }
+                $params['options'] = $newOptionArray;
+            }
+           
+
+            $product = $this->_initProduct();
+           // var_dump($product);exit;
+            $related = $this->getRequest()->getParam('related_product');
+
+            /**
+             * Check product availability
+             */
+            if (!$product) {
+                $message = $this->__('Cannot add the item to shopping cart.');
+                $response["message"] = $message;
+            }
+                        $product_wal = Mage::getModel('catalog/product');
+
+            $product_wal->load($product->getId());
+
+
+   
+        $personlize=array();
+        foreach ($product_wal->getOptions() as $o) {
+             $optionType = $o->getType();
+            
+
+            if ($optionType == 'drop_down') {
+                $values = $o->getValues();
+               
+
+                foreach ($values as $k => $v) {
+                     $personlize[$k]=$v->title;
+                    
+                }
+            }
+           
+        }
+            
+            
+            
+            
+            $options='';
+foreach ($newOptionArray as $k => $val) {
+    if($personlize[$val]!='')
+    $val=$personlize[$val];
+    $options.=$val.'~';
+}
+$options=addslashes(substr($options, 0, -1));
+$extpartno='';
+$partner_name=$params['partner_name'];
+$deal_number=$params['offer_id'];
+$today = date("Y-m-d H:i:s");
+$external_prodid=$params['client_sku'];
+$cps_sku=$params['cps_sku'];
+$cart_id=$params['cart_id'];
+if (isset($_COOKIE['CRT'])) {
+    unset($_COOKIE['CRT']);
+}
+Mage::log($cart_id, null, 'wm_sitelink_log_'.date("j.n.Y").'.log');
+$img_url=Mage::helper('catalog/image')->init($product, 'thumbnail');
+//$cart_id='89624f23-ea2f-48cc-a999-22d7d44d716f';
+//$cart_id='78c86e54-2b1c-4d69-8685-7a131963c416';
+//$redirectURL=$params['redirectURL'];
+$redirectURL='www.walmart.com/cart/';
+if (isset($params['super_attribute'])) {
+                
+                foreach ($params['super_attribute'] as $optionKey1 => $optionsValue1) {
+                    
+                        $extpartno= $optionsValue1;
+                   
+                }
+               
+            }
+            
+      if($extpartno!=''){
+             $cps_product=Mage::getModel('catalog/product')->load($product->getId());
+            
+   
+    
+    
+  $productAttributeOptions = $cps_product->getTypeInstance(true)->getConfigurableAttributesAsArray($cps_product);
+   $attributeOptions = array();
+   
+   
+   foreach ($productAttributeOptions as $productAttribute) {
+   
+    foreach ($productAttribute['values'] as $attribute) {
+        
+        if($extpartno==$attribute['value_index']){
+            $extpartno=$attribute['store_label'];
+        }
+    
+    
+     
+    }
+   
+   } 
+            
+           }      
+
+//$randId = time();
+$randId = Rand(10000000,99999999).date("m").date("d");
+//$randId = $this->randomNumber(9);
+$resource = Mage::getSingleton('core/resource');
+          $writeConnection = $resource->getConnection('core_write');
+         
+             $query = "INSERT INTO `site_link_external_walmart_transactions` (`partnername`, `offer_id`, `raw_pers_string`, `createdate`, `external_prodid`, `extpartno`, `session_id`,`token_id`,`cps_sku`) VALUES
+    ('$partner_name', '$deal_number', '$options', '$today', '$external_prodid', '$extpartno', '','$randId','$cps_sku')";        
+          $writeConnection->query($query);
+Mage::log($query, null, 'wm_sitelink_log_'.date("j.n.Y").'.log');
+$additionalOptions = array();
+           
+            foreach ($params as $key => $value)
+            {
+                $additionalOptions[] = array(
+                    'label' => $key,
+                    'value' => $value,
+                );
+            }
+            
+            
+           
+            
+           
+            //$product->setStoreId(5);
+           //print_r($product);exit;
+            $cart->addProduct($product, $params);
+            if (!empty($related)) {
+                $cart->addProductsByIds(explode(',', $related));
+            }
+ //print_r($cart);exit;
+            $cart->save();
+
+            $this->_getSession()->setCartWasUpdated(true);
+$items = Mage::getSingleton('checkout/session')->getQuote()->getAllItems(); // Render the item from the Cart session
+$custom='';
+foreach($items as $item) { // Get Cart items one by one.
+
+$_options = Mage::helper('catalog/product_configuration')->getCustomOptions($item); // Get product options
+
+foreach ($_options as $_option) {
+    if (strtolower($_option[value]) != 'optional')
+    $custom.='{"name": "'.$_option[label].'","value": "'.$_option[value].'","type": "DISPLAY","group": 1},';
+    
+    }
+
+}
+        $custom=substr($custom, 0, -1);
+            /**
+             * @todo remove wishlist observer processAddToCart
+             */
+            Mage::dispatchEvent(
+                'checkout_cart_add_product_complete',
+                array('product' => $product, 'request' => $this->getRequest(), 'response' => $this->getResponse())
+            );
+
+/*if ($partner_name=='WALMART') {
+    
+  $message = $this->__('success');
+   $response["message"] = $message;
+        }
+        else{*/
+        $qty=$params['qty'];
+            if (!$cart->getQuote()->getHasError()) {
+                $array1='{
+    "offerId": "'."$deal_number".'",
+    "quantity": '.$qty.',
+    "configId": "'."$randId".'",
+    "vendorId": "6DC0CDt4A40D4F72943DE2B2237C2965",
+    "customAttributes": [
+        '.$custom.'
+    ]
+}';
+
+Mage::log($array1, null, 'wm_sitelink_log_'.date("j.n.Y").'.log');
+//$data = json_encode($array1);
+
+//echo $url='https://sandbox-cartservice.walmart.com/service/cart-service-app/cart/'.$cart_id.'/items';
+$url='https://cartservice.walmart.com/service/cart-service-app/cart/'.$cart_id.'/items';
+//file_put_contents('/var/log/log_'.date("j.n.Y").'.txt', $url, FILE_APPEND);
+Mage::log($url, null, 'wm_sitelink_log_'.date("j.n.Y").'.log');
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_ENCODING, '');
+//curl_setopt($ch,CURLOPT_FOLLOWLOCATION,true);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST"); // note the PUT here
+
+curl_setopt($ch, CURLOPT_POSTFIELDS, $array1);
+curl_setopt($ch, CURLOPT_HEADER, false);
+//curl_setopt($ch,CURLOPT_FOLLOWLOCATION,true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+'Accept:application/json',
+'Content-Type: application/json',
+'WM_SVC.VERSION:1.0.0',
+'WM_SVC.ENV:prod',
+'WM_SVC.NAME:cart-service-app',
+'WM_CONSUMER.IP:172.29.175.171',
+'WM_QOS.CORRELATION_ID:6d05a765-6e16-424f-bfc0-cbafe173a8ce',
+'WM_TENANT_ID:0',
+'WM_VERTICAL_ID:0',
+'WM_CONSUMER.USER_ID:6d05a765-6e16-424f-bfc0-cbafe173a8ce',
+'WM_LOCALE_ID:eng_USA',
+'WM_DEVICE_ID:123',
+'WM_CONSUMER.ID:c5e49713-202a-4643-a4e0-a8fac41b5898',
+'WM_SEC.AUTH_TOKEN:+D9JPGO0HLIKVmOO8pQIk3WaspcXzJaR/Nw6LJq3G5Xd4z7dTDlCgJm+iDbdVObnjfcFq6Ca921hYGojvn7ILS0I2VfsZ3MmMPGgVLqHLquvj6r71UHfTW8ANTF2+iu9OcIyGmWOkffXIkpp1XrVfvuoDe6MXXtW68aj49YyJgQgAc8f3FcUPMn9a4kSmRr',
+'WM_CONSUMER.USER_TYPE:GUEST',
+'WM_CONSUMER.INTIMESTAMP:1444985936449',
+'WM_SEC.KEY_VERSION:1',
+'WM_SEC.AUTH_SIGNATURE:RiqE9mqC0SFuE/HZmCXrGkffJIavVT8tpv1eTsbxt9+BAfODjpZAjIP2JrKvVMz0h6TIWq+zTo/afFvbvpSyYod8Makv77Tn4IuTc6e2bg+iKGH3IhhTIMKyT5o2U1KFxX38W/k+gzpsjD6N57G/ofh3QdIKuWp0TeedzzZpsmY='
+));     
+
+$output = curl_exec($ch);
+mysql_close();
+//file_put_contents('/var/log/log_'.date("j.n.Y").'.txt', $output, FILE_APPEND);
+Mage::log($output, null, 'wm_sitelink_log_'.date("j.n.Y").'.log');
+                $message = $this->__(
+                    '%s was added to your shopping cart.',
+                    Mage::helper('core')->htmlEscape($product->getName())
+                );
+                 $response["message"] = $message.'~'.$redirectURL;
+                //Get Layout update content
+                $layout = $this->getLayout();
+                if (Mage::getSingleton('customer/session')->isLoggedIn()) {
+                    $layout->getUpdate()
+                            ->addHandle('default')
+                            ->addHandle('customer_logged_in')
+                            ->load();
+                } else {
+                    $layout->getUpdate()
+                            ->addHandle('default')
+                            ->addHandle('customer_logged_out')
+                            ->load();
+                }
+                $layout->generateXml()->generateBlocks();
+                $header = $layout->getBlock('header')->toHtml();
+
+                $response["header"] = preg_replace(
+                    "#<div class=\"nav-container\">(.*?)</div>#is", "", trim($header)
+                );
+                if ($blockType = Mage::helper('zeon_ajaxcart')->getRuleProductBlockType()) {
+                    $response["additional"] = Mage::helper('zeon_ajaxcart')->getAdditionalProductBlock($blockType);
+                }
+            }
+        //}
+        } catch (Mage_Core_Exception $e) {
+            $message = $e->getMessage();
+            $response["message"] = $message;
+        } catch (Exception $e) {
+            $message = $this->__('Cannot add the item to shopping cart.');
+            $response["message"] = $message;
+            // log exception to exceptions log
+            $error = sprintf('Exception message: %s%sTrace: %s', $e->getMessage(), "\n", $e->getTraceAsString());
+            $file = Mage::getStoreConfig(self::XML_PATH_LOG_EXCEPTION_FILE);
+            Mage::log($error, Zend_Log::DEBUG, $file);
+        }
+        $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($response));
+    }
+    function randomNumber($length)
+    {
+        $result = '';
+    
+        for($i = 0; $i < $length; $i++) {
+            $result .= mt_rand(0, 9);
+    }
+
+    return $result;
+    }
+
+
+    /**
+     * Add product to shopping cart action
+     */
+    public function donateAction()
+    {
+
+        $response = array();
+
+        $cart = $this->_getCart();
+        $params = $this->getRequest()->getParams();
+        try {
+            if (isset($params['qty'])) {
+                $filter = new Zend_Filter_LocalizedToNormalized(
+                    array('locale' => Mage::app()->getLocale()->getLocaleCode())
+                );
+                $params['qty'] = $filter->filter($params['qty']);
+            }
+            $donationSku = Mage::helper('donation')->getDonationSku();
+            if (!$donationSku) {
+                $message = $this->__('Cannot add Donation to shopping cart.');
+                $response["message"] = $message;
+                $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($response));
+            }
+            $productId = Mage::getModel('catalog/product')
+                ->getIdBySku($donationSku);
+
+            $product = Mage::getModel('catalog/product');
+
+            $product ->load($productId);
+
+            /**
+             * Check product availability
+             */
+            if (!$product) {
+                $message = $this->__('Cannot add the item to shopping cart.');
+                $response["message"] = $message;
+            }
+
+            $cart->addProduct($product, $params);
+            $cart->save();
+
+            $this->_getSession()->setCartWasUpdated(true);
+
+            /**
+             * @todo remove wishlist observer processAddToCart
+             */
+            Mage::dispatchEvent(
+                'checkout_cart_add_product_complete',
+                array('product' => $product, 'request' => $this->getRequest(), 'response' => $this->getResponse())
+            );
+
+
+            if (!$cart->getQuote()->getHasError()) {
+                $message = $this->__(
+                    '%s was added to your shopping cart.',
+                    Mage::helper('core')->htmlEscape($product->getName())
+                );
+                $response["message"] = $message;
+
+                //Get Layout update content
+                $layout = $this->getLayout();
+                if (Mage::getSingleton('customer/session')->isLoggedIn()) {
+                    $layout->getUpdate()
+                        ->addHandle('default')
+                        ->addHandle('customer_logged_in')
+                        ->addHandle('checkout_cart_index')
+                        ->load();
+                } else {
+                    $layout->getUpdate()
+                        ->addHandle('default')
+                        ->addHandle('customer_logged_out')
+                        ->addHandle('checkout_cart_index')
+                        ->load();
+                }
+                $layout->generateXml()->generateBlocks();
+                $header = $layout->getBlock('header')->toHtml();
+                $content = $layout->getBlock('content')->toHtml();
+                $response["header"] = preg_replace("#<div class=\"nav-container\">(.*?)</div>#is", "", trim($header));
+                if ($blockType = Mage::helper('zeon_ajaxcart')->getRuleProductBlockType()) {
+                    $response["additional"] = Mage::helper('zeon_ajaxcart')->getAdditionalProductBlock($blockType);
+                }
+                $response["content"] = trim($content);
+            }
+        } catch (Mage_Core_Exception $e) {
+            $message = $e->getMessage();
+            $response["message"] = $message;
+        } catch (Exception $e) {
+            $message = $this->__('Cannot add the item to shopping cart.');
+            $response["message"] = $message;
+            // log exception to exceptions log
+            $error = sprintf('Exception message: %s%sTrace: %s', $e->getMessage(), "\n", $e->getTraceAsString());
+            Mage::log($error, Zend_Log::DEBUG, 'error.log', true);
+        }
+        $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($response));
+    }
+
+    /**
+     * Update product configuration for a cart item
+     */
+    public function updateItemOptionsAction()
+    {
+        $response = array();
+
+        $cart = $this->_getCart();
+        $id = (int) $this->getRequest()->getParam('id');
+        $params = $this->getRequest()->getParams();
+
+        if (!isset($params['options'])) {
+            $params['options'] = array();
+        }
+        try {
+            if (isset($params['qty'])) {
+                $filter = new Zend_Filter_LocalizedToNormalized(
+                    array('locale' => Mage::app()->getLocale()->getLocaleCode())
+                );
+                $params['qty'] = $filter->filter($params['qty']);
+            }
+
+            $quoteItem = $cart->getQuote()->getItemById($id);
+            if (!$quoteItem) {
+                $message = $this->__('Quote item is not found.');
+                $response["message"] = $message;
+            }
+
+            $item = $cart->updateItem($id, new Varien_Object($params));
+            if (is_string($item)) {
+                $message = $item;
+                $response["message"] = $message;
+            }
+            if ($item->getHasError()) {
+                $message = $item->getMessage();
+                $response["message"] = $message;
+            }
+
+            $related = $this->getRequest()->getParam('related_product');
+            if (!empty($related)) {
+                $cart->addProductsByIds(explode(',', $related));
+            }
+
+            $cart->save();
+
+            $this->_getSession()->setCartWasUpdated(true);
+
+            Mage::dispatchEvent(
+                'checkout_cart_update_item_complete',
+                array('item' => $item, 'request' => $this->getRequest(), 'response' => $this->getResponse())
+            );
+            if (!$cart->getQuote()->getHasError()) {
+                $message = $this->__(
+                    '%s was updated in your shopping cart.',
+                    Mage::helper('core')->htmlEscape($item->getProduct()->getName())
+                );
+                $response["message"] = $message;
+                $response["item_id"] = $item->getId();
+
+                //Get Layout update content
+                $layout = $this->getLayout();
+                if (Mage::getSingleton('customer/session')->isLoggedIn()) {
+                    $layout->getUpdate()
+                            ->addHandle('default')
+                            ->addHandle('customer_logged_in')
+                            ->load();
+                } else {
+                    $layout->getUpdate()
+                            ->addHandle('default')
+                            ->addHandle('customer_logged_out')
+                            ->load();
+                }
+                $layout->generateXml()->generateBlocks();
+                $header = $layout->getBlock('header')->toHtml();
+                if (!Mage::getConfig()->getNode('modules/Enterprise_PageCache/active')) {
+                    $response["header"] = preg_replace(
+                        "#<div class=\"nav-container\">(.*?)</div>#is", "", trim($header)
+                    );
+                } else {
+                    $response["header"] = trim($header);
+                }
+            }
+        } catch (Mage_Core_Exception $e) {
+            $message = $e->getMessage();
+            $response["message"] = $message;
+        } catch (Exception $e) {
+            $message = $this->__('Cannot update the item.');
+            $response["message"] = $message;
+            Mage::logException($e);
+        }
+        $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($response));
+    }
+
+    /**
+     * Delete shoping cart item action
+     */
+    public function deleteAction()
+    {
+        $response = array();
+        $id = (int) $this->getRequest()->getParam('id');
+        if ($id) {
+            try {
+                $this->_getCart()->removeItem($id)
+                        ->save();
+
+                // Remove the "Out-Of-Stock" and other errors from the error list.
+                $this->_getCart()->getQuote()->removeErrorInfosByParams('stock');
+                $this->_getCart()->getQuote()->removeErrorInfosByParams('qty');
+                $this->_getCart()->getQuote()->removeErrorInfosByParams('error');
+                $this->_getCart()->getQuote()->removeErrorInfosByParams();
+
+                $message = $this->__('Item was removed from your shopping cart.');
+                $response["message"] = $message;
+
+                //Get Layout update content
+                $layout = $this->getLayout();
+                if (Mage::getSingleton('customer/session')->isLoggedIn()) {
+                    $handle = 'customer_logged_in';
+                } else {
+                    $handle = 'customer_logged_out';
+                }
+                $layout->getUpdate()
+                            ->addHandle('default')
+                            ->addHandle($handle)
+                            ->addHandle('checkout_cart_index')
+                            ->load();
+                $layout->generateXml()->generateBlocks();
+                $header = $layout->getBlock('header')->toHtml();
+                $content = $layout->getBlock('content')->toHtml();
+                if (!Mage::getConfig()->getNode('modules/Enterprise_PageCache/active')) {
+                    $response["header"] = preg_replace(
+                        "#<div class=\"nav-container\">(.*?)</div>#is", "", trim($header)
+                    );
+                } else {
+                    $response["header"] = trim($header);
+                }
+                $response["content"] = trim($content);
+            } catch (Exception $e) {
+                $message = $this->__('Cannot remove the item.');
+                $response["message"] = $message;
+                Mage::logException($e);
+            }
+        }
+        $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($response));
+    }
+
+    /**
+     * Update shopping cart data action
+     */
+    public function updatePostAction()
+    {
+        $response = array();
+        try {
+            $cart = $this->_getCart();
+            $cartData = $this->getRequest()->getParam('cart');
+            $updateAction = (string) $this->getRequest()->getParam('clear_cart_action');
+            if (isset($updateAction) && $updateAction == 'empty_cart') {
+
+                $cart->truncate();
+                $cart->save();
+                $this->_getSession()->setCartWasUpdated(true);
+                $message = $this->__('Shopping cart is empty.');
+                $response["message"] = $message;
+                $response["empty"]="empty";
+
+                //Get Layout update content
+                $layout = $this->getLayout();
+                if (Mage::getSingleton('customer/session')->isLoggedIn()) {
+                    $handle = 'customer_logged_in';
+                } else {
+                    $handle = 'customer_logged_out';
+                }
+                $layout->getUpdate()
+                        ->addHandle('default')
+                        ->addHandle($handle)
+                        ->addHandle('checkout_cart_index')
+                        ->load();
+                $layout->generateXml()->generateBlocks();
+                $header = $layout->getBlock('header')->toHtml();
+                $content = $layout->getBlock('content')->toHtml();
+                if (!Mage::getConfig()->getNode('modules/Enterprise_PageCache/active')) {
+                    $response["header"] = preg_replace(
+                        "#<div class=\"nav-container\">(.*?)</div>#is", "", trim($header)
+                    );
+                } else {
+                    $response["header"] = trim($header);
+                }
+                $response["content"] = trim($content);
+            } else {
+                if (is_array($cartData)) {
+                    $filter = new Zend_Filter_LocalizedToNormalized(
+                        array('locale' => Mage::app()->getLocale()->getLocaleCode())
+                    );
+                    foreach ($cartData as $index => $data) {
+                        if (isset($data['qty'])) {
+                            $cartData[$index]['qty'] = $filter->filter(trim($data['qty']));
+                        }
+                    }
+                    $cart = $this->_getCart();
+                    if (!$cart->getCustomerSession()->getCustomer()->getId() &&
+                        $cart->getQuote()->getCustomerId()) {
+                        $cart->getQuote()->setCustomerId(null);
+                    }
+
+                    $cartData = $cart->suggestItemsQty($cartData);
+                    $cart->updateItems($cartData)
+                            ->save();
+                    $message = $this->__('Shopping cart is updated.');
+                    $response["message"] = $message;
+
+                    // Remove the "Out-Of-Stock" and other errors from the error list.
+                    $this->_getCart()->getQuote()->removeErrorInfosByParams('stock');
+                    //$this->_getCart()->getQuote()->removeErrorInfosByParams('qty');
+                    //$this->_getCart()->getQuote()->removeErrorInfosByParams('error');
+                    //$this->_getCart()->getQuote()->removeErrorInfosByParams();
+
+                    //Get Layout update content
+                    $layout = $this->getLayout();
+                    if (Mage::getSingleton('customer/session')->isLoggedIn()) {
+                        $handle = 'customer_logged_in';
+                    } else {
+                        $handle = 'customer_logged_out';
+                    }
+                    $layout->getUpdate()
+                            ->addHandle('default')
+                            ->addHandle($handle)
+                            ->addHandle('checkout_cart_index')
+                            ->load();
+                    $layout->generateXml()->generateBlocks();
+                    $header = $layout->getBlock('header')->toHtml();
+                    $content = $layout->getBlock('content')->toHtml();
+                    if (!Mage::getConfig()->getNode('modules/Enterprise_PageCache/active')) {
+                        $response["header"] = preg_replace(
+                            "#<div class=\"nav-container\">(.*?)</div>#is", "", trim($header)
+                        );
+                    } else {
+                        $response["header"] = trim($header);
+                    }
+                    $response["content"] = trim($content);
+                }
+            }
+            $this->_getSession()->setCartWasUpdated(true);
+        } catch (Mage_Core_Exception $e) {
+            $message = $e->getMessage();
+            $response["message"] = $message;
+            Mage::logException($e);
+        } catch (Exception $e) {
+            $message = $this->__('Cannot update shopping cart.');
+            $response["message"] = $message;
+            Mage::logException($e);
+        }
+        $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($response));
+    }
+    
+    public function hsnaddAction()
+    {
+        $response = array();
+         $storeId = Mage::app()->getStore()->getStoreId();
+        $cart = $this->_getCart();
+        $params = $this->getRequest()->getParams();
+        
+        /*if($storeId!=4)
+        {
+            if (!$this->_validateFormKey()) {
+                $response["message"] = $this->__('Cannot add the item to shopping cart..');
+                $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($response));
+                return;
+            }
+        }*/
+        try {
+            $filter = new Zend_Filter_LocalizedToNormalized(
+                array('locale' => Mage::app()->getLocale()->getLocaleCode())
+            );
+            if (isset($params['qty'])) {
+                $params['qty'] = $filter->filter($params['qty']);
+            }
+            //added this code to remove optional text in personalized field.
+            //print_r($params);exit;
+          
+            if (isset($params['options'])) {
+                $newOptionArray = array();
+                foreach ($params['options'] as $optionKey => $optionsValue) {
+                    if (strtolower($optionsValue) == 'optional') {
+                        $newOptionArray[$optionKey] = '';
+                    } else {
+                        //performing filter for preventing xss vulnerability
+                        //if($storeId!=4)
+                        //$newOptionArray[$optionKey] = $filter->filter($optionsValue);
+                        //else
+                        $newOptionArray[$optionKey] = $optionsValue;
+                    }
+                }
+                $params['options'] = $newOptionArray;
+            }
+           
+
+            $product = $this->_initProduct();
+            
+       
+            
+           // var_dump($product);exit;
+            $related = $this->getRequest()->getParam('related_product');
+
+            /**
+             * Check product availability
+             */
+            if (!$product) {
+                $message = $this->__('Cannot add the item to shopping cart.');
+                $response["message"] = $message;
+            }
+            
+            
+            
+            $product_wal = Mage::getModel('catalog/product');
+
+            $product_wal->load($product->getId());
+
+
+   
+        $personlize=array();
+        foreach ($product_wal->getOptions() as $o) {
+             $optionType = $o->getType();
+            
+
+            if ($optionType == 'drop_down') {
+                $values = $o->getValues();
+               
+
+                foreach ($values as $k => $v) {
+                     $personlize[$k]=$v->title;
+                    
+                }
+            }
+           
+        }
+            
+            
+            
+            
+            $options='';
+foreach ($newOptionArray as $k => $val) {
+    if($personlize[$val]!='')
+    $val=$personlize[$val];
+    $options.=$val.'~';
+}
+
+
+
+
+
+
+
+$options=addslashes(substr($options, 0, -1));
+$extpartno='';
+$partner_name=$params['partner_name'];
+$deal_number=$params['offer_id'];
+$today = date("Y-m-d H:i:s");
+$external_prodid=$params['client_sku'];
+$cps_sku=$params['cps_sku'];
+$cart_id=$params['cart_id'];
+$img_url=Mage::helper('catalog/image')->init($product, 'thumbnail');
+//$cart_id='89624f23-ea2f-48cc-a999-22d7d44d716f';
+$redirectURL=$params['redirectURL'];
+if (isset($params['super_attribute'])) {
+                
+                foreach ($params['super_attribute'] as $optionKey1 => $optionsValue1) {
+                    
+                        $extpartno= $optionsValue1;
+                   
+                }
+               
+            }
+            
+        if($extpartno!=''){
+             $cps_product=Mage::getModel('catalog/product')->load($product->getId());
+            
+   
+    
+    
+  $productAttributeOptions = $cps_product->getTypeInstance(true)->getConfigurableAttributesAsArray($cps_product);
+   $attributeOptions = array();
+   
+   
+   foreach ($productAttributeOptions as $productAttribute) {
+   
+    foreach ($productAttribute['values'] as $attribute) {
+        
+        if($extpartno==$attribute['value_index']){
+            $extpartno=$attribute['store_label'];
+        }
+    
+    
+     
+    }
+   
+   } 
+            
+           }
+            
+  
+
+$randId = Rand(1000000000,9999999999).date("m").date("d");
+Mage::log("Random id : ".$randId, null, 'hsn_sitelink_log_'.date("j.n.Y").'.log');
+$resource = Mage::getSingleton('core/resource');
+          $writeConnection = $resource->getConnection('core_write');
+         
+             
+
+$additionalOptions = array();
+           
+            foreach ($params as $key => $value)
+            {
+                $additionalOptions[] = array(
+                    'label' => $key,
+                    'value' => $value,
+                );
+            }
+            
+        
+            $cart->addProduct($product, $params);
+            if (!empty($related)) {
+                $cart->addProductsByIds(explode(',', $related));
+            }
+ 
+            $cart->save();
+/*$item = $observer->getQuoteItem();
+$quote = $item->getQuote();
+
+echo $item->getId();exit;*/
+$currentcart = Mage::getModel('checkout/cart');
+$quote = $currentcart->getQuote();
+$quoteItems = $quote->getAllVisibleItems();
+foreach ($quoteItems as $item) {
+$ItemId = $item->getId();
+}
+            Mage::log("Item Id: ".$ItemId, null, 'hsn_sitelink_log_'.date("j.n.Y").'.log');
+
+            $this->_getSession()->setCartWasUpdated(true);
+            $query = "INSERT INTO `site_link_external_walmart_transactions` (`partnername`, `offer_id`, `raw_pers_string`, `createdate`, `external_prodid`, `extpartno`, `session_id`,`token_id`,`cps_sku`,`quote_item_id`) VALUES
+    ('$partner_name', '$deal_number', '$options', '$today', '$external_prodid', '$extpartno', '',$randId,'$cps_sku',$ItemId)";        
+          $writeConnection->query($query);
+          Mage::log($query, null, 'hsn_sitelink_log_'.date("j.n.Y").'.log');
+ /*$items = Mage::getSingleton('checkout/session')->getQuote()->getAllItems(); // Render the item from the Cart session
+$custom='';
+foreach($items as $item) { // Get Cart items one by one.
+
+$_options = Mage::helper('catalog/product_configuration')->getCustomOptions($item); // Get product options
+
+foreach ($_options as $_option) {
+    if (strtolower($_option[value]) != 'optional')
+    $custom.='{"name": "'.$_option[label].'","value": "'.$_option[value].'","type": "DISPLAY","group": 1},';
+    
+    }
+
+}
+        $custom=substr($custom, 0, -1); */   /**
+             * @todo remove wishlist observer processAddToCart
+             */
+            Mage::dispatchEvent(
+                'checkout_cart_add_product_complete',
+                array('product' => $product, 'request' => $this->getRequest(), 'response' => $this->getResponse())
+            );
+
+/*if ($partner_name=='WALMART') {
+    
+  $message = $this->__('success');
+   $response["message"] = $message;
+        }
+        else{*/
+        
+            //if (!$cart->getQuote()->getHasError()) {
+                
+                
+                
+               
+//$this->_redirectUrl('http://www-e16.walmart.com/cart');exit;
+//echo $output;exit;
+                
+                
+                
+                
+                
+                
+                $message = $this->__(
+                    '%s was added to your shopping cart.',
+                    Mage::helper('core')->htmlEscape($product->getName())
+                );
+                
+                $response["message"] = $message.'~'.$randId.'~'.$params['qty'].'~'.$external_prodid;
+                Mage::log("Response is: ".$response["message"], null, 'hsn_sitelink_log_'.date("j.n.Y").'.log');
+                //Get Layout update content
+                $layout = $this->getLayout();
+                if (Mage::getSingleton('customer/session')->isLoggedIn()) {
+                    $layout->getUpdate()
+                            ->addHandle('default')
+                            ->addHandle('customer_logged_in')
+                            ->load();
+                } else {
+                    $layout->getUpdate()
+                            ->addHandle('default')
+                            ->addHandle('customer_logged_out')
+                            ->load();
+                }
+                $layout->generateXml()->generateBlocks();
+                $header = $layout->getBlock('header')->toHtml();
+
+                $response["header"] = preg_replace(
+                    "#<div class=\"nav-container\">(.*?)</div>#is", "", trim($header)
+                );
+                
+                if ($blockType = Mage::helper('zeon_ajaxcart')->getRuleProductBlockType()) {
+                    $response["additional"] = Mage::helper('zeon_ajaxcart')->getAdditionalProductBlock($blockType);
+                }
+            //}
+        //}
+        } catch (Mage_Core_Exception $e) {
+            $message = $e->getMessage();
+            $response["message"] = $message;
+            Mage::log("Message in core exception: ".$message, null, 'hsn_sitelink_log_'.date("j.n.Y").'.log');
+        } catch (Exception $e) {
+            $message = $this->__('Cannot add the item to shopping cart.');
+            $response["message"] = $message;
+            Mage::log("Message in exception: ".$message, null, 'hsn_sitelink_log_'.date("j.n.Y").'.log');
+            // log exception to exceptions log
+            $error = sprintf('Exception message: %s%sTrace: %s', $e->getMessage(), "\n", $e->getTraceAsString());
+            $file = Mage::getStoreConfig(self::XML_PATH_LOG_EXCEPTION_FILE);
+            Mage::log($error, Zend_Log::DEBUG, $file);
+            Mage::log("Error in exception : ".$error, null, 'hsn_sitelink_log_'.date("j.n.Y").'.log');
+        }
+        $this->getResponse()->setBody(Mage::helper('core')->jsonEncode($response));
+    }
+
+}

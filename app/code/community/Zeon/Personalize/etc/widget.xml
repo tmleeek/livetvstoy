@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget>
+<new_products type="catalog/product_widget_new" translate="name description" module="catalog">
+    <name>Zeon New Products List</name>
+    <description>List of Products that are set as New</description>
+    <is_email_compatible>1</is_email_compatible>
+    <parameters>
+        <display_type translate="label description">
+            <required>1</required>
+            <visible>1</visible>
+            <label>Display Type</label>
+            <type>select</type>
+            <value>all_products</value>
+            <values>
+                <default translate="label">
+                    <value>all_products</value>
+                    <label>All products</label>
+                </default>
+                <item translate="label">
+                    <value>new_products</value>
+                    <label>New products</label>
+                </item>
+            </values>
+            <description>All products - recently added products, New products - products marked as new</description>
+        </display_type>
+        <show_pager translate="label">
+            <visible>1</visible>
+            <label>Display Page Control</label>
+            <type>select</type>
+            <source_model>adminhtml/system_config_source_yesno</source_model>
+        </show_pager>
+        <products_per_page translate="label">
+            <required>1</required>
+            <visible>1</visible>
+            <value>5</value>
+            <label>Number of Products per Page</label>
+            <type>text</type>
+            <depends><show_pager><value>1</value></show_pager></depends>
+        </products_per_page>
+        <products_count translate="label">
+            <required>1</required>
+            <visible>1</visible>
+            <value>10</value>
+            <label>Number of Products to Display</label>
+            <type>text</type>
+        </products_count>
+        <template>
+            <required>1</required>
+            <visible>1</visible>
+            <label>Template</label>
+            <type>select</type>
+            <value>zeon/product/widget/new/content/new_grid.phtml</value>
+            <values>
+                <default translate="label">
+                    <value>catalog/product/widget/new/content/new_grid.phtml</value>
+                    <label>New Products Grid Template</label>
+                </default>
+                <list translate="label">
+                    <value>zeon/product/widget/new/content/new_list.phtml</value>
+                    <label>New Products List Template</label>
+                </list>
+            </values>
+        </template>
+        <cache_lifetime translate="label description">
+            <label>Cache Lifetime (Seconds)</label>
+            <description>86400 by default, if not set. To refresh instantly, Clear the Blocks HTML Output Cache.</description>
+            <visible>1</visible>
+            <type>text</type>
+        </cache_lifetime>
+    </parameters>
+</new_products>
+
+    <recently_viewed type="reports/product_widget_viewed" translate="name description" module="reports">
+        <name>Zeon Recently Viewed Products</name>
+        <description>List of Products Recently Viewed by Visitor</description>
+        <parameters>
+            <page_size translate="label">
+                <required>1</required>
+                <visible>1</visible>
+                <value>5</value>
+                <label>Number of Products to display</label>
+                <type>text</type>
+            </page_size>
+            <template>
+                <required>1</required>
+                <visible>1</visible>
+                <label>Template</label>
+                <type>select</type>
+                <value>zeon/reports/product/widget/viewed_grid.phtml</value>
+                <values>
+                    <default translate="label">
+                        <value>zeon/reports/widget/viewed/content/viewed_grid.phtml</value>
+                        <label>Viewed Products Grid Template</label>
+                    </default>
+                    <list translate="label">
+                        <value>zeon/reports/widget/viewed/content/viewed_list.phtml</value>
+                        <label>Viewed Products List Template</label>
+                    </list>
+                </values>
+            </template>
+        </parameters>
+    </recently_viewed>
+
+</widget>

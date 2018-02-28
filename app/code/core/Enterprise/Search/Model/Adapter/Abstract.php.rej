@@ -1,0 +1,70 @@
+--- app/code/core/Enterprise/Search/Model/Adapter/Abstract.php
++++ app/code/core/Enterprise/Search/Model/Adapter/Abstract.php
+@@ -89,7 +89,7 @@
+      */
+     protected $_defaultQueryParams = array(
+         'offset' => 0,
+-        'limit' => Enterprise_Search_Model_Adapter_Solr_Abstract::DEFAULT_ROWS_LIMIT,
++        'limit' => 100,
+         'sort_by' => array(array('score' => 'desc')),
+         'store_id' => null,
+         'locale_code' => null,
+@@ -397,11 +397,10 @@
+             }
+ 
+             $attribute->setStoreId($storeId);
+-            $preparedValue = '';
++
+             // Preparing data for solr fields
+             if ($attribute->getIsSearchable() || $attribute->getIsVisibleInAdvancedSearch()
+                 || $attribute->getIsFilterable() || $attribute->getIsFilterableInSearch()
+-                || $attribute->getUsedForSortBy()
+             ) {
+                 $backendType = $attribute->getBackendType();
+                 $frontendInput = $attribute->getFrontendInput();
+@@ -410,7 +409,7 @@
+                     if ($frontendInput == 'multiselect') {
+                         $preparedValue = array();
+                         foreach ($value as $val) {
+-                            $preparedValue = array_merge($preparedValue, array_filter(explode(',', $val)));
++                            $preparedValue = array_merge($preparedValue, explode(',', $val));
+                         }
+                         $preparedNavValue = $preparedValue;
+                     } else {
+@@ -440,16 +439,16 @@
+                     if ($backendType == 'datetime') {
+                         if (is_array($value)) {
+                             $preparedValue = array();
+-                            foreach ($value as $id => &$val) {
++                            foreach ($value as &$val) {
+                                 $val = $this->_getSolrDate($storeId, $val);
+                                 if (!empty($val)) {
+-                                    $preparedValue[$id] = $val;
++                                    $preparedValue[] = $val;
+                                 }
+                             }
+                             unset($val); //clear link to value
+                             $preparedValue = array_unique($preparedValue);
+                         } else {
+-                            $preparedValue[$productId] = $this->_getSolrDate($storeId, $value);
++                            $preparedValue = $this->_getSolrDate($storeId, $value);
+                         }
+                     }
+                 }
+@@ -457,7 +456,6 @@
+ 
+             // Preparing data for sorting field
+             if ($attribute->getUsedForSortBy()) {
+-                $sortValue = null;
+                 if (is_array($preparedValue)) {
+                     if (isset($preparedValue[$productId])) {
+                         $sortValue = $preparedValue[$productId];
+@@ -996,7 +994,7 @@
+      */
+     public function _escape($value)
+     {
+-        $pattern = '/(\+|&&|\|\||!|\(|\)|\{|}|\[|]|\^|"|~|\*|\?|:|\\\)/';
++        $pattern = '/(\+|-|&&|\|\||!|\(|\)|\{|}|\[|]|\^|"|~|\*|\?|:|\\\)/';
+         $replace = '\\\$1';
+ 
+         return preg_replace($pattern, $replace, $value);

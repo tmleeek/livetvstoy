@@ -1,0 +1,10 @@
+--- app/code/core/Enterprise/Index/Block/Adminhtml/Process/Grid.php
++++ app/code/core/Enterprise/Index/Block/Adminhtml/Process/Grid.php
+@@ -68,6 +68,7 @@
+     {
+         /** @var $collection  Enterprise_Index_Model_Resource_Process_Collection */
+         $collection = Mage::getResourceModel('enterprise_index/process_collection');
++        Mage::dispatchEvent('enterprise_index_exclude_process_before', array('collection' => $collection));
+         $collection->initializeSelect();
+         $this->setCollection($collection);
+         parent::_prepareCollection();

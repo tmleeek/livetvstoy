@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <sections>
+        <dropshiping_setting translate="label" module="dropshiping">
+            <label>Dropshiping Setting</label>
+            <tab>zextension</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>20</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>0</show_in_website>
+            <show_in_store>0</show_in_store>
+             <groups>
+                <cart_setting translate="label">
+                     <label>Dropshiping Cart Setting</label>
+                     <frontend_type>text</frontend_type>
+                     <sort_order>2</sort_order>
+                     <show_in_default>1</show_in_default>
+                     <fields>
+                         <dropshiping_message>
+                             <label>Dropshiping Cart Message</label>
+                             <comment>
+                                 <![CDATA[This message will display in cart for drop ship items.]]>
+                             </comment>
+                             <frontend_type>textarea</frontend_type>
+                             <sort_order>10</sort_order>
+                             <show_in_default>1</show_in_default>
+                         </dropshiping_message>
+                     </fields>
+                 </cart_setting>
+            </groups>
+        </dropshiping_setting>
+    </sections>
+</config>

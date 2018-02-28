@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+* Module used to make inactive inventory based on user roles.
+* For making this applicable, need to set role resource Manage Product -> Edit Product inventory - unchecked.
+*
+* @author Aniket N <aniket.nimje@zeonsolutions.com>
+* @keywords Inventory Roles Manage Products Inactive
+* @screenshot
+*/
+-->
+<config>
+    <modules>
+        <Zeon_Manageinventory>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Zeon_Manageinventory>
+    </modules>
+</config>

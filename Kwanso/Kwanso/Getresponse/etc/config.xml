@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+    <Kwanso_Getresponse>
+      <version>1.1.0</version>
+    </Kwanso_Getresponse>
+  </modules>
+  <global>
+    
+    <helpers>
+      <getresponse>
+        <class>Kwanso_Getresponse_Helper</class>
+      </getresponse>
+    </helpers>
+	
+	<blocks>
+	  <getresponse>
+		<class>Kwanso_Getresponse_Block</class>
+	  </getresponse>
+	</blocks>
+	
+	<models>
+	  <getresponse>
+		<class>Kwanso_Getresponse_Model</class>
+		<resourceModel>getresponse_mysql4</resourceModel>
+	  </getresponse>
+	</models>
+
+	<resources>
+      <getresponse_setup>
+        <setup>
+          <module>Kwanso_Getresponse</module>
+        </setup>
+        <connection>
+          <use>core_setup</use>
+        </connection>
+      </getresponse_setup>
+      <getresponse_write>
+          <connection>
+            <use>core_write</use>
+          </connection>
+      </getresponse_write>
+      <getresponse_read>
+          <connection>
+            <use>core_read</use>
+          </connection>
+      </getresponse_read>
+    </resources>
+
+  </global>
+  <admin>
+	<routers>
+	  <getresponse>
+	    <use>admin</use> 
+		<args>
+		  <module>Kwanso_Getresponse</module>
+		  <frontName>admin_getresponse</frontName>
+		</args>
+	  </getresponse>
+	</routers>
+  </admin>
+  <adminhtml>
+	<acl>
+	  <resources>
+		<all>
+		  <title>Allow Everything</title>
+		</all>
+		<admin>
+		  <children>
+			<getresponse translate="title" module="getresponse">
+			  <title>Getresponse</title>
+			  <sort_order>1000</sort_order>
+			  <children>
+		  <getresponsebackend translate="title">
+			<title>Campaings</title>
+		  </getresponsebackend>
+			  </children>
+			</getresponse>
+		  </children>
+		</admin>
+	  </resources>
+	</acl>
+	<layout>
+	  <updates>
+		<getresponse>
+		  <file>getresponse.xml</file>
+		</getresponse>
+	  </updates>
+	</layout>
+  </adminhtml>    
+    <!-- <crontab>
+        <jobs>            
+			<getresponse_importcontacts>
+                <schedule>
+                	<cron_expr>0 0 * * *</cron_expr>
+                </schedule>
+                <run>
+                	<model>getresponse/cron::importContacts</model>
+                </run>
+            </getresponse_importcontacts>
+        </jobs>
+    </crontab> -->
+</config> 

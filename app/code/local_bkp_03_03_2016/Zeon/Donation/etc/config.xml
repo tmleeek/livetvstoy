@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Zeon_Donation>
+            <version>0.1.0</version>
+        </Zeon_Donation>
+    </modules>
+    <global>
+         <helpers>
+             <donation>
+                 <class>Zeon_Donation_Helper</class>
+             </donation>
+         </helpers>
+         <blocks>
+             <donation>
+                <class>Zeon_Donation_Block</class>
+             </donation>
+         </blocks>
+
+
+         <models>
+            <donation>
+                <class>Zeon_Donation_Model</class>
+            </donation>
+
+        </models>
+        <resources>
+            <zeon_donation_setup>
+                <setup>
+                    <module>Zeon_Donation</module>
+                    <class>Mage_Eav_Model_Entity_Setup</class>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </zeon_donation_setup>
+        </resources>
+    </global>
+    <adminhtml>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <donation_setting>
+                                            <title>Donation Setting</title>
+                                            <sort_order>20</sort_order>
+                                        </donation_setting>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+    </adminhtml>
+</config>

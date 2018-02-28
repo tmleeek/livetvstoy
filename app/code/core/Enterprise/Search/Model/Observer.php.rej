@@ -1,0 +1,29 @@
+--- app/code/core/Enterprise/Search/Model/Observer.php
++++ app/code/core/Enterprise/Search/Model/Observer.php
+@@ -100,7 +100,8 @@
+ 
+         $object = $observer->getEvent()->getDataObject();
+         if ($object->isObjectNew() || $object->getTaxClassId() != $object->getOrigData('tax_class_id')) {
+-            Mage::helper('enterprise_search')->invalidateCatalogSearchIndex();
++            Mage::getSingleton('index/indexer')->getProcessByCode('catalogsearch_fulltext')
++                ->changeStatus(Mage_Index_Model_Process::STATUS_REQUIRE_REINDEX);
+         }
+     }
+ 
+@@ -302,15 +303,6 @@
+      */
+     public function rebuiltIndex(Varien_Event_Observer $observer)
+     {
+-        $affectedProductIds = $observer->getEvent()->getProductIds();
+-        if (empty($affectedProductIds)) {
+-            return;
+-        }
+-
+-        if (!Mage::helper('enterprise_search')->isThirdPartyEngineAvailable()) {
+-            return;
+-        }
+-
+-        $this->_getIndexer()->rebuildIndex(null, $affectedProductIds)->resetSearchResults();
++        $this->_getIndexer()->rebuildIndex(null, $observer->getEvent()->getProductIds())->resetSearchResults();
+     }
+ }

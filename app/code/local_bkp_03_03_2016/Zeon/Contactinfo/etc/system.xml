@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<config>
+    <sections>
+        <contactinfo translate="label" module="contactinfo">
+            <class>separator-top</class>
+            <label>Contact Info</label>
+            <tab>zextension</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>399</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <general translate="label">
+                    <label>General Configuration</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <customer_service_link translate="label">
+                            <label>Customer Service Link Block ID</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Customer Service Link Static Block ID.</comment>
+                        </customer_service_link>
+                        <customer_service_info translate="label">
+                            <label>Customer Service Info Block ID</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Customer Service Info Static Block ID.</comment>
+                        </customer_service_info>
+                        <iframe_url translate="label">
+                            <label>Customer Service IFrame URL</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Customer Service IFrame URL link.</comment>
+                        </iframe_url>
+                    </fields>
+                </general>
+            </groups>
+        </contactinfo>
+    </sections>
+</config>

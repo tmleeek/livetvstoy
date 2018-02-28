@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Celigo_Connectorplus>
+            <active>true</active>
+            <codePool>local</codePool>
+			<depends>
+				<Mage_Core />
+				<Mage_Customer />
+				<Mage_Adminhtml />
+				<Mage_Payment />
+				<Celigo_Connector />
+			</depends>
+        </Celigo_Connectorplus>
+    </modules>
+</config> 

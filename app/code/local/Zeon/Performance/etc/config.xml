@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<!-- 
+/**
+* @Author		Mukesh Patel
+* @category 	Performance 
+* @package		Zeon_paymetric 
+*/
+-->
+<config>
+    <modules>
+        <Zeon_Performance>
+            <version>0.1.0</version>
+        </Zeon_Performance>
+    </modules>
+    <global>
+     <blocks>
+            <core>
+                <rewrite>
+                    <profiler>Zeon_Performance_Block_Profiler</profiler>
+                </rewrite>
+            </core>
+      </blocks>
+      <models>
+            <core>
+                <rewrite>
+                    <resource>Zeon_Performance_Model_Resource</resource>
+                </rewrite>
+            </core>         
+        </models>
+       <helpers>
+            <core>
+                <rewrite>
+                    <data>Zeon_Performance_Helper_Data</data>
+                </rewrite>
+            </core>              
+       </helpers>
+    </global>
+     <adminhtml>
+     <acl>
+        <resources>
+            <admin>
+                <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <zeon_performance translate="title" module="zeon_performance">
+                                        <title>Performance Setting</title>
+                                    </zeon_performance>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+     </adminhtml>
+</config>

@@ -1,0 +1,74 @@
+--- app/code/core/Enterprise/Search/Model/Catalog/Layer/Filter/Price.php
++++ app/code/core/Enterprise/Search/Model/Catalog/Layer/Filter/Price.php
+@@ -187,37 +187,15 @@
+     }
+ 
+     /**
+-     * Prepare unique cache key
+-     *
+-     * @param string $cachePrefix
+-     * @param array  $additionalParams
+-     *
+-     * @return string
+-     */
+-    protected function _getUniqueCacheKey($cachePrefix, array $additionalParams = array())
+-    {
+-        $uniqueParams = $this->getLayer()->getProductCollection()->getExtendedSearchParams();
+-        $uniqueParams['currency_rate'] = $this->getCurrencyRate();
+-        if (!empty($additionalParams)) {
+-            $additionalParams = array_filter($additionalParams, 'strlen');
+-            sort($additionalParams);
+-            $uniqueParams = array_merge($uniqueParams, $additionalParams);
+-        }
+-        $uniqueParams = strtoupper(md5(serialize($uniqueParams)));
+-
+-        $cacheKey = $cachePrefix . '_' . $this->getLayer()->getStateKey() . '_' . $uniqueParams;
+-
+-        return $cacheKey;
+-    }
+-
+-    /**
+      * Get maximum price from layer products set using cache
+      *
+      * @return float
+      */
+     public function getMaxPriceInt()
+     {
+-        $cacheKey = $this->_getUniqueCacheKey('MAXPRICE');
++        $searchParams = $this->getLayer()->getProductCollection()->getExtendedSearchParams();
++        $uniquePart = strtoupper(md5(serialize($searchParams . '_' . $this->getCurrencyRate())));
++        $cacheKey = 'MAXPRICE_' . $this->getLayer()->getStateKey() . '_' . $uniquePart;
+ 
+         $cachedData = Mage::app()->loadCache($cacheKey);
+         if (!$cachedData) {
+@@ -246,9 +224,12 @@
+      */
+     protected function _getSeparators()
+     {
++        $searchParams = $this->getLayer()->getProductCollection()->getExtendedSearchParams();
+         $intervalParams = $this->getInterval();
+-        $additionalParams = ($intervalParams) ? array($intervalParams[0] . '-' . $intervalParams[1]) : array();
+-        $cacheKey = $this->_getUniqueCacheKey('PRICE_SEPARATORS', $additionalParams);
++        $intervalParams = $intervalParams ? ($intervalParams[0] . '-' . $intervalParams[1]) : '';
++        $uniquePart = strtoupper(md5(serialize($searchParams . '_'
++            . $this->getCurrencyRate() . '_' . $intervalParams)));
++        $cacheKey = 'PRICE_SEPARATORS_' . $this->getLayer()->getStateKey() . '_' . $uniquePart;
+ 
+         $cachedData = Mage::app()->loadCache($cacheKey);
+         if (!$cachedData) {
+@@ -258,11 +239,11 @@
+             $statistics = $statistics[$this->_getFilterField()];
+ 
+             $appliedInterval = $this->getInterval();
+-            if ($appliedInterval
++            if (
++                $appliedInterval
+                 && ($statistics['count'] <= $this->getIntervalDivisionLimit()
+-                    || $appliedInterval[0] == $appliedInterval[1]
+-                    || $appliedInterval[1] === '0'
+-                )
++                || $appliedInterval[0] == $appliedInterval[1]
++                || $appliedInterval[1] === '0')
+             ) {
+                 $algorithmModel->setPricesModel($this)->setStatistics(0, 0, 0, 0);
+                 $this->_divisible = false;

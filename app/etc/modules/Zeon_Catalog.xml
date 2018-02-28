@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Zeon Solutions
+ * Catalog Module
+ * The Catalog module has been overridden.
+ * refer the text file for details.
+ *
+ * @category   Zeon
+ * @package    Zeon_Catalog
+ * @copyright  Copyright (c) 2008 Zeon Solutions (http://www.zeonsolutions.com/)
+ * @version    1.01
+ * @date       jan 29 2009 1846 IST
+ */
+-->
+<config>
+    <modules>
+        <Zeon_Catalog>
+            <active>true</active>
+            <codePool>local</codePool>
+            <version>1.0.0</version>
+        </Zeon_Catalog>
+    </modules>
+</config>

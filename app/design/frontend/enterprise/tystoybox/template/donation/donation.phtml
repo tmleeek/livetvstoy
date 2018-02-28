@@ -1,0 +1,108 @@
+<div class="donation-container">
+<div class="donation-text">
+<?php echo $this->__("<strong>Support PBS And Donate $1.00</strong><p>100% of the net proceeds PBS KIDS® receives from your purchase helps us encourage all children to discover who they are and what they can do.</p>")?>
+<?php
+if (!$this->checkForDonationInCart()) {
+?>
+<ul class="form-list">
+<li>
+<div class="input-box">
+    <input type="radio" class="radio" id="do_donation" value="1" name="do_donation"> <label><?php echo $this->__("Yes, I'LL DONATE $1.")?></label>
+</div>
+</li>
+</ul>
+<script type="text/javascript">
+
+    AjaxCart.prototype.donate = function () {
+        postUrl = BASE_URL + 'ajaxcart/cart/donate';
+        this.setLoadWaiting(true);
+        var request = new Ajax.Request(
+            postUrl,
+            {
+                method : 'post',
+                onComplete : this.onComplete,
+                onFailure : function(response) {
+                    alert('An error occurred while processing your request');
+                    this.onComplete;
+                },
+                onSuccess : function(response) {
+                    if (response && response.responseText) {
+                        if (typeof (response.responseText) == 'string') {
+                            eval('result = ' + response.responseText);
+                        }
+
+                        if (result.message) {
+                            $('message-content').update(result.message);
+                        }
+                        // Update the header
+                        if (typeof (result.header) != 'undefined') {
+                            var begin = result.header
+                                .indexOf('<header class="header-container">')
+                                + '<header class="header-container">'.length;
+                            var end = result.header.length
+                                - '</header>'.length;
+                            var header = result.header.substring(begin,
+                                end);
+                            $$('.header-container')[0].innerHTML = header;
+                            this.extractScripts(header);
+
+                            // Remove the extra container row.
+                            if ($$('.top-container-row')[1]) {
+                                $$('.top-container-row')[1].remove();
+                            }
+
+                            // Call the function to call the top-menu.
+                            topmenuCall();
+
+                            // this.initializeClasses();
+                        }
+
+                        // Update the content
+                        if (typeof (result.content) != 'undefined') {
+                            if (result.content
+                                .indexOf('<div class="cart">') == -1) {
+                                var content = result.content;
+                            } else {
+                                var begin = result.content
+                                    .indexOf('<div class="cart">')
+                                    + '<div class="cart">'.length;
+                                var end = result.content.length
+                                    - '</div>'.length;
+                                var content = result.content.substring(
+                                    begin, end);
+                            }
+
+                            $$('.cart')[0].innerHTML = content;
+                            this.extractScripts(content);
+                        }
+                        this.hideButtons();
+                        this.openMessagePopup(AJAX_CART.isAutoHidePopup);
+                    }
+                }.bind(this)
+            });
+    };
+
+    // Added code to show/hide form to change password on checked
+    jQuery('#do_donation').on('ifChecked', function(event){
+        <?php
+          if (!$this->checkForDonationInCart()) {
+        ?>
+        ajaxCart.donate();
+        <?php } ?>
+    });
+    jQuery('#do_donation').on('ifUnchecked', function(event){
+        ajaxCart.donate();
+    });
+
+    <?php
+      if ($this->checkForDonationInCart()) {
+    ?>
+    jQuery('#do_donation').iCheck('check');
+    <?php
+      }
+    ?>
+
+</script>
+<?php } ?>
+</div>
+</div>

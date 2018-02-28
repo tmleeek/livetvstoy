@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <sections>
+        <expedited_setting translate="label" module="shipping">
+            <label>Expedited Shipping Settings</label>
+            <tab>zextension</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>30</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <cart_settings translate="label">
+                    <label>Expedited Shipping Setting</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>2</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <active translate="label comment">
+                            <label>Enable</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Enable/Disable Expedited Shipping functionality</comment>
+                        </active>
+                        <shipping_method>
+                            <label>Select Expedited Shipping Methods</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>Zeon_Matrixrate/system_config_source_shippingmethods</source_model>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Select Shipping Methods you want to expedit for current store.</comment>
+                        </shipping_method>
+                        <message translate="label comment">
+                            <label>Expedited Shipping Message</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Display Expedited Shipping Message on Cart page.</comment>
+                        </message>
+                    </fields>
+                </cart_settings>
+            </groups>
+        </expedited_setting>
+    </sections>
+</config>

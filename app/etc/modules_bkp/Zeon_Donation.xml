@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<config>
+    <modules>
+        <Zeon_Donation>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Zeon_Donation>
+    </modules>
+</config>

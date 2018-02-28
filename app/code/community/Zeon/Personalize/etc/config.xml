@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+
+    <modules>
+        <Zeon_Personalize>
+            <version>0.1.2</version>
+        </Zeon_Personalize>
+    </modules>
+
+    <frontend>
+
+        <routers>
+            <Personalize>
+                <use>standard</use>
+                <args>
+                    <module>Zeon_Personalize</module>
+                    <frontName>personalize</frontName>
+                </args>
+            </Personalize>
+        </routers>
+
+        <layout>
+            <updates>
+                <personalize>
+                    <file>zeon/personalize.xml</file>
+                </personalize>
+            </updates>
+        </layout>
+
+    </frontend>
+
+    <global>
+        <models>
+            <personalize>
+                <class>Zeon_Personalize_Model</class>
+                <resourceModel>personalize_resource</resourceModel>
+            </personalize>
+
+            <personalize_resource>
+                <class>Zeon_Personalize_Model_Mysql4</class>
+                <entities>
+                    <personalize>
+                        <table>personalize</table>
+                    </personalize>
+                </entities>
+            </personalize_resource>
+        </models>
+
+        <events>
+            <checkout_onepage_controller_success_action>
+                <observers>
+                    <zeon_personalize_model_observer>
+                        <type>singleton</type>
+                        <class>Zeon_Personalize_Model_Observer</class>
+                        <method>savepersonalize</method>
+                    </zeon_personalize_model_observer>
+                </observers>
+            </checkout_onepage_controller_success_action>
+
+            <customer_login>
+                <observers>
+                    <zeon_personalize_model_observer>
+                        <class>Zeon_Personalize_Model_Observer</class>
+                        <method>updateUserIdCustomer</method>
+                    </zeon_personalize_model_observer>
+                </observers>
+            </customer_login>
+
+            <customer_logout>
+                <observers>
+                    <zeon_personalize_model_observer>
+                        <class>Zeon_Personalize_Model_Observer</class>
+                        <method>clearPoptropicaDetails</method>
+                    </zeon_personalize_model_observer>
+                </observers>
+            </customer_logout>
+
+            <controller_action_layout_load_before>
+                <observers>
+                    <personalizedhandle>
+                        <class>Zeon_Personalize_Model_Observer</class>
+                        <method>setPersonalizedProductHandle</method>
+                    </personalizedhandle>
+                </observers>
+            </controller_action_layout_load_before>
+
+        </events>
+        <resources>
+
+            <personalize_setup>
+                <setup>
+                    <module>Zeon_Personalize</module>
+                    <class>Zeon_Personalize_Model_Resource_Mysql4_Setup</class>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </personalize_setup>
+            <personalize_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </personalize_write>
+            <personalize_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </personalize_read>
+        </resources>
+
+        <blocks>
+            <personalize>
+                <class>Zeon_Personalize_Block</class>
+            </personalize>
+        </blocks>
+
+        <blocks>
+            <catalog>
+                <!--<rewrite>
+                  <product_list>Zeon_Personalize_Block_Product_List</product_list>
+              </rewrite>
+             <rewrite>
+                  <product_list>Zeon_Personalize_Block_Product_View</product_list>
+              </rewrite>-->
+            </catalog>
+        </blocks>
+
+        <helpers>
+            <personalize>
+                <class>Zeon_Personalize_Helper</class>
+            </personalize>
+        </helpers>
+
+    </global>
+
+    <default>
+        <personalize>
+            <mycustom_group>
+                <artifi_upload_image>/Designer/Services/UploadThirdPartyImage</artifi_upload_image>
+            </mycustom_group>
+            <poptropica_settings>
+                <poptropica_shop_url>http://www.poptropica.com/shop/</poptropica_shop_url>
+                <poptropica_image_url>http://ext2.poptropica.com/shop/php/fetchimage.php</poptropica_image_url>
+                <poptropica_password>brand-xpand</poptropica_password>
+                <poptropica_ftp_host>72.55.151.219</poptropica_ftp_host>
+                <poptropica_ftp_username>Poptropica</poptropica_ftp_username>
+                <poptropica_ftp_password>tr0pP0p9</poptropica_ftp_password>
+                <poptropica_ftp_directory>/temp/</poptropica_ftp_directory>
+            </poptropica_settings>
+        </personalize>
+    </default>
+
+</config>

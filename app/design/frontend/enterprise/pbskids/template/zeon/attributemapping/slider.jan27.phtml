@@ -1,0 +1,58 @@
+<?php
+$enableSlider = Mage::helper('zeon_attributemapping')
+    ->getConfigData('front_scroller/active');
+
+if ($enableSlider) :
+    $_imagePath = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA);
+    $scrollerdata = Mage::helper('zeon_attributemapping')->getCharactersListAll();
+    $allUrl = Mage::helper('zeon_attributemapping')
+        ->getConfigDetails('characterpage_url', 1);
+    $urlSuffix = Mage::helper('zeon_attributemapping')
+            ->getConfigDetails('url_prefix', 1);
+            if ($urlSuffix) {
+                $urlSuffix = '.'.$urlSuffix;
+            }
+    $allUrl = $allUrl.$urlSuffix;
+    ?>
+
+    <div id="attribute-slider">
+        <?php
+        $scrollerdataCount = 0;
+        $numberOfCharacters = 10; ?>
+        <div class="chter-right-bg"></div>
+        <div class="chter-left-bg"></div>
+
+        <ul class="character-slider-top">
+            <?php
+            foreach ($scrollerdata as $data): ?>
+                <li class="slide item limited-character">
+                    <a title="" class="slider-option tooltip-active"
+                    href="<?php echo Mage::helper('zeon_attributemapping')->getAttributeUrl($data['option_id'], $data['request_path']); ?>"
+                    ><div class="show-tooltip" style="display:none"><div class="tip-arrow"></div><div class="tooltip-left"><div class="tooltip-middle"><?php echo $data['value'] ?></div></div></div>
+                    <img src="<?php echo $_imagePath.$data['slider_image']; ?>" />
+                    </a>
+                </li>
+            <?php
+            $scrollerdataCount++;
+            endforeach; ?>
+        </ul>
+
+        <?php if ($scrollerdataCount >= $numberOfCharacters): ?>
+        <script>
+            jQuery(document).ready(function() {
+                jQuery('.character-slider-top').children('div').removeClass('limited-character');
+                jQuery('.character-slider-top').bxSlider({
+                    pager: false,
+                    slideWidth: 150,
+                    minSlides: <?php echo $numberOfCharacters; ?>,
+                    maxSlides: <?php echo $numberOfCharacters; ?>,
+                    moveSlides: 1,
+                    slideMargin: 12,
+                    useCSS: false
+                });
+            });
+        </script>
+        <?php endif; ?>
+    </div>
+
+<?php endif; ?>

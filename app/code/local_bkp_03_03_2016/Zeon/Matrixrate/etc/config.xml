@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Zeon_Matrixrate>
+            <version>1.0.0</version>
+        </Zeon_Matrixrate>
+    </modules>
+    <global>
+        <models>
+            <Zeon_Matrixrate>
+                <class>Zeon_Matrixrate_Model</class>
+            </Zeon_Matrixrate>
+            <matrixrate_shipping>
+                <rewrite>
+                    <carrier_matrixrate>Zeon_Matrixrate_Model_Carrier_Matrixrate</carrier_matrixrate>
+                </rewrite>
+            </matrixrate_shipping>
+        </models>
+    </global>
+    <adminhtml>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <expedited_setting>
+                                            <title>Expedited Shipping Settings</title>
+                                            <sort_order>30</sort_order>
+                                        </expedited_setting>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+    </adminhtml>
+    <default>
+        <expedited_setting>
+            <cart_settings>
+                <message>Available for Expedited Shipping.</message>
+            </cart_settings>
+        </expedited_setting>
+    </default>
+</config>

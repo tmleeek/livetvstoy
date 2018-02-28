@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Zeon_Contactus>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Zeon_Contactus>
+    </modules>
+</config>

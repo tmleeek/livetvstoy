@@ -1,0 +1,19 @@
+--- app/design/adminhtml/default/default/template/enterprise/search/system/config/testconnection.phtml
++++ app/design/adminhtml/default/default/template/enterprise/search/system/config/testconnection.phtml
+@@ -34,12 +34,10 @@
+         var elem = $('<?php echo $this->getHtmlId() ?>');
+ 
+         params = {
+-            host:       $('catalog_search_solr_server_hostname').value,
+-            port:       $('catalog_search_solr_server_port').value,
+-            path:       $('catalog_search_solr_server_path').value,
+-            login:      $('catalog_search_solr_server_username').value,
+-            password:   $('catalog_search_solr_server_password').value,
+-            timeout:    $('catalog_search_solr_server_timeout').value
++            host: $('catalog_search_solr_server_hostname').value,
++            port: $('catalog_search_solr_server_port').value,
++            timeout: $('catalog_search_solr_server_timeout').value,
++            path: $('catalog_search_solr_server_path').value
+         };
+ 
+         new Ajax.Request('<?php echo $this->getAjaxUrl() ?>', {

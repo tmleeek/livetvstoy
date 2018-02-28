@@ -1,0 +1,144 @@
+<?xml version="1.0"?>
+<!--
+
+/**
+* zeonsolutions inc.
+*
+* NOTICE OF LICENSE
+*
+* This source file is subject to the EULA
+* that is bundled with this package in the file LICENSE.txt.
+* It is also available through the world-wide-web at this URL:
+* http://shop.zeonsolutions.com/license-enterprise.txt
+*
+* =================================================================
+*                 MAGENTO EDITION USAGE NOTICE
+* This package designed for Magento ENTERPRISE edition
+* =================================================================
+* zeonsolutions does not guarantee correct work of this extension
+* on any other Magento edition except Magento ENTERPRISE edition.
+* zeonsolutions does not provide extension support in case of
+* incorrect edition usage.
+* =================================================================
+*
+* @category   Zeon
+* @package    Zeon_GoogleTagManager
+* @version    0.0.1
+* @copyright  @copyright Copyright (c) 2013 zeonsolutions.Inc. (http://www.zeonsolutions.com)
+* @license    http://shop.zeonsolutions.com/license-enterprise.txt
+*/
+-->
+<config>
+    <modules>
+        <Zeon_GoogleTagManager>
+            <version>1.0.0</version>
+        </Zeon_GoogleTagManager>
+    </modules>
+    <global>
+        <blocks>
+            <zeon_googletagmanager>
+                <class>Zeon_GoogleTagManager_Block</class>
+            </zeon_googletagmanager>
+        </blocks>
+        <helpers>
+            <zeon_googletagmanager>
+                <class>Zeon_GoogleTagManager_Helper</class>
+            </zeon_googletagmanager>
+        </helpers>
+        <models>
+            <zeon_googletagmanager>
+                <class>Zeon_GoogleTagManager_Model</class>
+                <resourceModel>zeon_googletagmanager_mysql4</resourceModel>
+            </zeon_googletagmanager>
+            <zeon_googletagmanager_mysql4>
+                <class>Zeon_GoogleTagManager_Model_Mysql4</class>
+                <entities>
+                    <sales>
+                        <table>zeon_sales_order_analytics</table>
+                    </sales>
+                </entities>  
+            </zeon_googletagmanager_mysql4>
+        </models>
+        <resources>
+            <zeon_googletagmanager_setup>
+                <setup>
+                    <module>Zeon_GoogleTagManager</module>
+                    <class>Zeon_GoogleTagManager_Model_Resource_Setup</class>
+                </setup>
+            </zeon_googletagmanager_setup>
+        </resources>
+    </global>
+    <frontend>
+        <events>
+            <checkout_onepage_controller_success_action>
+                <observers>
+                    <zeon_googletagmanager_order_success>
+                        <class>zeon_googletagmanager/observer</class>
+                        <method>setOrderData</method>
+                    </zeon_googletagmanager_order_success>
+                </observers>
+            </checkout_onepage_controller_success_action>
+            <checkout_multishipping_controller_success_action>
+                <observers>
+                    <zeon_googletagmanager_order_success>
+                        <class>zeon_googletagmanager/observer</class>
+                        <method>setOrderData</method>
+                    </zeon_googletagmanager_order_success>
+                </observers>
+            </checkout_multishipping_controller_success_action>
+            <checkout_submit_all_after>
+                <observers>
+                    <zeon_googletagmanager_checkout_observer>
+                        <type>singleton</type>
+                        <class>Zeon_GoogleTagManager_Model_Observer</class>
+                        <method>collectData</method>
+                    </zeon_googletagmanager_checkout_observer>
+                </observers>
+            </checkout_submit_all_after>
+        </events>
+        <layout>
+            <updates>
+                <zeon_googletagmanager>
+                    <file>zeon/googletagmanager.xml</file>
+                </zeon_googletagmanager>
+            </updates>
+        </layout>
+        <translate>
+            <modules>
+                <Zeon_GoogleTagManager>
+                    <files>
+                        <default>Zeon_GoogleTagManager.csv</default>
+                    </files>
+                </Zeon_GoogleTagManager>
+            </modules>
+        </translate>
+    </frontend>
+    <adminhtml>
+        <layout>
+            <updates>
+                <zeon_googletagmanager>
+                    <file>zeon/googletagmanager.xml</file>
+                </zeon_googletagmanager>
+            </updates>
+        </layout>
+        <translate>
+            <modules>
+                <Zeon_GoogleTagManager>
+                    <files>
+                        <default>Zeon_GoogleTagManager.csv</default>
+                    </files>
+                </Zeon_GoogleTagManager>
+            </modules>
+        </translate>
+    </adminhtml>
+    <default>
+        <zeon_googletagmanager>
+            <general>
+                <is_enabled>0</is_enabled>
+                <datalayer_name>dataLayer</datalayer_name>
+                <enable_orderanalytics>1</enable_orderanalytics>
+                <additional_cookies></additional_cookies>
+            </general>
+        </zeon_googletagmanager>
+    </default>
+</config>

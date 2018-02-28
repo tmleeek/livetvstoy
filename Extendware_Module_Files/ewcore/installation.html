@@ -1,0 +1,268 @@
+<html>
+<head>
+	<title>Extension Installation</title>
+	<script src="http://ajax.googleapis.com/ajax/libs/prototype/1.7.1.0/prototype.js"></script>
+	<style type="text/css">
+		body {margin: 10px 20px 10px 10px; font: 16px sans-serif,Arial,Helvetica;}
+		h1 {font-size: 32px;}
+		h2 {font-size: 24px;}
+		h3 {font-size: 20px;}
+		h4 {font-size: 16px;}
+		h5 {font-size: 14px;}
+		div.header-container {margin-left: 20px; margin-bottom: 30px;}
+		ul {line-height: 25px;}
+		p {line-height: 25px;}
+		#toc {background-color: #F9F9F9; border: 1px solid #AAAAAA; padding: 5px;}
+		#toc ol { list-style-image: none; list-style-type: none; margin-left: 0; padding: 0; }
+		#toc ol {margin-left: 30px}
+		#toc span.toggle {cursor: pointer; color: #0645AD}
+		#toc_list li span.item { cursor: pointer; color: #0645AD; }
+		#toc ol span.item span.number { padding-right: 13px; color: black; }
+	</style>
+	
+	<script type="text/javascript">
+		function toggleToc(elem) {
+			elem = $(elem);
+			var toc = $('toc_list');
+			toc.toggle();
+			var text = 'show';
+			if (toc.visible()) text = 'hide';
+			elem.update(text);
+		}
+		
+		var sections = [];
+		function buildToc() {
+			$('toc').show();
+			
+			var c = 0;
+			var i = 0;
+			var html = '<ol id="toc_list">';
+			$$('h2').each(function(e) {
+				i++;
+				sections[c] = e;
+				html += '<li><span class="item" onclick="gotoSection('+c+')"><span class="number">' + (i) + '</span><span class="text">' + e.innerHTML.stripTags() + '</span></span>';
+				
+				var subs = e.next('div').select('h3')
+				if (subs.size() > 0) {
+					html += '<ol>';
+					var k = 0;
+					e.next('div').select('h3').each(function(e) {
+						c++; k++;
+						sections[c] = e;
+						html += '<li><span class="item" onclick="gotoSection('+c+')"><span class="number">' + (i) + '.' + (k) + '</span><span class="text">' + e.innerHTML.stripTags() + '</span></span>';
+						
+						if (e.next('div')) {
+							var subssubs = e.next('div').select('h4')
+							if (subssubs.size() > 0) {
+								var j = 0;
+								html += '<ol>';
+								e.next('div').select('h4').each(function(e) {
+									c++; j++;
+									sections[c] = e;
+									html += '<li><span class="item" onclick="gotoSection('+c+')"><span class="number">' + (i) + '.' + (k) + '.' + (j) + '</span><span class="text">' + e.innerHTML.stripTags() + '</span></span></li>';
+								});
+								html += '</ol>';
+							}
+						}
+						
+						html += '</li>';
+					});
+					html += '</ol>';
+				}
+				html += '</li>';
+				c++;
+	        });
+			html += '</ol>';
+			
+			$('toc_placeholder').replace(html);
+		}
+		
+		function gotoSection(i) {
+			var section = sections[i];
+			section.scrollTo();
+			if (typeof(window.scrollTo) == 'function') {
+				var p = section.cumulativeScrollOffset();
+				window.scrollTo(0, p[1]);
+			}
+		}
+		
+		function showConditionalContent(elem) {
+			if ('%%IS_COMBINED%%' == 1) {
+				$$('.separated_packages_only').invoke('hide');
+			}
+		}
+		
+		document.observe("dom:loaded", function() { buildToc(); showConditionalContent(); });
+	</script>
+</head>
+<body style="background: white">
+
+<h1>Extendware Installation Guide</h1>
+	<p style="background-color: yellow"><b>Note: </b> This is not a generic installation guide. There are extension specific information that must be followed in this guide.</p>
+	<div id="toc" style="display:none">
+		<b>Table of Contents</b> [<span class="toggle" onclick="toggleToc(this)">hide</span>]
+		<div id="toc_placeholder"></div>
+	</div>
+	
+	<h2>From Us to You</h2>
+	<div class="header-container">
+		<p>We are glad that you chose Extendware to meet your business needs! We pride ourselves on creating innovative solutions for 
+		our customers and partners and constantly strive to provide first class software, quality customer service, and reasonable prices.
+		We hope that our software will improve your business, simplify your life, and increase your revenue. Please follow this 
+		installation manual to begin using your new software. Thank you for business!</p>
+		<div style="text-align: right; width:65%;"><b>- Extendware Team</b></div>
+		<p><b>PS:</b> If you need any help, then please contact our <a href="http://www.extendware.com/contacts/" target="_blank"><b>support team</b></a>.
+	</div>
+	
+	<h2>Improving Your Installation Experience</h2>
+	<div class="header-container">
+		<p>Read every document in full before installing. <u>If something goes wrong, read the troubleshooting section of this document.</u> Almost every issue
+		is the result of a permission error, not fully uploading files, or not setting up cron. Make sure all files are uploaded and make sure all permissions are correct.
+		If you follow this document, then installing your installation will be a very nice and easy experience.</p>
+		
+		<p>Take advantage of our <a href="http://www.extendware.com/services/magento-extension-installation.html"><b>extension installation service</b></a> if you do not want to deal with installation yourself or you want to ensure it is done correctly.</p>
+	</div>
+	
+	<h2>Extension Installation</h2>
+	<div class="header-container">
+		<h3>Before you install</h3>
+		<ul>
+			<li><u>Read and understand this whole document and every document that came with this installation prior to installation.</u></li>
+			<li>Install and test this extension in your test environment to ensure everything works as expected.</li>
+			<li>Backup your Web site and database.</li>
+		</ul>
+		
+		<h3>Preparing Magento for a new extension</h3>
+		<ul>
+			<li>Disable system compilation in <i>System -> Tools -> Compilation</i>.</li>
+			<li>Disable caching in <i>System -> Cache Management</i>. Select all cache types and disable them.</li>
+		</ul>
+		
+		<h3>Installing the extension <i>the right way</i></h3>
+		<ul>
+			<li>Ensure you have read <i>Checking for dependencies</i> in this guide. If you install without dependencies you will see a white screen.</li>
+			<li>Upload <i>maintenance.flag</i> to the Magento base directory. This will ensure the database is updated correctly and your users do not receive errors during the upload process.</li>
+			<li><u>Upload Step 1</u>
+				<ul>
+					<li>Copy the contents of the <i>step1</i> directory into your Magento base directory having your FTP software merge the contents.</li>
+					<li>Ensure that <i>[Magento base]/var/</i> and all subdirectories are read / writable, especially <i>[Magento base]/var/extendware/</i>. Usually this means setting the permissions to <i>0777</i> or <i>0755</i></li>
+				</ul>
+			</li>
+			<li><u>Upload Step 2</u>
+				<ul>
+					<li>Copy the contents of the <i>step2</i> directory into your Magento base directory having your FTP software merge the contents.</li>
+					<li>Ensure that all files and directories <i>[Magento base]/app/etc/</i> are read / writeable. Usually this means setting the permissions to <i>0777</i> or <i>0755</i></li>
+				</ul>
+			</li>
+			<li>Delete the <i>maintenance.flag</i> file so that your store is accessible again.</li>
+		</ul>
+		
+		<p style="background-color: yellow"><b>Note: </b> This extensions depends on the Magento cron</p>
+		<p>Please ensure you have properly installed Magento and setup the Magento Cron. This is not only used by our extensions, but
+		by Magento itself. <u>In our experience, 35% of Magento installations are NOT properly setup with the Magento cron.</u> 
+		You, your Web master, or your Web host will need to setup the Magento cron located at <i>[Magento base]/cron.php</i>. Please refer
+		to the <i>cronjob</i> guide that accompanied this download for more information.</p>
+		
+		<p>Cron must run as <u>the same user as the apache process</u> (usually <i>apache</i> or your user name if suphp / fastcgi is used) or else your store cache 
+		can become unreadable (due to permission errors). You will know cron is running as the incorrect user as the cache will become unreadable and Magento will show 
+		<i>404 Page Not Found</i> errors after the cron is run. To fix this, you must delete the cache in <i>[Magento base]/var/cache</i> and run the cron as the correct user.</p>
+		
+		<p>We recommend running the cron every 5-10 minutes. If there are no tasks to do, it will just immediately exit, so there is no reason
+		to not run it frequently.</p>
+		
+		<h3>After installing the extensions</h3>
+		<ul>
+			<li><u>Logout of the Magento administrative center and log back in. If you fail to do this, then you cannot configure the extension.</u></li>
+			<li>You may re-enable the cache. However, please <i>refresh the cache</i> prior to enabling it by selecting all cache types and hitting refresh.</li>
+			<li>You may now re-enable system compilation if you want (ensure to re-run it before enabling it).</li>
+			<li>Ensure you read the user guide.</li>
+		</ul>
+		
+		<p style="background-color: yellow" class="separated_packages_only"><b>Note: </b> Ensure you read the user guide! There is additional troubleshooting and other necessary information in the user guides.</p>
+		
+		<h3>Are You Installing other extensions?</h3>
+		<p><u>Please ensure you read the installation guide of any other extensions you are installing</u>. The installation guide may look the same, but
+		many of our extensions have subtle differences in instructions or additional requirements.</p>
+	</div>
+	
+	<h2>Using the Extension</h2>
+	<div class="header-container">
+		<p>Not all extensions come with a user guide. If your extension came with a user guide, then please refer to the user guide. If your
+		extension did not come with a user guide, then please explore <i>Extendware -> Manage Extensions -> [Name of the Extension]</i> to configure
+		and use the extension</p>
+	</div>
+	
+	<h2>Extendware Core is Free to Use!</h2>
+	<div class="header-container">
+		<p>Extendware Core is free to use! Even if you do not use our extensions you may install Extendware core on Magento installations and take advantage of its features.
+		If you install Extendware Core on multiple production stores, then please create multiple Magento installations in your Extendware account and download the unique package for each of your stores. Do not reuse
+		the same package for multiple production installations (even if this software is free to use). You may install this package on your <i>development-only</i> Magento installations without creating a new installation in your Extendware account.</p>
+	</div>
+	
+	<h2>Our Bug Policy</h2>
+	<div class="header-container">
+		<p>At Extendware we hate bugs in our software. None of our software has known bugs. If you find a bug, please report it to support and it will be fixed.
+		If the bug is critical (affects functionality, security, etc), then it will be fixed and released very rapidly. If the bug is minor (misspelling, PHP notice, etc), then it will be
+		fixed and released during the next scheduled release.</p>
+	</div>
+	
+	<h2>Troubleshooting / FAQ</h2>
+	<div class="header-container">
+		<h3>How may I disable the extension?</h3>
+		
+		<p>You may rename the extensions XML file in <i>[Magento base]/app/etc/modules/Extendware_EWCore.xml</i> to
+		something like <i>[Magento base]/app/etc/modules/Extendware_EWCore.xml.disabled</i></p>
+		
+		<h3>I get an error to check the store logs</h3>
+		
+		<p>This means that the files located at <i>/var/extendware/</i> in the <i>installation package</i> were not uploaded or are not
+		read / writeable. If you have uploaded these files and set the proper permissions, please look in <i>[Magento base]/var/log</i> to read
+		what the store log says.</p>
+		
+		<h3>I only see a white page after installation</h3>
+		<p>Please disable the extension by following the directions in the <i>How may I disable the extension</i> FAQ. Next, please delete the file located in
+		<i>[Magento base]/app/code/local/Varien/Autoload.php</i>.</p>
+		
+		<p>Please contact your hosting provider and tell them to install IonCube on the server.
+		It is quick, free, and easy for your hosting provider to install. It is also needed by thousands of software packages, including Magento Commerce Enterprise.</p>
+		
+		<h3>I get an "Access Denied" message or a blank page when configuring the extensions</h3>
+		
+		<p>You must login and re-logout of your store in order to configure the extension. After you do this, then you will have permission
+		to configure the extension.</p>
+		
+		<h3>The extension is installed, but is behaving weirdly</h3>
+		
+		<p>99% of the time this is the result of an extension conflict. Please go to <i>System -> Tools -> Compilation</i> and disable compilation
+		if enabled. Then go to <i>Extendware -> Manage Extensions -> Overview</i> and click on the <i>3rd Party Extensions</i> tab. 
+		Please selectively disable each of these extensions until you determine which one is causing the conflict. Once to determined, 
+		you may re-enable the non-conflicting extensions while keeping the conflicting extension disabled.</p>
+		
+		<h3>Javascript / CSS returns a 404 error</h3>
+		
+		<p>Most likely, you have magento installed in a subdirectory. For example, if you access magento from 
+		http://www.example.com/magento/, then this is the case. To fix this issue, you need to edit 
+		<i>[Magento base]/skin/extendware/ewcore/.htaccess</i> and change RewriteBase to the correct directory (in this example 
+		it is /magento/).</p>
+		
+		<p>If you use a Web server that is not compatible with apache rewrites, then you will need to create URL rewrites the preferred method
+		of your Web server.</p>
+		
+		<h3>The Extendware administrative menu looks different from the demos</h3>
+		
+		<p>First, ensure you are running a recent version of PHP 5.2.x or 5.3.x. If you are running an old version of PHP 5.2, then this extension
+		will not work correctly</p>
+		
+		<p>If your PHP version is recent, then 99% of the time this is the result of an extension conflict. Please go to <i>System -> Tools -> Compilation</i> and disable compilation
+		if enabled. Then go to <i>Extendware -> Manage Extensions -> Overview</i> and click on the <i>3rd Party Extensions</i> tab. 
+		Please selectively disable each of these extensions until you determine which one is causing the conflict. Once to determined, 
+		you may re-enable the non-conflicting extensions while keeping the conflicting extension disabled.</p>
+	</div>
+	
+	<h2>Uninstalling</h2>
+	<div class="header-container">
+		Please remove all files from your server that came with the installation package you installed. <u>This extension should never be disabled.</u>
+		If you do not wish to use it, then please uninstall it from your server. <u>Extendware Core is free to use. There is no reason to uninstall it</u>.
+	</div>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Zeon Solutions Inc.
+ * Newsletter module 
+ *
+ * @category   Zeon
+ * @package    Zeon_Newsletter
+ * @copyright  Copyright (c) 2008 Zeon Solutions Inc.
+ * @license    http://www.opensource.org/licenses/gpl-3.0.html GNU General Public License version 3
+ */
+-->
+
+<config>
+    <modules>
+        <Zeon_Newsletterpopup>
+            <version>0.0.1</version>
+        </Zeon_Newsletterpopup>
+    </modules>
+    <frontend>
+        <layout>
+            <updates>
+                <newsletterpopup>
+                    <file>zeon/newsletterpopup.xml</file>
+                </newsletterpopup>
+            </updates>
+        </layout>
+    </frontend>
+    <global>
+        <helpers>
+             <newsletterpopup>
+                <class>Zeon_Newsletterpopup_Helper</class>
+             </newsletterpopup>
+        </helpers>
+    </global>
+    <default>
+        <newsletter>
+            <subscription>
+                <active_popup>1</active_popup>
+                <active_lefttemplate>1</active_lefttemplate>
+            </subscription>
+        </newsletter>
+    
+    </default>
+</config>

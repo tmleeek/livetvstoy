@@ -1,0 +1,75 @@
+<?php
+/**
+ * Magento Enterprise Edition
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magento Enterprise Edition License
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.magentocommerce.com/license/enterprise-edition
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2013 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://www.magentocommerce.com/license/enterprise-edition
+ */
+?>
+
+<?php
+$_product = $this->getProduct();
+$_attributes = Mage::helper('core')->decorateArray($this->getAllowAttributes());
+$resource = Mage::getSingleton('core/resource');
+	$writeConnection = $resource->getConnection('core_write');
+$id=$_product->getSku();
+         $query_sel = "SELECT * FROM `site_link_configure_products` where cps_sku='$id' and partner_name='WALMART SITELINK'";
+            $results = $writeConnection->fetchAll($query_sel);
+?>
+<?php if ($_product->isSaleable() && count($_attributes)): ?>
+    <dl>
+        <?php foreach ($_attributes as $_attribute): ?>
+            <dt>
+                <?php if ($results[0]['custom_option'] == 2) { ?>
+                    <a class="size-chart" href="#size-chart-content" target="_blank"><?php echo $results[0]['custom_text'];?></a>
+                <?php } ?></dt>
+            <dd<?php if ($_attribute->decoratedIsLast) { ?> class="last"<?php } ?>>
+                <div class="input-box">
+                    <select name="super_attribute[<?php echo $_attribute->getAttributeId() ?>]"
+                            id="attribute<?php echo $_attribute->getAttributeId() ?>"
+                            class="required-entry super-attribute-select">
+                        <option><?php echo $this->__('Choose an Option...') ?></option>
+                    </select>
+                </div>
+            </dd>
+        <?php endforeach; ?>
+    </dl>
+	<?php if ($_attribute->getLabel() == 'Size') { ?>
+		<div style="display:none;" id="size-chart-content"><?php
+$homepage = file_get_contents($results[0]['custom_url']);
+echo $homepage;
+?></div>
+	<?php } ?>
+    <script type="text/javascript">
+        var spConfig = new Product.Config(<?php echo $this->getJsonConfig() ?>);
+		jQuery('.size-chart').fancybox({
+			maxWidth    : 800,
+            maxHeight    : 600,
+            fitToView    : false,
+            width        : '70%',
+            height        : '70%',
+            autoSize    : false,
+            closeClick    : false,
+            openEffect    : 'none',
+            closeEffect    : 'none'
+		});
+    </script>
+<?php endif; ?>

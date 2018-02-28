@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+    <Kwanso_Apiaddtocart>
+      <version>0.1.0</version>
+    </Kwanso_Apiaddtocart>
+  </modules>
+  <frontend>
+    <routers>
+      <apiaddtocart>
+        <use>standard</use>
+          <args>
+            <module>Kwanso_Apiaddtocart</module>
+            <frontName>apiaddtocart</frontName>
+          </args>
+      </apiaddtocart>
+      
+      <checkout>
+	     <args>
+	         <modules>
+	             <apiaddtocart before="Mage_Checkout">Kwanso_Apiaddtocart</apiaddtocart>
+	         </modules>
+	     </args>
+	 </checkout>
+
+    </routers>
+		<layout>
+		  <updates>
+			<apiaddtocart>
+			  <file>apiaddtocart.xml</file>
+			</apiaddtocart>
+		  </updates>
+		</layout>
+  </frontend>
+  <global>
+  	
+  	<rewrite>
+         <kwanso_apiaddtocart>
+               <from><![CDATA[#^/checkout/cart/#]]></from>
+               <to>/apiaddtocart/cart/</to>
+         </kwanso_apiaddtocart>
+    </rewrite>
+
+    <helpers>
+      <apiaddtocart>
+        <class>Kwanso_Apiaddtocart_Helper</class>
+      </apiaddtocart>
+    </helpers>
+	<blocks>
+	  <apiaddtocart>
+		<class>Kwanso_Apiaddtocart_Block</class>
+	  </apiaddtocart>
+	</blocks>
+	<models>
+	  <apiaddtocart>
+		<class>Kwanso_Apiaddtocart_Model</class>
+		<resourceModel>apiaddtocart_mysql4</resourceModel>
+	  </apiaddtocart>
+	  <apiaddtocart_mysql4>
+		<class>Kwanso_Apiaddtocart_Model_Mysql4</class>
+		<entities>		  
+			  <apiaddtocart>
+				<table>charms_api_add_to_cart</table>
+			  </apiaddtocart>
+        </entities>
+	  </apiaddtocart_mysql4>
+	</models>
+	<resources>
+	  <apiaddtocart_setup>
+		<setup>
+		  <module>Kwanso_Apiaddtocart</module>
+		</setup>
+		<connection>
+		  <use>core_setup</use>
+		</connection>
+	  </apiaddtocart_setup>
+	  <apiaddtocart_write>
+		<connection>
+		  	<use>core_write</use>
+		</connection>
+	  </apiaddtocart_write>
+	  <apiaddtocart_read>
+		<connection>
+		  <use>core_read</use>
+		</connection>
+	  </apiaddtocart_read>
+	</resources>
+
+	<events>
+        <kwanso_cart_add_options_to_api>
+            <observers>
+                <kwanso_cart_add_options_to_api>
+                    <type>singleton</type>
+                    <class>Kwanso_Apiaddtocart_Model_Observer</class>
+                    <method>cartAddOptionsToApi</method>
+                </kwanso_cart_add_options_to_api>
+            </observers>
+        </kwanso_cart_add_options_to_api>
+
+        <kwanso_cart_update_options_to_api>
+            <observers>
+                <kwanso_cart_update_options_to_api>
+                    <type>singleton</type>
+                    <class>Kwanso_Apiaddtocart_Model_Observer</class>
+                    <method>checkoutCartUpdateItemComplete</method>
+                </kwanso_cart_update_options_to_api>
+            </observers>
+        </kwanso_cart_update_options_to_api>
+    </events>
+
+  </global>
+</config> 

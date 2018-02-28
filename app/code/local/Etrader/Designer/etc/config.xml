@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Etrader_Designer>
+            <version>0.0.1.0</version>
+        </Etrader_Designer>
+    </modules>
+	<global>
+		<helpers>
+            <etrader_designer>
+                <class>Etrader_Designer_Helper</class>
+            </etrader_designer>
+			<catalog>
+                <rewrite>
+                    <product_configuration>Etrader_Designer_Helper_Product_Configuration</product_configuration>
+                </rewrite>
+			</catalog>
+        </helpers>
+    </global>
+</config>

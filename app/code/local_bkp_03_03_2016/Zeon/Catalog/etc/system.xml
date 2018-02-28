@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Zeon Solutions
+ * Catalog Module
+ * The Catalog module has been overridden.
+ * refer the text file for details.
+ *
+ * @category   Zeon
+ * @package    Zeon_Catalog
+ * @copyright  Copyright (c) 2008 Zeon Solutions (http://www.zeonsolutions.com/)
+ * @version    1.01
+ * @date       jan 29 2009 1846 IST
+ */
+-->
+<config>
+     <sections>
+        <catalog translate="label" module="catalog">
+            <groups>
+                <category_list translate="label">
+                    <label>Category List</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>450</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+<!--						<category_display_mode translate="label comment">
+                            <label>Display mode</label>
+                            <comment>the categories will be displayed in the selected mode</comment>
+                            <frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_catalog_listMode</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </category_display_mode>-->
+						<category_grid_per_page_values translate="label comment">
+                            <label>Grid mode: Allowed per page values</label>
+                            <comment>comma separated values for number of categories displayed on a single page</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </category_grid_per_page_values>
+<!--						<category_list_per_page_values translate="label comment">
+                            <label>List mode: Allowed per page values</label>
+                            <comment>comma separated values for number of categories displayed on a single page</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </category_list_per_page_values>-->
+                        <category_grid_per_page translate="label comment">
+                            <label>Grid mode: Default categories displayed on a single page</label>
+                            <comment>must be in the allowed values list</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </category_grid_per_page>
+<!--                        <category_list_per_page translate="label comment">
+                            <label>List mode: Default categories displayed on a single page</label>
+                            <comment>must be in the allowed values list</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </category_list_per_page>-->
+                        <category_grid_per_row translate="label comment">
+                            <label>Grid mode: Default categories displayed on a single row</label>
+                            <comment></comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </category_grid_per_row>
+                    </fields>
+                </category_list>
+            </groups>
+        </catalog>
+    </sections>
+</config>

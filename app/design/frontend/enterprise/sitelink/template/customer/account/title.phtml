@@ -1,0 +1,11 @@
+<?php
+$customer = Mage::getSingleton('customer/session')->getCustomer();
+$fullName = $customer->getName();
+?>
+<div class="block-title">
+    <strong><span><?php echo $this->__('MY ACCOUNT'); ?></span></strong>
+    <div class="welcome-msg">
+        <h2 class="sub-title">Welcome, <?php echo $fullName; ?></h2>
+        <!--    <p></p>-->
+    </div>
+</div>

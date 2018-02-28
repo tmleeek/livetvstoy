@@ -1,0 +1,21 @@
+<?php $_categories = $this->getCurrentChildCategories(); ?>
+<ul class="left-attribute-list-links">
+<?php foreach ($_categories as $_category): ?>
+    <li>
+        <a href="<?php echo $this->getCategoryUrl($_category) ?>" title="<?php echo $this->htmlEscape($_category->getName()) ?>"><?php echo $this->htmlEscape($_category->getName()) ?></a>
+
+    </li>
+<?php endforeach ?>
+</ul>
+<script type="text/javascript">
+			jQuery(document).ready(function() {
+				jQuery('body.catalog-category-view').addClass('cat-listing');
+				if (jQuery(window).width() < 991) {
+					jQuery('.filter-toggle').hide();
+					jQuery('.cat-listing .filter-col-block.browser-cat').css('display','block');
+				}
+                jQuery(document).ajaxSuccess(function() {
+                    jQuery(window).scrollTop(jQuery('div.breadcrumbs').offset().top);
+                });
+			});
+</script>

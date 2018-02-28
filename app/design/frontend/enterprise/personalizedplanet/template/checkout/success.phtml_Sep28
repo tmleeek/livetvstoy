@@ -1,0 +1,148 @@
+<?php
+/**
+ * Magento Enterprise Edition
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magento Enterprise Edition License
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.magentocommerce.com/license/enterprise-edition
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2013 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://www.magentocommerce.com/license/enterprise-edition
+ */
+?>
+<div class="page-title">
+    <h1><?php echo $this->__('Your order has been received.') ?></h1>
+</div>
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<h2 class="sub-title"><?php echo $this->__('Thank you for your purchase!') ?></h2>
+
+<?php if ($this->getOrderId()):?>
+    <?php $orderInfo = Mage::helper('sales')->getCurrentOrderDetails($this->getOrderId());
+    $_order = Mage::getModel('sales/order')->load($this->getOrderId());
+    $order_details = Mage::getModel('sales/order')->loadByIncrementId(Mage::getSingleton('checkout/session')->getLastRealOrderId());
+$adwords_saleamt = $order_details->getSubtotal();
+    ?>
+
+<?php if ($this->getCanViewOrder()) :?>
+    <p><?php echo $this->__('Your order # is: %s.', sprintf('<a href="%s">%s</a>', $this->escapeHtml($this->getViewOrderUrl()), $this->escapeHtml($this->getOrderId()))) ?></p>
+<?php  else :?>
+    <p><?php echo $this->__('Your order # is: %s.', $this->escapeHtml($this->getOrderId())) ?></p>
+<?php endif;?>
+    <p><?php echo $this->__('You will receive an order confirmation email with details of your order and a link to track its progress.') ?></p>
+<?php if ($this->getCanViewOrder() && $this->getCanPrintOrder()) :?>
+    <p>
+        <?php echo $this->__('Click <a href="%s" onclick="this.target=\'_blank\'">here to print</a> a copy of your order confirmation.', $this->getPrintUrl()) ?>
+        <?php echo $this->getChildHtml() ?>
+    </p>
+<?php endif;?>
+<?php endif;?>
+
+<?php if ($this->getAgreementRefId()): ?>
+    <p><?php echo $this->__('Your billing agreement # is: %s.', sprintf('<a href="%s">%s</a>', $this->escapeHtml($this->getAgreementUrl()), $this->escapeHtml($this->getAgreementRefId())))?></p>
+<?php endif;?>
+
+<?php if ($profiles = $this->getRecurringProfiles()):?>
+<p><?php echo $this->__('Your recurring payment profiles:'); ?></p>
+<ul class="disc">
+<?php foreach($profiles as $profile):?>
+<?php $profileIdHtml = ($this->getCanViewProfiles() ? sprintf('<a href="%s">%s</a>', $this->escapeHtml($this->getProfileUrl($profile)), $this->escapeHtml($this->getObjectData($profile, 'reference_id'))) : $this->escapeHtml($this->getObjectData($profile, 'reference_id')));?>
+    <li><?php echo $this->__('Payment profile # %s: "%s".', $profileIdHtml, $this->escapeHtml($this->getObjectData($profile, 'schedule_description')))?></li>
+<?php endforeach;?>
+</ul>
+<?php endif;?>
+
+<div class="buttons-set">
+    <button type="button" class="button red-button" title="<?php echo $this->__('Continue Shopping') ?>" onclick="window.location='<?php echo $this->getUrl() ?>'"><span><span><?php echo $this->__('Continue Shopping') ?></span></span></button>
+</div>
+<!-- CJ script start -->
+<script>
+    var MasterTmsUdo = {
+        'CJ': {
+            'CID': '1531347',
+            'TYPE': '373794',
+            'DISCOUNT': '<?php echo isset($orderInfo["discount_amount"])?$orderInfo["discount_amount"]:""; ?>',
+            'OID': dataLayer[0].transactionId,
+            'CURRENCY': 'USD',
+            'COUPON': '<?php echo isset($orderInfo["coupon_code"])?$orderInfo["coupon_code"]:""; ?>',
+            'FIRECJ': 'true',
+            PRODUCTLIST: []
+        }
+    };
+    // Build the product list
+    for (var count = 1; count <= dataLayer[0].transactionProducts.length; count++) {
+        if (dataLayer[0].transactionProducts[count - 1].sku != undefined) {
+            MasterTmsUdo.CJ.PRODUCTLIST[count - 1] = {};
+            MasterTmsUdo.CJ.PRODUCTLIST[count - 1].ITEM = dataLayer[0].transactionProducts[count - 1].sku;
+            MasterTmsUdo.CJ.PRODUCTLIST[count - 1].AMT = dataLayer[0].transactionProducts[count - 1].price;
+            MasterTmsUdo.CJ.PRODUCTLIST[count - 1].QTY = dataLayer[0].transactionProducts[count - 1].quantity;
+        }
+    }
+</script>
+<script>/*DO NOT ALTER *** Personalized Planet*/
+    (function (e) {
+        var t = "1364", n = document, r, i, s = {http: "http://cdn.mplxtms.com/s/MasterTMS.min.js", https: "https://secure-cdn.mplxtms.com/s/MasterTMS.min.js"}, o = s[/\w+/.exec(window.location.protocol)[0]];
+        i = n.createElement("script"), i.type = "text/javascript", i.async = !0, i.src = o + "#" + t, r = n.getElementsByTagName("script")[0], r.parentNode.insertBefore(i, r), i.readyState ? i.onreadystatechange = function () {
+            if (i.readyState === "loaded" || i.readyState === "complete")i.onreadystatechange = null
+        } : i.onload = function () {
+            try {
+                e()
+            } catch (t) {
+            }
+        }
+    })(function () {
+    });</script>
+<!-- CJ script end -->
+<!-- Google Code for Conversion Value Conversion Page -->
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 976647502;
+var google_conversion_language = "en";
+var google_conversion_format = "3";
+var google_conversion_color = "ffffff";
+var google_conversion_label = "XXnSCNCHqFsQzurZ0QM";
+var google_conversion_value = <?php echo $adwords_saleamt;?>;
+var google_conversion_currency = "USD";
+var google_remarketing_only = false;
+/* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/976647502/?value=<?php echo $adwords_saleamt;?>&amp;currency_code=USD&amp;label=XXnSCNCHqFsQzurZ0QM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+
+<?php
+$thisOrderId = Mage::getSingleton('checkout/session')->getLastRealOrderId();
+$order       = Mage::getModel('sales/order');
+$order->loadByIncrementId($thisOrderId);
+$items = $order->getAllItems();
+?>
+<!--Channel Advisor-->
+<script type="text/javascript">
+    var _caq = _caq || [];
+    var products = [];
+    <?php
+        foreach($items as $item) {?>
+
+            products.push({Sku: '<?php echo $item->getSku(); ?>', UnitPrice: '<?php echo $item->getPrice();  ?>', Quantity: '<?php echo $item->getQty(); ?>'});
+        <?php }
+    ?>
+    _caq.push(["Order", {OrderId: '<?php echo $this->getOrderId(); ?>', Revenue: '<?php echo $adwords_saleamt; ?>', CurrencyCode: 'USD', Products: products}]);
+</script>
+<!--Channel Advisor-->

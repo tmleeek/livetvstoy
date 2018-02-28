@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Zeon_Sitemap>
+            <version>1.0.0</version>
+        </Zeon_Sitemap>
+    </modules>
+    <global>
+        <models>
+          <sitemap>
+            <rewrite>
+              <sitemap>Zeon_Sitemap_Model_Sitemap</sitemap>
+            </rewrite>
+          </sitemap>
+        </models>
+    </global>
+    <default>
+        <sitemap>
+            <homepage>
+                <priority>1.0</priority>
+                <changefreq>daily</changefreq>
+            </homepage>
+            <subcategory>
+                <priority>0.7</priority>
+                <changefreq>daily</changefreq>
+            </subcategory>
+        </sitemap>
+    </default>
+</config>

@@ -1,0 +1,76 @@
+<?php
+$bannerData = $this->getAllBanners();
+//print_r($bannerData);
+?>
+<?php
+if (!empty($bannerData)) { ?>
+    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+            <?php
+            foreach($bannerData as $index => $banner) {
+                if ($index == 0) { $class = 'active'; } else { $class = ''; } ?>
+                <li data-target="#carousel-example-generic" data-slide-to="<?php echo $index; ?>" class="<?php echo $class; ?>"></li>
+            <?php
+            } ?>
+            <li class="play pause" id="pauseButton"></li>
+        </ol>
+
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner">
+            <?php
+            $baseUrl = Mage::getBaseUrl('media') . 'bannerslider/';
+            foreach($bannerData as $index => $banner) {
+                $bannerUrl = Mage::helper('bannerslider')->getBannerImage($banner['image']);
+                if ($index == 0) { $class = 'active'; } else { $class = ''; } ?>
+                <div class="item <?php echo $class; ?>">
+                    <?php
+                    if (!empty ($banner['click_url'])) {
+                        $bannerClickUrl = $banner['click_url'];
+                    } else {
+                        $bannerClickUrl = Mage::getBaseUrl();
+                    } ?>
+                    <a href="<?php echo $bannerClickUrl; ?>">
+                        <img src="<?php echo $bannerUrl; ?>" alt="<?php echo $banner['image_alt']; ?>" />
+                    </a>
+                    <div class="carousel-caption">
+                        <?php //echo $banner['image']; ?>
+                    </div>
+                </div>
+            <?php
+            } ?>
+        </div>
+
+        <!-- Controls -->
+        <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+          <span class="glyphicon glyphicon-chevron-left"></span>
+        </a>
+        <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+          <span class="glyphicon glyphicon-chevron-right"></span>
+        </a>
+    </div>
+    <?php
+    // Set the page limit.
+    $configIntervalSettings = Mage::helper('bannerslider')
+        ->getConfigDetails('general/interval'); ?>
+    <script>
+        jQuery( document ).ready(function() {
+            jQuery('.carousel').carousel({
+                interval: <?php echo $configIntervalSettings; ?>
+            });
+
+            jQuery(document).on('click', 'li#playButton', function() {
+                jQuery('.carousel').carousel('cycle');
+                jQuery(this).addClass('pause');
+                jQuery(this).attr('id', 'pauseButton');
+            });
+            jQuery(document).on('click', 'li#pauseButton', function() {
+                jQuery('.carousel').carousel('pause');
+                jQuery(this).removeClass('pause');
+                jQuery(this).attr('id', 'playButton');
+            });
+        });
+
+    </script>
+<?php
+} ?>

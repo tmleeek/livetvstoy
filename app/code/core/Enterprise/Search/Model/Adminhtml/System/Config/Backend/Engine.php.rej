@@ -1,0 +1,12 @@
+--- app/code/core/Enterprise/Search/Model/Adminhtml/System/Config/Backend/Engine.php
++++ app/code/core/Enterprise/Search/Model/Adminhtml/System/Config/Backend/Engine.php
+@@ -45,7 +45,8 @@
+         parent::_afterSave();
+ 
+         if ($this->isValueChanged()) {
+-            Mage::helper('enterprise_search')->invalidateCatalogSearchIndex();
++            Mage::getSingleton('index/indexer')->getProcessByCode('catalogsearch_fulltext')
++                ->changeStatus(Mage_Index_Model_Process::STATUS_REQUIRE_REINDEX);
+         }
+ 
+         return $this;

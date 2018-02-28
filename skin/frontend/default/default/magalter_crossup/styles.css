@@ -1,0 +1,195 @@
+.magalter-crossup-products {
+    border:1px solid #CCC;
+    margin:10px 0 10px 0;
+    background:white;
+    text-align:left;
+    padding:5px;
+    min-height:80px;
+}
+
+.magalter-crossup-products .magalter-crossup-product-info {
+    float:left;
+    margin-left:4px;  
+}
+
+.magalter-crossup-products .product-name {
+    float:left;   
+}
+
+.magalter-crossup-products .product-name a {
+    text-decoration:none;
+} 
+
+.magalter-crossup-products .product-info-crossup {
+    clear:both;
+    min-height:25px;
+    height:auto!important;
+}
+
+/* price styles */
+.magalter-crossup-products .price-box .old-price .price-label, 
+.magalter-crossup-products .price-box .special-price .price-label  {
+    display:none;
+}
+.magalter-crossup-products .old-price, 
+.magalter-crossup-products .special-price,
+.magalter-crossup-products .price-from, 
+.magalter-crossup-products .price-to,
+.magalter-crossup-products .minimal-price,
+.magalter-crossup-products .minimal-price-link,
+.magalter-crossup-products .price-excluding-tax,
+.magalter-crossup-products .price-including-tax
+{
+    display:inline; 
+    padding:0;
+    margin:0;
+    font-size:12px;
+}
+
+.magalter-crossup-products .minimal-price .price {
+    white-space: normal!important;
+}
+
+.magalter-crossup-products .old-price,
+.magalter-crossup-products .regular-price,
+.magalter-crossup-products .minimal-price,
+.magalter-crossup-products .price-from {
+    margin-left:4px;   
+}
+
+.magalter-crossup-products .price-box {
+    float:left;
+    margin:0;
+}
+
+
+.magalter-crossup-products .special-price .price {
+    color:rgb(255,50,0); 
+    margin-left: 5px;
+    font-size:12px;
+}
+.magalter-crossup-products .old-price .price {
+    color:rgb(0,0,0); 
+}
+
+/* price styles */
+
+.magalter-crossup-rule-image {    
+    width: 90px;  
+    padding: 5px;
+    text-align:center;
+    height:90px;
+    float:left;
+}
+
+.magalter-crossup-rule-description {
+    width:150px;
+    padding: 5px;
+    float:left;
+}
+
+.magalter-crossup-image {
+    height:70px!important;
+}
+
+
+
+.magalter-crossup-product-details {
+    padding:5px;
+    width:615px;       
+    float:left;
+}
+
+.magalter-crossup-product-grid {
+    width:635px!important;
+    position:static!important;
+    border-bottom:none;
+}
+
+.magalter-crossup-product-grid .product-name {
+    font-size:12px;
+}
+
+.magalter-crossup-product-grid .actions {    
+    position:static!important;
+}
+
+
+.magalter-crossup-product-grid li.item {
+    padding: 12px 10px 15px; 
+}
+
+
+
+.magalter-crossup-product-details-inner {
+
+    display:inline-block;
+    vertical-align:top;
+    width:100%;
+    margin:3px
+}
+
+
+.magalter-crossup-product-details-inner .product-name {
+    display:inline!important
+
+} 
+
+
+.products-info-table td {
+    padding:0 3px 0 3px;
+    vertical-align:middle;
+}
+
+/* prices */
+
+/* prices */
+
+
+
+
+.magalter-crossup-product-info {
+    background: url("images/magalter-icon-info.png");
+    width:16px;
+    height:16px;
+    display:inline-block;
+    vertical-align:top;
+    cursor:pointer;
+}
+
+.magalter-crossup-product-description {    
+    width:200px;    
+    padding:10px;
+    background:white;
+    border:1px solid #CCC;
+}
+
+.magalter-crossup-cart {
+    background: url("images/magalter-crossup-cart.png") no-repeat center center;
+    cursor:pointer;
+    width:40px;
+    height:20px;
+}
+
+.magalter-crossups-scroll-down {
+    text-align:center;
+}
+.magalter-crossups-scroll-down .scroll-down-message {
+    color:#3c5a98;
+    font-family: 'Museo300',Helvetica,Arial,sans-serif;
+}
+
+.magalter-crossups-scroll-down img {
+    border:none;
+}
+
+.magalter-crossup-product-description .product-name {
+    text-align:center;
+    float:none;
+
+}
+
+.magalter-crossup-description-image, .magalter-crossup-description-action {
+    text-align:center;
+    margin-top:5px;
+}

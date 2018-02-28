@@ -1,0 +1,41 @@
+<?xml version="1.0" ?>
+<layout version="0.1.0">    
+      <adminhtml_magaltercrossupadmin_rules_edit>
+        <reference name="head">
+            <action method="addCss"><stylesheet>magalter_crossup/styles.css</stylesheet></action>                         
+            <action method="setCanLoadExtJs"><param>1</param></action>
+            <action method="setCanLoadRulesJs"><param>1</param></action>        
+        </reference>
+        <update handle="editor"/>
+        <reference name="head">
+            <action method="setCanLoadTinyMce"><param>1</param></action>
+        </reference>
+        <reference name="content">
+            <block type="magalter_crossup/adminhtml_rules_edit" name="magalter_crossup_edit"></block>
+        </reference>
+        <reference name="left">            
+            <block type="magalter_crossup/adminhtml_rules_edit_tabs" name="magalter_crossup_edit_tabs"></block>
+        </reference>
+         <reference name="menu">
+            <action method="setActive"><menupath>promo</menupath></action>
+        </reference> 
+    </adminhtml_magaltercrossupadmin_rules_edit>
+    <adminhtml_magaltercrossupadmin_templates_edit>
+        <reference name="head">
+            <action method="addCss"><stylesheet>magalter_crossup/styles.css</stylesheet></action>
+        </reference>
+        <update handle="editor"/>
+        <reference name="head">
+            <action method="setCanLoadTinyMce"><param>1</param></action>
+        </reference>
+        <reference name="content">
+            <block type="magalter_crossup/adminhtml_templates_edit" name="magalter_crossup_templates_edit"></block>
+        </reference>
+        <reference name="left">            
+            <block type="magalter_crossup/adminhtml_templates_edit_tabs" name="magalter_crossup_edit_templates_tabs"></block>
+        </reference>
+         <reference name="menu">
+            <action method="setActive"><menupath>promo</menupath></action>
+        </reference> 
+    </adminhtml_magaltercrossupadmin_templates_edit>   
+</layout>

@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<config>
+    <menu>
+        <promo>
+            <children>
+                <magalter_crossup>
+                    <title><![CDATA[Automatic Cart Upsells & Cross-sells]]></title>
+                    <sort_order>80</sort_order>
+                    <children>
+                        <magalter_crossup>
+                            <title>Rules</title>
+                            <sort_order>5</sort_order>
+                            <action>adminhtml/magaltercrossupadmin_rules</action>
+                        </magalter_crossup>                    
+                        <configuration>
+                            <title>Configuration settings</title>
+                            <sort_order>10</sort_order>
+                            <action>adminhtml/system_config/edit/section/magalter_crossup</action>
+                        </configuration>
+                    </children>
+                </magalter_crossup> 
+            </children>
+        </promo>
+    </menu>
+    <acl>
+        <resources>
+            <all>
+                <title>Allow Everything</title>
+            </all>
+            <admin>
+                <children>
+                    <promo>
+                        <children>
+                            <magalter_crossup>
+                                <title><![CDATA[Automatic Cart Upsells & Cross-sells]]></title>
+                                <sort_order>60</sort_order>
+                                <children>
+                                    <magalter_crossup>
+                                        <title>Rules</title>
+                                        <sort_order>5</sort_order>
+                                        <action>adminhtml/magaltercrossupadmin_rules</action>
+                                    </magalter_crossup>                                  
+                                    <configuration>
+                                        <title>Configuration settings</title>
+                                        <sort_order>10</sort_order>
+                                        <action>adminhtml/system_config/edit/section/magalter_crossup</action>
+                                    </configuration>
+                                </children>
+                            </magalter_crossup> 
+                        </children>
+                    </promo>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <magalter_crossup>
+                                        <title>Magalter - Cart Upsells And Cross-sells</title>
+                                    </magalter_crossup>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>

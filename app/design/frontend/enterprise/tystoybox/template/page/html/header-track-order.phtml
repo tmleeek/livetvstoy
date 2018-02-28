@@ -1,0 +1,13 @@
+<?php
+$isCustomerLoggedIn = $this->helper('customer')->isLoggedIn();
+$baseUrl = Mage::getBaseUrl(); ?>
+<li class="last">
+    <?php
+    if ($isCustomerLoggedIn) { ?>
+        <a title="Track Order" href="<?php echo $baseUrl . 'sales/order/history/'; ?>"> Track Order </a>
+    <?php
+    } else { ?>
+        <a title="Track Order" href="<?php echo $baseUrl . 'sales/guest/form/'; ?>"> Track Order </a>
+    <?php
+    } ?>
+</li>

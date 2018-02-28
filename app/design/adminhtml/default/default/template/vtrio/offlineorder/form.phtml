@@ -1,0 +1,68 @@
+
+<?php if($this->hasMethods()): ?>
+<div id="order-billing_method_form">
+    <dl class="payment-methods">
+    <?php
+        $_methods       = $this->getMethods();
+        $_methodsCount  = count($_methods);
+        $_counter = 0;
+
+			$admin_user_session = Mage::getSingleton('admin/session');
+			$adminuserId = $admin_user_session->getUser()->getUserId();
+			$role_data = Mage::getModel('admin/user')->load($adminuserId)->getRole()->getData();
+			$role_id = $role_data['role_id'];
+			$role_type = $role_data['role_type']; 
+			$role_name = $role_data['role_name'];
+			$i = 0;
+    ?>
+	<?php if ($role_id == Vtrio_OfflineOrder_Helper_Data::OfflineOrder_roleId): ?>
+		<?php
+	//echo "<pre>";print_r($_methods);echo "</pre>";
+?>
+				 <?php foreach ($_methods as $_method): $_code = $_method->getCode(); $_counter++; ?>
+					  <dt>
+					  <?php if ($_methodsCount >= 1 && $_code == 'checkmo'): $i = 1;?>
+						   <input id="p_method_<?php echo $_code ?>" value="<?php echo $_code ?>" type="radio" name="payment[method]" title="<?php echo $this->escapeHtml($_method->getTitle()) ?>" onclick="payment.switchMethod('<?php echo $_code ?>')"<?php if($this->getSelectedMethodCode()==$_code): ?> checked="checked"<?php endif; ?> <?php if ($_counter == $_methodsCount) : ?>class="validate-one-required-by-name"<?php endif;?> checked="checked"/>
+							<label for="p_method_<?php echo $_code ?>"><?php echo $this->escapeHtml($_method->getTitle()) ?></label>
+
+					  <?php else :?>
+						   <span class="no-display"><input id="p_method_<?php echo $_code ?>" value="<?php echo $_code ?>" type="radio" name="payment[method]" checked="checked" /></span>
+
+					  <?php endif;?>
+						   
+					  </dt>					  
+				 <?php endforeach; ?>
+			<?php if($i==1){  $i==0;?>
+							<script type="text/javascript">
+								function setMoneyOrderValue(){
+									console.log('auto load');
+									order.loadShippingRates();
+									return false;
+								}
+								window.onload = setMoneyOrderValue();
+								console.log('calling auto load');
+							</script>
+			<?php	}
+			?>
+	<?php else: ?>
+			 <?php foreach ($_methods as $_method): $_code = $_method->getCode(); $_counter++; ?>
+				  <dt>
+				  <?php if ($_methodsCount > 1): ?>
+				      <input id="p_method_<?php echo $_code ?>" value="<?php echo $_code ?>" type="radio" name="payment[method]" title="<?php echo $this->escapeHtml($_method->getTitle()) ?>" onclick="payment.switchMethod('<?php echo $_code ?>')"<?php if($this->getSelectedMethodCode()==$_code): ?> checked="checked"<?php endif; ?> <?php if ($_counter == $_methodsCount) : ?>class="validate-one-required-by-name"<?php endif;?>/>
+				  <?php else :?>
+				      <span class="no-display"><input id="p_method_<?php echo $_code ?>" value="<?php echo $_code ?>" type="radio" name="payment[method]" checked="checked" /></span>
+				  <?php endif;?>
+
+				      <label for="p_method_<?php echo $_code ?>"><?php echo $this->escapeHtml($_method->getTitle()) ?></label>
+				  </dt>
+				  <dd>
+				      <?php echo $this->getChildHtml('payment.method.'.$_code) ?>
+				  </dd>
+			 <?php endforeach; ?>
+	<?php endif; ?>
+    </dl>
+</div>
+<script type="text/javascript">order.setPaymentMethod('<?php echo $this->getSelectedMethodCode() ?>')</script>
+<?php else: ?>
+    <div><?php echo Mage::helper('sales')->__('No Payment Methods') ?></div>
+<?php endif; ?>

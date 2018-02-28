@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+        
+<config>
+    <modules>
+        <Zeon_Dropshiping>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Zeon_Dropshiping>
+    </modules>
+</config>

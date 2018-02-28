@@ -1,0 +1,146 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <zeon_catalogmanager_index_index>
+        <reference name="breadcrumbs.container">
+            <block type="core/template" name="category.title" after="breadcrumbs" template="zeon/catalogmanager/title.phtml"/>
+        </reference>
+        <reference name="content">
+            <block type="zeon_catalogmanager/product_featuredproducts" name="featuredproduct_list" as="featuredproduct_list" template="zeon/catalogmanager/list_featuredproduct.phtml">
+                <block type="catalog/product_list_toolbar" name="product_list_toolbar" template="catalog/product/list/toolbar.phtml">
+                    <block type="page/html_pager" name="product_list_toolbar_pager"/>
+                </block>
+                <action method="setToolbarBlockName">
+                    <name>product_list_toolbar</name>
+                </action>
+            </block>
+        </reference>
+    </zeon_catalogmanager_index_index>
+
+    <zeon_catalogmanager_index_best>
+        <reference name="breadcrumbs.container">
+            <block type="core/template" name="category.title" after="breadcrumbs" template="zeon/catalogmanager/title.phtml"/>
+        </reference>
+        <reference name="content">
+            <block type="zeon_catalogmanager/product_bestproducts" name="bestproduct_list" as="bestproduct_list" template="zeon/catalogmanager/list_bestproduct.phtml">
+                <block type="catalog/product_list_toolbar" name="product_list_toolbar" template="catalog/product/list/toolbar.phtml">
+                    <block type="page/html_pager" name="product_list_toolbar_pager"/>
+                </block>
+                <action method="setToolbarBlockName">
+                    <name>product_list_toolbar</name>
+                </action>
+            </block>
+        </reference>
+    </zeon_catalogmanager_index_best>
+
+    <zeon_catalogmanager_index_homeoption1>
+        <reference name="breadcrumbs.container">
+            <block type="core/template" name="category.title" after="breadcrumbs" template="zeon/catalogmanager/title.phtml"/>
+        </reference>
+        <reference name="content">
+            <block type="zeon_catalogmanager/product_productpageoption1" name="productpageoption1_list" as="productpageoption1_list" template="zeon/catalogmanager/list_productpageoption1.phtml">
+                <block type="catalog/product_list_toolbar" name="product_list_toolbar" template="catalog/product/list/toolbar.phtml">
+                    <block type="page/html_pager" name="product_list_toolbar_pager"/>
+                </block>
+                <action method="setToolbarBlockName">
+                    <name>product_list_toolbar</name>
+                </action>
+            </block>
+        </reference>
+    </zeon_catalogmanager_index_homeoption1>
+
+    <zeon_catalogmanager_index_homeoption2>
+        <reference name="breadcrumbs.container">
+            <block type="core/template" name="category.title" after="breadcrumbs" template="zeon/catalogmanager/title.phtml"/>
+        </reference>
+        <reference name="content">
+            <block type="zeon_catalogmanager/product_productpageoption2" name="productpageoption2_list" as="productpageoption2_list" template="zeon/catalogmanager/list_productpageoption2.phtml">
+                <block type="catalog/product_list_toolbar" name="product_list_toolbar" template="catalog/product/list/toolbar.phtml">
+                    <block type="page/html_pager" name="product_list_toolbar_pager"/>
+                </block>
+                <action method="setToolbarBlockName">
+                    <name>product_list_toolbar</name>
+                </action>
+            </block>
+        </reference>
+    </zeon_catalogmanager_index_homeoption2>
+
+    <zeon_catalogmanager_index_homeoption3>
+        <reference name="breadcrumbs.container">
+            <block type="core/template" name="category.title" after="breadcrumbs" template="zeon/catalogmanager/title.phtml"/>
+        </reference>
+        <reference name="content">
+            <block type="zeon_catalogmanager/product_productpageoption3" name="productpageoption3_list" as="productpageoption3_list" template="zeon/catalogmanager/list_productpageoption3.phtml">
+                <block type="catalog/product_list_toolbar" name="product_list_toolbar" template="catalog/product/list/toolbar.phtml">
+                    <block type="page/html_pager" name="product_list_toolbar_pager"/>
+                </block>
+                <action method="setToolbarBlockName">
+                    <name>product_list_toolbar</name>
+                </action>
+            </block>
+        </reference>
+    </zeon_catalogmanager_index_homeoption3>
+
+    <zeon_catalogmanager_index_popular>
+        <reference name="breadcrumbs.container">
+            <block type="core/template" name="category.title" after="breadcrumbs" template="zeon/catalogmanager/title.phtml"/>
+        </reference>
+        <reference name="content">
+            <block type="zeon_catalogmanager/product_popularproducts" name="popularproduct_list" as="popularproduct_list" template="zeon/catalogmanager/list_popularproduct.phtml">
+                <block type="catalog/product_list_toolbar" name="product_list_toolbar" template="catalog/product/list/toolbar.phtml">
+                    <block type="page/html_pager" name="product_list_toolbar_pager"/>
+                </block>
+                <action method="setToolbarBlockName">
+                    <name>product_list_toolbar</name>
+                </action>
+            </block>
+        </reference>
+    </zeon_catalogmanager_index_popular>
+
+    <zeon_catalogmanager_index_newarrivals>
+        <reference name="root">
+            <action method="setTemplate"><template>page/2columns-left.phtml</template></action>
+        </reference>
+        <reference name="head">
+            <action method="setTitle" translate="title">
+                <title>New Arrivals</title>
+            </action>
+        </reference>
+        <reference name="breadcrumbs.container">
+            <block type="core/template" name="category.title" after="breadcrumbs" template="zeon/catalogmanager/title.phtml"/>
+        </reference>
+        <reference name="content">
+            <block type="zeon_catalogmanager/product_newarrivals" name="newarrivals" template="zeon/catalogmanager/new_arrivals.phtml">
+                <block type="catalog/product_list_toolbar" name="product_list_toolbar" template="catalog/product/list/toolbar.phtml">
+                    <block type="page/html_pager" name="product_list_toolbar_pager"/>
+                </block>
+                <action method="setToolbarBlockName">
+                    <name>product_list_toolbar</name>
+                </action>
+            </block>
+        </reference>
+    </zeon_catalogmanager_index_newarrivals>
+
+    <zeon_catalogmanager_index_contentblocktopright>
+        <reference name="root">
+            <action method="setTemplate"><template>page/2columns-left.phtml</template></action>
+        </reference>
+        <reference name="head">
+            <action method="setTitle" translate="title">
+                <title>New Arrivals</title>
+            </action>
+        </reference>
+        <reference name="breadcrumbs.container">
+            <block type="core/template" name="category.title" after="breadcrumbs" template="zeon/catalogmanager/title.phtml"/>
+        </reference>
+        <reference name="content">
+            <block type="zeon_catalogmanager/product_contentblocktopright" name="contentblocktopright" template="zeon/catalogmanager/list_contentblocktopright.phtml">
+                <block type="catalog/product_list_toolbar" name="product_list_toolbar" template="catalog/product/list/toolbar.phtml">
+                    <block type="page/html_pager" name="product_list_toolbar_pager"/>
+                </block>
+                <action method="setToolbarBlockName">
+                    <name>product_list_toolbar</name>
+                </action>
+            </block>
+        </reference>
+    </zeon_catalogmanager_index_contentblocktopright>
+</layout>

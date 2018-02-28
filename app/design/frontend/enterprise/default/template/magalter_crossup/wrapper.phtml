@@ -1,0 +1,31 @@
+<?php if(!$selector = trim(Mage::getStoreConfig('magalter_crossup/configuration/position'))): ?>
+<div id="magalter-crossup-data">
+    <h2><?php echo $this->__('Special offers are being loaded now'); ?></h2>
+</div>
+<?php endif; ?>
+<script type = "text/javascript">
+    document.observe("dom:loaded", function() {       
+       var magalterCrossupContainer = $('magalter-crossup-data');        
+       if(!magalterCrossupContainer) {
+           var el = null;       
+           try {
+               el = eval(<?php echo $selector; ?>);
+           } catch(e) {} 
+
+            Element.insert( $(el), {
+                'before': '<div id="magalter-crossup-data"><h2><?php echo $this->__('Special offers are being loaded now'); ?></h2></div>'
+            }); 
+        }        
+        new Ajax.Request('<?php echo Mage::getUrl('magalter_crossup/products/upsells', array('_secure' => Mage::app()->getStore()->isCurrentlySecure())); ?>', {
+            method: 'get',
+            onSuccess: function(transport) {    
+                $('magalter-crossup-data').innerHTML = transport.responseText;              
+                $('magalter-crossup-data').innerHTML.extractScripts().each(function(script) {             
+                    try {                       
+                        eval(script.replace(/(\/\/\s*<!\[CDATA\[|\/\/\s*]]>|var\s|\/\*\s*<!\[CDATA\[\s*\*\/|\/\*\s*\]\]>\*\/)/ig,''));
+                    } catch(e) { }        
+                });                  
+            }
+        });           
+    }); 
+</script>

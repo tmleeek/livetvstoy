@@ -1,0 +1,80 @@
+<?php
+/**
+ * zeonsolutions inc.
+ * @category   design
+ * @package    enterprise_default
+ * @version    0.0.1
+ * @copyright  @copyright Copyright (c) 2013 zeonsolutions.Inc. (http://www.zeonsolutions.com)
+ * @license    http://shop.zeonsolutions.com/license-enterprise.txt
+ */
+?>
+
+<?php $_product = $this->getProduct(); ?>
+<?php $productType = $_product->getTypeID(); ?>
+<?php $buttonTitle = $this->__('Add to Cart'); ?>
+<?php
+//$personalize_value =  Mage::getModel('catalog/product')->load($_product->getId())->getPersonalize();
+$isPersonalized =  $_product->getPersonalize();
+if ($isPersonalized == '1') {
+    $buttonTitle = $this->__('Personalize');
+}
+$email='';
+$customer = Mage::getSingleton('customer/session')->getCustomer();
+$email=$customer->getEmail();
+?>
+    <div class="add-to-cart">
+        <!--  Quantity testbox and label -->
+      
+        <!--  out of stock label -->
+
+            <?php if ($this->displayProductStockStatus()): ?>
+                <?php if (!$_product->isAvailable()): ?>
+                     <div class="item-oos"><p class="availability out-of-stock"><?php echo $this->__('Item out of stock') ?></p></div>
+                     <div class="cart-btn-set">
+                <?php else: ?>
+
+                <?php endif; ?>
+            <?php endif; ?>
+        <?php $_options = $_product->getOptions();?>
+        <!--  confirmation checkbox -->
+        <?php if ($_product->isSaleable()): ?>
+        <?php if (count($_options)):?>
+        <?php if ($this->hasOptions() && $isPersonalized != 1) : ?>
+            <div class="required-box">
+                
+                <input type="checkbox" name="required_check" />
+                <span class="note"><?php echo $this->__('I confirm the personalization indicated above is correct') ?></span>
+            </div>
+        <?php endif; ?>
+        <?php endif; ?>
+        <!-- "Add To Cart" button -->
+        <?php
+        $classToAdd = "";
+        if ($productType == 'bundle') {
+            $classToAdd = "hide";
+        } ?>
+        <div class="cart-btn-set">
+            <?php if ($isPersonalized != 1): ?>
+            <a href="javascript:window.history.go(-1);"><img border="0" src="<?php echo $this->getSkinUrl('images/HSN_btn_blue_back_v7.gif') ?>" name="search"></a>
+            <div id="cart-button-div-id" class="cart-button <?php echo $classToAdd; ?>">
+                <button type="submit" title="<?php echo $buttonTitle ?>" class="button btn-cart red-button buttonimg"></button>
+                <?php //echo $this->getChildHtml('', true, true) ?>
+            </div>
+            <?php endif; ?>
+        <?php endif; ?>
+        
+        </div>
+    </div>
+<script>
+    jQuery(document).ready(function() {
+        validatePersonalizedFields();
+    });
+</script>
+<style>
+    
+    .buttonimg{
+        background: url("<?php echo $this->getSkinUrl('images/HSN_btn_blue_continue_v7.gif') ?>") no-repeat !important;
+        height: 25px;
+        width: 100px;
+    }
+</style>

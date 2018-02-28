@@ -1,0 +1,30 @@
+<?php
+/**
+ * Custom tab template
+ */
+?>
+ <?php
+             $product_id = Mage::registry('current_product')->getId();
+        $sku = Mage::getModel('catalog/product')->load($product_id)->getSku();
+        $_product = Mage::getModel('catalog/product')->load($product_id);  
+        $attribute = $_product->getResource()->getAttribute('site_link');
+
+     $attribute_value = $attribute ->getFrontend()->getValue($_product);
+          ?>
+
+<tr>
+    <td class="label">Site-linking</td>
+    <td class="value">
+        
+      <select id="site_link" class=" select">
+<option <?php if($attribute_value=="No") { ?> selected="selected" <?php }?> value="0">No</option>
+<option <?php if($attribute_value=="Yes") { ?> selected="selected" <?php }?> value="1">Yes</option>
+</select>
+        
+        <a href="<?php echo $this->getUrl('smashingmagazine_branddirectory_admin/brand/index/sku/'.$sku); ?>">Add Site-link</a>
+       
+         
+        
+    </td>
+   
+</tr>

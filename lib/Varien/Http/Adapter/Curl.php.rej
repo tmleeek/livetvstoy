@@ -1,0 +1,117 @@
+--- lib/Varien/Http/Adapter/Curl.php
++++ lib/Varien/Http/Adapter/Curl.php
+@@ -53,11 +53,11 @@
+      * @var array
+      */
+     protected $_allowedParams = array(
+-        'timeout'       => CURLOPT_TIMEOUT,
+-        'maxredirects'  => CURLOPT_MAXREDIRS,
+-        'proxy'         => CURLOPT_PROXY,
+-        'ssl_cert'      => CURLOPT_SSLCERT,
+-        'userpwd'       => CURLOPT_USERPWD
++        'timeout' => CURLOPT_TIMEOUT,
++        'maxredirects' => CURLOPT_MAXREDIRS,
++        'proxy' => CURLOPT_PROXY,
++        'ssl_cert' => CURLOPT_SSLCERT,
++        'userpwd' => CURLOPT_USERPWD
+     );
+ 
+     /**
+@@ -74,12 +74,15 @@
+      */
+     protected function _applyConfig()
+     {
+-        curl_setopt_array($this->_getResource(), $this->_options);
+-
+         if (empty($this->_config)) {
+             return $this;
+         }
+ 
++        // apply additional options to cURL
++        foreach ($this->_options as $option => $value) {
++            curl_setopt($this->_getResource(), $option, $value);
++        }
++
+         $verifyPeer = isset($this->_config['verifypeer']) ? $this->_config['verifypeer'] : 0;
+         curl_setopt($this->_getResource(), CURLOPT_SSL_VERIFYPEER, $verifyPeer);
+ 
+@@ -120,20 +123,6 @@
+     }
+ 
+     /**
+-     * Add additional options list to curl
+-     *
+-     * @param array $options
+-     *
+-     * @return Varien_Http_Adapter_Curl
+-     */
+-    public function addOptions(array $options)
+-    {
+-        $this->_options = $options + $this->_options;
+-
+-        return $this;
+-    }
+-
+-    /**
+      * Set the configuration array for the adapter
+      *
+      * @param array $config
+@@ -163,7 +152,7 @@
+      * Send request to the remote server
+      *
+      * @param string        $method
+-     * @param string|Zend_Uri_Http $url
++     * @param Zend_Uri_Http $url
+      * @param string        $http_ver
+      * @param array         $headers
+      * @param string        $body
+@@ -176,23 +165,26 @@
+         }
+         $this->_applyConfig();
+ 
+-        $header = isset($this->_config['header']) ? $this->_config['header'] : true;
+-        $options = array(
+-            CURLOPT_URL                     => $url,
+-            CURLOPT_RETURNTRANSFER          => true,
+-            CURLOPT_HEADER                  => $header
+-        );
++        // set url to post to
++        curl_setopt($this->_getResource(), CURLOPT_URL, $url);
++        curl_setopt($this->_getResource(), CURLOPT_RETURNTRANSFER, true);
+         if ($method == Zend_Http_Client::POST) {
+-            $options[CURLOPT_POST]          = true;
+-            $options[CURLOPT_POSTFIELDS]    = $body;
+-        } elseif ($method == Zend_Http_Client::GET) {
+-            $options[CURLOPT_HTTPGET]       = true;
++            curl_setopt($this->_getResource(), CURLOPT_POST, true);
++            curl_setopt($this->_getResource(), CURLOPT_POSTFIELDS, $body);
+         }
++        elseif ($method == Zend_Http_Client::GET) {
++            curl_setopt($this->_getResource(), CURLOPT_HTTPGET, true);
++        }
++
+         if (is_array($headers)) {
+-            $options[CURLOPT_HTTPHEADER]    = $headers;
++            curl_setopt($this->_getResource(), CURLOPT_HTTPHEADER, $headers);
+         }
+ 
+-        curl_setopt_array($this->_getResource(), $options);
++        /**
++         * @internal Curl options setter have to be re-factored
++         */
++        $header = isset($this->_config['header']) ? $this->_config['header'] : true;
++        curl_setopt($this->_getResource(), CURLOPT_HEADER, $header);
+ 
+         return $body;
+     }
+@@ -268,10 +260,6 @@
+      */
+     public function getInfo($opt = 0)
+     {
+-        if (!$opt) {
+-            return curl_getinfo($this->_getResource());
+-        }
+-
+         return curl_getinfo($this->_getResource(), $opt);
+     }
+ 

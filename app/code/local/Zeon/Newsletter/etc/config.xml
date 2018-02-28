@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Zeon_Newsletter>
+            <version>1.0.1</version>
+        </Zeon_Newsletter>
+    </modules>
+    <frontend>
+        <routers>
+            <newsletter>
+                <args>
+                    <modules>
+                        <zeon_newsletter before="Mage_Newsletter">Zeon_Newsletter</zeon_newsletter>
+                    </modules>
+                </args>
+            </newsletter>
+        </routers>
+    </frontend>
+    <global>
+        <models>
+            <newsletter>
+                <rewrite>
+                    <!-- Override newsletter subscriber model -->
+                    <subscriber>Zeon_Newsletter_Model_Subscriber</subscriber>
+                </rewrite>
+            </newsletter>
+            <newsletter_mysql4> <!-- We use newsletter_mysql4 for compatibility -->
+                <rewrite>
+                    <subscriber>Zeon_Newsletter_Model_Resource_Subscriber</subscriber>
+                </rewrite>
+            </newsletter_mysql4>
+        </models>
+        </global>
+</config>

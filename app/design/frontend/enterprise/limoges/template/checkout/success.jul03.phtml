@@ -1,0 +1,134 @@
+<?php
+/**
+ * Magento Enterprise Edition
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magento Enterprise Edition License
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.magentocommerce.com/license/enterprise-edition
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2013 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://www.magentocommerce.com/license/enterprise-edition
+ */
+?>
+<div class="page-title">
+    <h1><?php echo $this->__('Your order has been received.') ?></h1>
+</div>
+<?php
+$is_pixel_code = Mage::getStoreConfig('sales_affilate_pixel_code/pixel_code/affilate_pixel_code');
+if($is_pixel_code) {
+$lastorderid = Mage::getSingleton('checkout/session')->getLastOrderId();
+$_order = Mage::getModel('sales/order')->load($lastorderid);
+$billing_address = $_order->getBillingAddress();
+$order_details = Mage::getModel('sales/order')->loadByIncrementId(Mage::getSingleton('checkout/session')->getLastRealOrderId());
+$adwords_saleamt = $order_details->getSubtotal();
+$ls_orderid = $this->getOrderId(); #get the order ID
+$ls_sku = '';
+$ls_amount = '';
+$ls_quantity = '';
+$ls_product = '';
+$ls_discount = $_order->discount_amount;
+$pid='';
+foreach ($_order->getAllItems() as $item) {
+    $parent = explode("-",$item->getSku());
+ $pid.="\n".'{id:"'.$parent[0].'",price:'.$item->getPrice().',quantity:'.$item->getQtyOrdered().'},';
+    if($item->getPrice() > 0){
+        $ls_sku .= $item->getSku() . '|';
+        $ls_amount .= ($item->getPrice() * $item->getQtyOrdered() * 100) . "|";
+        $ls_quantity .= $item->getQtyOrdered() . '|';
+        $ls_product .= urlencode($item->getName()) . '|';
+    }
+}
+
+if($ls_discount != 0) {
+    $ls_sku .= 'Discount';
+    $ls_amount .= ($ls_discount * 100);
+    $ls_quantity .= '0';
+    $ls_product .= 'Discount';
+}
+
+echo '<img src="https://track.linksynergy.com/ep?mid=2142&ord='.$ls_orderid.'&cur=USD&skulist='.$ls_sku.'&qlist='.$ls_quantity.'&amtlist='.$ls_amount.'&namelist='.$ls_product.'" width="1" height="1">';
+}
+?>
+
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<h2 class="sub-title"><?php echo $this->__('Thank you for your purchase!') ?></h2>
+
+<?php if ($this->getOrderId()):?>
+<?php if ($this->getCanViewOrder()) :?>
+    <p><?php echo $this->__('Your order # is: %s.', sprintf('<a href="%s">%s</a>', $this->escapeHtml($this->getViewOrderUrl()), $this->escapeHtml($this->getOrderId()))) ?></p>
+<?php  else :?>
+    <p><?php echo $this->__('Your order # is: %s.', $this->escapeHtml($this->getOrderId())) ?></p>
+<?php endif;?>
+    <p><?php echo $this->__('You will receive an order confirmation email with details of your order and a link to track its progress.') ?></p>
+<?php if ($this->getCanViewOrder() && $this->getCanPrintOrder()) :?>
+    <p>
+        <?php echo $this->__('Click <a href="%s" onclick="this.target=\'_blank\'">here to print</a> a copy of your order confirmation.', $this->getPrintUrl()) ?>
+        <?php echo $this->getChildHtml() ?>
+    </p>
+<?php endif;?>
+<?php endif;?>
+
+<?php if ($this->getAgreementRefId()): ?>
+    <p><?php echo $this->__('Your billing agreement # is: %s.', sprintf('<a href="%s">%s</a>', $this->escapeHtml($this->getAgreementUrl()), $this->escapeHtml($this->getAgreementRefId())))?></p>
+<?php endif;?>
+
+<?php if ($profiles = $this->getRecurringProfiles()):?>
+<p><?php echo $this->__('Your recurring payment profiles:'); ?></p>
+<ul class="disc">
+<?php foreach($profiles as $profile):?>
+<?php $profileIdHtml = ($this->getCanViewProfiles() ? sprintf('<a href="%s">%s</a>', $this->escapeHtml($this->getProfileUrl($profile)), $this->escapeHtml($this->getObjectData($profile, 'reference_id'))) : $this->escapeHtml($this->getObjectData($profile, 'reference_id')));?>
+    <li><?php echo $this->__('Payment profile # %s: "%s".', $profileIdHtml, $this->escapeHtml($this->getObjectData($profile, 'schedule_description')))?></li>
+<?php endforeach;?>
+</ul>
+<?php endif;?>
+
+<div class="buttons-set">
+    <button type="button" class="button red-button" title="<?php echo $this->__('Continue Shopping') ?>" onclick="window.location='<?php echo $this->getUrl() ?>'"><span><span><?php echo $this->__('Continue Shopping') ?></span></span></button>
+</div>
+<script type="text/javascript" src="//static.criteo.net/js/ld/ld.js" async="true"></script>
+<script type="text/javascript">
+var deviceType =
+/Mobile|iP(hone|od)|Android|BlackBerry|IEMobile|Silk/.test(navigator.userAgent)
+? "m" : /iPad/.test(navigator.userAgent) ? "t" : "d";
+window.criteo_q = window.criteo_q || [];
+window.criteo_q.push(
+{ event: "setAccount", account: 11065},
+{ event: "setSiteType", type: deviceType},
+{ event: "setEmail", email: "<?php echo $billing_address->getEmail();?>"},
+{ event: "trackTransaction",id:"<?php echo $this->getOrderId();?>", item: [<?php echo substr($pid,0,-1)."\n";?>]});
+</script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 1072697570;
+var google_conversion_language = "en_US";
+var google_conversion_format = "1";
+var google_conversion_color = "ffffff";
+var google_conversion_label = "PXyHCPj9ZhDiocD_Aw";
+var google_conversion_value = <?php echo $adwords_saleamt;?>;
+var google_conversion_currency = "USD";
+var google_remarketing_only = false;
+/* ]]> */
+</script>
+<script type="text/javascript"
+src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt=""
+src="//www.googleadservices.com/pagead/conversion/1072697570/?value=<?php echo $adwords_saleamt;?>&amp;currency_code=USD&amp;label=PXyHCPj9ZhDiocD_Aw&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>

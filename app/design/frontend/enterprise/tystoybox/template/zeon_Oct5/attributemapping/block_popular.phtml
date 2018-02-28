@@ -1,0 +1,52 @@
+<?php
+$characterdata = $this->getPopularAttributeList();
+$_collectionSize = count($characterdata);
+if ($_collectionSize > 0) :
+$_imageUrl = Mage::getBaseUrl('media');
+$helper = Mage::helper('zeon_attributemapping');
+$allUrl = Mage::helper('zeon_attributemapping')
+        ->getConfigDetails('characterpage_url', 1);
+    $urlSuffix = Mage::helper('zeon_attributemapping')
+            ->getConfigDetails('url_prefix', 1);
+            if ($urlSuffix) {
+                $urlSuffix = '.'.$urlSuffix;
+            }
+    $allUrl = $allUrl.$urlSuffix;
+?>
+
+<div class="category-products populer-character">
+    <div class="green-title-sec"><span class="green-title"><?php echo $this->__('Most Popular Characters'); ?></span>
+    </div>
+    <?php // Set the page limit.
+    $configCatPerRow = Mage::getStoreConfig('catalog/category_list/category_grid_per_row');
+    $i=0;  ?>
+    <?php foreach ($characterdata as $character): ?>
+    <?php $_logoUrl = $_imageUrl.$character['logo_image'];
+        if ($character['logo_image'] == '') {
+            $_logoUrl = $this->getSkinUrl('images/no_image_c.jpg');
+        }
+        $attributeUrl = $helper->getAttributeUrl($character['option_id'], $character['request_path']);
+        ?>
+
+        <?php if(($i++ % $configCatPerRow) == 0): ?>
+            <ul class="products-grid">
+        <?php endif; ?>
+            <li class="item<?php if (($i - 1) % $configCatPerRow == 0): ?> first<?php elseif ($i % $configCatPerRow == 0): ?> last<?php endif; ?>">
+                <a href="<?php echo $attributeUrl ?>" onclick="setLocation('<?php echo $attributeUrl ?>');"
+                title="" class="show-tooltip tooltip-active">
+                    <img src="<?php echo $_logoUrl; ?>" alt="<?php echo $this->htmlEscape($character['value']) ?>" />
+                    <div class="show-tooltip" style="display:none"><?php echo $character['value'] ?></div>
+                </a>
+            </li>
+        <?php if( ($i % $configCatPerRow) == 0 || $i==$_collectionSize): ?>
+            </ul>
+        <?php endif; ?>
+    <?php endforeach ?>
+     <div>
+        <a href="<?php echo $this->getUrl().$allUrl ?>">
+            <?php echo $this->__('View All'); ?>
+        </a>
+    </div>
+</div>
+
+<?php endif; ?>

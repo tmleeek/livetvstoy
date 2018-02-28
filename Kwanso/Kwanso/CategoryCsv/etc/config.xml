@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<config>
+  <modules>
+    <Kwanso_CategoryCsv>
+      <version>0.1.0</version>
+    </Kwanso_CategoryCsv>
+  </modules>
+  <global>
+    <helpers>
+      <categorycsv>
+        <class>Kwanso_CategoryCsv_Helper</class>
+      </categorycsv>
+    </helpers>
+	<models>
+	  <categorycsv>
+		<class>Kwanso_CategoryCsv_Model</class>
+		<resourceModel>categorycsv_mysql4</resourceModel>
+	  </categorycsv>
+	</models>
+          <events>
+            <admin_system_config_changed_section_cat_csv_sec>
+                <observers>
+                    <categorycsv>
+                        <type>singleton</type>
+                        <class>categorycsv/observer</class>
+                        <method>adminSystemConfigChangedSection</method>
+                    </categorycsv>
+                </observers>
+            </admin_system_config_changed_section_cat_csv_sec>
+        </events>
+  </global>
+    <crontab>
+        <jobs>
+			<categorycsv_csv>
+                <schedule><cron_expr>*/30 * * * *</cron_expr></schedule>
+                <run><model>categorycsv/cron::csv</model></run>
+            </categorycsv_csv>
+        </jobs>
+    </crontab>
+</config>

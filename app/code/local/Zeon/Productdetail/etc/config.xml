@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @category   Zeon
+ * @package    Zeon_Attributemapping
+ */
+ -->
+<config>
+
+    <modules>
+        <Zeon_Productdetail>
+            <version>1.0.0</version>
+        </Zeon_Productdetail>
+    </modules>
+    
+    <frontend>
+        <routers>
+            <productdetail>
+                <use>standard</use>
+                <args>
+                    <module>Zeon_Productdetail</module>
+                    <frontName>productdetail</frontName>
+                </args>
+            </productdetail>
+        </routers>
+    </frontend>
+    <global>
+    <blocks>
+    	<zeon_productdetail>
+                <class>Zeon_Productdetail_Block</class>
+      	</zeon_productdetail>
+      <adminhtml>
+        <rewrite>
+          <review_edit_form>Zeon_Productdetail_Block_Adminhtml_Edit_Form</review_edit_form>
+        </rewrite>
+      </adminhtml>
+    </blocks>
+             
+         <helpers>
+             <zeon_productdetail>
+                 <class>Zeon_Productdetail_Helper</class>
+             </zeon_productdetail>
+         </helpers>
+         
+         <models>
+         	<review_resource>
+	            <rewrite>
+	                <review>Zeon_Productdetail_Model_Review</review>
+	                <review_collection>Zeon_Productdetail_Model_Resource_Review_Collection</review_collection>
+	            </rewrite>
+	        </review_resource>
+         </models>
+         
+    
+        <resources>
+            <zeon_productdetail_setup>
+                <setup>
+                    <module>Zeon_Productdetail</module>
+                    <class>Mage_Eav_Model_Entity_Setup</class>
+                </setup>
+                <connection>
+                    <use>default_setup</use>
+                </connection>
+            </zeon_productdetail_setup>
+            <zeon_productdetail_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </zeon_productdetail_write>
+            <zeon_productdetail_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </zeon_productdetail_read>
+        </resources>
+        
+    </global>
+        
+    <default>
+        <zeon_productdetail>
+            <productdetails>
+                <popup_identifier>detail_popup_</popup_identifier>
+            </productdetails>
+        </zeon_productdetail>
+    </default>
+    
+</config>

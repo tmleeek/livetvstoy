@@ -1,0 +1,19 @@
+<div class="customer-service row">
+<?php /*?>CMS Blocks for Customer Service Links<?php */?>
+<?php
+$customerServiceLinks = Mage::getStoreConfig('contactinfo/general/customer_service_link');
+$customerServiceInfo = Mage::getStoreConfig('contactinfo/general/customer_service_info');
+$iframeUrl = Mage::getStoreConfig('contactinfo/general/iframe_url'); ?>
+<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId($customerServiceLinks)->toHtml() ?>
+
+<div class="contact-us col-lg-10 col-md-10 col-sm-12 col-xs-12">
+    <div class="green-title-sec">
+        <span class="green-title"><?php echo $this->__('Contact Us'); ?></span>
+    </div>
+    <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId($customerServiceInfo)->toHtml() ?>
+<div class="contact-form">
+    <?php $iframeSrc = $iframeUrl; ?>
+    <iframe src="<?php echo $iframeSrc; ?>" id="contactus-iframe" name="contactus-iframe" style="width:100%; height: 350px;" frameborder="no" scrolling="no"></iframe>
+</div>
+</div>
+</div>

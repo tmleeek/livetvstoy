@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<config>
+    <menu>
+        <zextension>
+            <children>
+                <banner translate="title">
+                    <title>Manage Banners</title>
+                    <sort_order>2</sort_order>
+                    <children>
+                        <banner_listing translate="title">
+                            <title>Listing</title>
+                            <action>bannerslideradmin/adminhtml_banner/index</action>
+                            <sort_order>1</sort_order>
+                        </banner_listing>
+                        <banner_setting translate="title">
+                            <title>Banner Settings</title>
+                            <action>adminhtml/system_config/edit/section/bannerslider</action>
+                            <sort_order>2</sort_order>
+                        </banner_setting>
+                    </children>
+                </banner>
+            </children>
+        </zextension>
+    </menu>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <zextension>
+                        <children>
+                            <banner translate="title">
+                                <title>Manage Banners</title>
+                                <sort_order>2</sort_order>
+                                <children>
+                                    <banner_listing translate="title">
+                                        <title>Listing</title>
+                                        <sort_order>1</sort_order>
+                                    </banner_listing>
+                                    <banner_setting>
+                                        <title>Banner Settings</title>
+                                        <sort_order>2</sort_order>
+                                    </banner_setting>
+                                </children>
+                            </banner>
+                        </children>
+                    </zextension>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <bannerslider translate="title">
+                                        <title>Banner Slider</title>
+                                        <sort_order>50</sort_order>
+                                    </bannerslider>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>

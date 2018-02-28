@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<config>
+    <sections>
+        <giftcard>
+            <groups>
+                <giftcardaccount_general translate="label" module="enterprise_giftcardaccount">
+                    <fields>
+                        <bulk_limit translate="label comment">
+                            <label>Bulk Create Limit</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>9</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                            <comment>Used for bulk giftcard account creator.</comment>
+                        </bulk_limit>
+                    </fields>
+                </giftcardaccount_general>
+            </groups>
+        </giftcard>
+    </sections>
+</config>

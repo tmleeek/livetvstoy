@@ -1,0 +1,8 @@
+<config>
+    <modules>
+        <Magalter_Lib>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Magalter_Lib>
+    </modules>
+</config>

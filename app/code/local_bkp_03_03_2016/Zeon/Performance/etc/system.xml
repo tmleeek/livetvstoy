@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Perofrmance
+ *
+ * @category    Zeon
+ * @package     Zeon_Performance
+ * @copyright   Zeon Solutions. (http://www.zeonsolutions.com)
+ * @author      Mukesh Patel <mukesh.patel@zeonsolutions.com>
+ * @since       Tuesday 18 Jan, 2014
+ */
+-->
+<config>
+    <sections>
+        <zeon_performance translate="label">
+            <label>Performance Configuration</label>
+            <tab>zextension</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>80</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>          
+                <global translate="label">
+                    <label>Performance Settings</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <enabled translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </enabled>
+                        <minicss translate="label comment">
+                            <label>CSS Minified</label>
+                           <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>          
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </minicss> 
+                        <minijs translate="label">
+                            <label>JS Minified</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </minijs>
+                         <sqldebug translate="label">
+                            <label>SQL Profiler Debug</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                         </sqldebug>     
+                        <debug translate="label">
+                            <label>Debug</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </debug> 
+                         <console translate="label">
+                            <label>Profiler Show in Console</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>5</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </console>                      
+                    </fields>
+                </global>             
+              
+              
+            </groups>
+        </zeon_performance>     
+   </sections>
+</config>

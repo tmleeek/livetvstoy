@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+  <modules>
+    <Etrader_All>
+      <active>true</active>
+      <codePool>local</codePool>
+    </Etrader_All>
+  </modules>
+</config>
